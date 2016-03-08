@@ -1,0 +1,145 @@
+body {
+    background-color: #fafafa;
+    font-family: 'Montserrat', sans-serif;  
+}
+
+div.outerBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+div.loginBox {
+    background-color: white;
+    border: 1px solid #edeeee;
+    border-radius: 1px;
+    margin: 0 auto;
+    padding: 10px 0;
+    width:350px;
+    height:300px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginLogo {
+    background-image: url(../images/logoInstagram.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+    display:block;
+    height: 60px;
+    width: 192px;
+    margin:5px auto;
+}
+
+input {
+    background-color: #fdfdfd;
+    border: 1px solid #edeeee;
+    border-radius: 3px;
+    font-size: 14px;
+    width:268px;
+    padding: 9px 8px 7px;
+    -webkit-appearance: none;
+    display:block;
+    clear:both;
+    margin:8px auto;
+}
+
+input[type=submit] {
+    background-color: #4090db;
+    border-color: #4090db;
+    color:white;
+    width:286px;
+    margin-bottom:15px;
+}
+
+.loginOr {
+    display:flex;
+    flex-direction: row;
+    margin: 5px 40px 8px;
+}
+
+.loginStripe {
+    background-color: #edeeee;
+    height: 1px;
+    position: relative;
+    margin: 7px 0;  
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+a.loginOrText:link,
+a.loginOrText:visited,
+a.loginOrText:hover,
+a.loginOrText:active {
+    text-decoration:none;   
+}
+
+.loginOrText {
+    text-transform: uppercase; 
+    color: #a5a7aa;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 15px;
+    margin: 0px 8px;
+}
+
+.viaFacebook {
+    display:flex;
+    justify-content: center;
+    color: #125688;
+    font-size:14px;
+}
+
+.logoFacebook {
+    margin-right: 8px;
+    background-image:url(../images/fb.jpg);
+    height:15px;
+    width:15px;
+    background-size:contain;
+    margin-top:10px;
+}
+
+.textFacebook {
+    margin-top:10px;
+    text-decoration:none;
+}
+
+.errorText {
+    color: #f12938;
+    font-size:13px;
+    text-align: center;
+    width:270px;
+    margin:10px auto;
+}
+
+div.registreer {
+    width:100px;
+    text-align:center;
+    height:14px;
+    font-size:14px;
+   position: absolute;
+    top:350px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-items: center;
+    justify-content: center; 
+    text-decoration: none;
+}
+
+a.signup:link,
+a.signup:visited,
+a.signup:hover,
+a.signup:active {
+    text-decoration: none;
+    color: #4b4f54;
+}

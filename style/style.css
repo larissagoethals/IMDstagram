@@ -1,0 +1,213 @@
+html {
+    font-family: 'Montserrat', sans-serif;   
+}
+
+body {
+    background-color: #fafafa;   
+}
+
+header {
+    width:100%;
+    background-color:white;
+    border-bottom-color: #edeeee;
+    border-bottom-width:1px;
+    border-bottom-style: solid;
+}
+
+.innerHeader {
+    max-width:600px;
+    padding:26px 0px;
+    margin:0px auto;
+    height:30px;
+}
+
+.logoInsta {
+    display:block;
+    background-image:url(../images/logoInstagram.png);
+    background-repeat:no-repeat;
+    background-size:contain;
+    height:28px;
+    text-indent:-9999px;
+    float:left;
+}
+
+/*.search {
+    left: 50%;
+    margin-left: -183px;
+    position: absolute;
+    top: 0; 
+}*/
+
+.inputSearch {
+    background: #fafafa;
+    border-radius: 15px;
+    border: solid 1px #edeeee;
+    font-size: 14px;
+    height: 20px;
+    outline: none;
+    padding: 3px 10px 3px 10px;
+    width: 178px;
+    z-index: 2;
+    text-align:center;
+    display:inline;
+    float:left;
+    margin-left:80px;
+}
+/*
+.realBox {
+     background: #fafafa;
+    border: solid 1px #edeeee;
+    border-radius: 15px;
+    color: #818488;
+    cursor: text;
+    font-size: 14px;
+    font-weight: 300;
+    height: 28px;
+    left: 0;
+    padding: 7px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 215px;
+    z-index: 2;   
+}
+
+.searchText {
+        display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;   
+}*/
+
+.profileName {
+    float:right;
+    color: #125688;
+    font-size: 16px;
+    line-height: 22px;
+    padding:3px 0px;
+}
+
+.profileName a:link,
+.profileName a:visited,
+.profileName a:hover,
+.profileName a:active {
+    text-decoration:none; 
+    color: #125688;
+}
+
+.clearfix {
+     clear:both;   
+}
+
+.timeline {
+    max-width:600px;
+    margin:0px auto;
+    padding-top: 60px;
+}
+
+.instaPost {
+    background-color: white;
+    border: 1px solid #edeeee;
+    border-radius: 3px;
+    margin-bottom: 60px;
+    margin-left: -1px;
+    margin-right: -1px;
+}
+
+.instaPost_header {
+    /*height: 64px;*/
+    padding: 14px 20px;
+    background-color:white;
+}
+
+.postProfileImage {
+    background-color: #fbfbfb;
+    border: 1px solid #cccfd0;
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: 30px;
+    overflow: hidden;
+    width: 30px;
+    float:left;
+}
+
+.ip_header_profile p {
+    float:left;
+    font-size: 15px;
+    line-height: 30px;
+    margin-left:10px;
+    -webkit-box-flex: 1;
+    color: #125688;
+    text-decoration: none;
+}
+
+.instaPost_image {
+    border-bottom: 1px solid #eeefef;
+    border-top: 1px solid #eeefef;
+    max-width:100%;
+}
+
+.instaPost_image img {
+    width:100%;   
+}
+
+.instaPost_timeAgo {
+    float:right; 
+    font-size: 15px;
+    line-height:30px;
+    color: #a5a7aa;
+}
+
+.instaPost_body {
+    padding:20px;
+    font-size: 15px;
+}
+
+.ip_body_likes {
+    margin-bottom:10px;
+    color: #4b4f54;
+    font-weight: 600;
+    font-size:15px;
+}
+
+.insta_loadMore {
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    border-color:#125688;
+    border-width:1px;
+    border-style:solid;
+    line-height:100px;
+    margin:0px auto;
+    text-align:center;
+    font-size:14px;
+    color:#125688;
+    font-weight: bold;
+}
+
+.likeAndReact {
+    border-top: 1px solid #eeefef;   
+}
+
+.react input {
+    border: solid 0px #edeeee;
+    font-size: 14px;
+    height: 20px;
+    outline: none;
+    padding: 3px 10px 3px 10px;
+    width: 178px;
+    z-index: 2;
+    display:inline;
+    float:left;
+}
+
+.like {
+        background-image: url(http://instagramstatic-a.akamaihd.net/h1/sprites/core-sprites-6625b8.png);
+    background-repeat: no-repeat;
+    background-position: -259px -264px;
+    height: 44px;
+    width: 44px; 
+    float:left;
+}
