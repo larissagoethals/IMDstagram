@@ -1,38 +1,30 @@
 body {
     background-color: #fafafa;
-    font-family: 'Montserrat', sans-serif;  
+    font-family: 'Montserrat', sans-serif;
 }
 
 div.outerBox {
-    display: flex;
+    margin-left:auto;
+    margin-right:auto;
+    display: block;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    background-color: white;
+    border: 1px solid #edeeee;
+    padding: 10px 0;
+    border-radius: 1px;
+    width: 350px;
+    margin-top: 20vh;
 }
 
 div.loginBox,
 div.signupBox{
     background-color: white;
-    border: 1px solid #edeeee;
-    border-radius: 1px;
-    margin: 0 auto;
-    padding: 10px 0;
     width:350px;
-    height:255px;
-    position: absolute;
     top:0;
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    align-items: center;
-    justify-content: center;
 }
-
-div.signupBox{
-    height: 335px;
-}
-
 
 .loginLogo {
     background-image: url(../images/logoInstagram.png);
@@ -127,19 +119,12 @@ a.loginOrText:active {
 }
 
 div.registreer {
-    width:100px;
     text-align:center;
     height:14px;
     font-size:14px;
-   position: absolute;
-    top:350px;
-    bottom: 0;
-    left: 0;
-    right: 0;
     margin: auto;
-    align-items: center;
-    justify-content: center; 
     text-decoration: none;
+    margin-top: 20px;
 }
 
 a.signup:link,
@@ -152,15 +137,10 @@ a.login:hover,
 a.login:active{
     text-decoration: none;
     color: #4b4f54;
-    margin-top:-20px;
     display: block;
+    width: 350px;
+    background-color: white;
 }
 
-a.login:link,
-a.login:visited,
-a.login:hover,
-a.login:active{
-    margin-top:20px;
-}
 
 
