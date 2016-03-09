@@ -115,7 +115,8 @@ a.loginOrText:active {
     font-size:13px;
     text-align: center;
     width:270px;
-    margin:10px auto;
+    margin:15px auto;
+    line-height: 18px;
 }
 
 div.registreer {
@@ -124,7 +125,7 @@ div.registreer {
     font-size:14px;
     margin: auto;
     text-decoration: none;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 a.signup:link,
