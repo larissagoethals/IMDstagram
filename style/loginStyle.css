@@ -10,14 +10,15 @@ div.outerBox {
     flex-direction: column;
 }
 
-div.loginBox {
+div.loginBox,
+div.signupBox{
     background-color: white;
     border: 1px solid #edeeee;
     border-radius: 1px;
     margin: 0 auto;
     padding: 10px 0;
     width:350px;
-    height:300px;
+    height:255px;
     position: absolute;
     top:0;
     bottom: 0;
@@ -27,6 +28,11 @@ div.loginBox {
     align-items: center;
     justify-content: center;
 }
+
+div.signupBox{
+    height: 335px;
+}
+
 
 .loginLogo {
     background-image: url(../images/logoInstagram.png);
@@ -62,14 +68,14 @@ input[type=submit] {
 .loginOr {
     display:flex;
     flex-direction: row;
-    margin: 5px 40px 8px;
+    margin: 5px 40px 6px;
 }
 
 .loginStripe {
     background-color: #edeeee;
     height: 1px;
     position: relative;
-    margin: 7px 0;  
+    margin: 7px 0;
     flex-shrink: 1;
     flex-grow: 1;
 }
@@ -104,11 +110,11 @@ a.loginOrText:active {
     height:15px;
     width:15px;
     background-size:contain;
-    margin-top:10px;
+    margin-top:3px;
 }
 
 .textFacebook {
-    margin-top:10px;
+    margin-top:3px;
     text-decoration:none;
 }
 
@@ -139,7 +145,22 @@ div.registreer {
 a.signup:link,
 a.signup:visited,
 a.signup:hover,
-a.signup:active {
+a.signup:active,
+a.login:link,
+a.login:visited,
+a.login:hover,
+a.login:active{
     text-decoration: none;
     color: #4b4f54;
+    margin-top:-20px;
+    display: block;
 }
+
+a.login:link,
+a.login:visited,
+a.login:hover,
+a.login:active{
+    margin-top:20px;
+}
+
+
