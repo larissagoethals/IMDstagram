@@ -15,7 +15,7 @@
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
     //connectie
-    $conn = new mysqli($DB_LOCATION, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
+    $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     if($conn->connect_errno){
         die("No database connection");
