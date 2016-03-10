@@ -1,4 +1,16 @@
 <?php
+    session_start();
+
+    //Check if able to be here
+    /*
+    if(isset($_SESSION['loggedinFact'])){
+
+    }
+    else {
+        header('Location: login.php');
+    }
+    */
+
     $users = [
             ["username" => "yarondassonneville"],
             ["username" => "thomasthaens"]
