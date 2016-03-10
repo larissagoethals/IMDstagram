@@ -38,10 +38,10 @@
 
     <section class="timeline">
 
-        <div class="uploadImage">
+        <a href="postImage.php" class="uploadImage">
             <div class="photoUpload"></div>
             <p>Post foto</p>
-        </div>
+        </a>
 
        <?php foreach($posts as $post): ?>
         <div class="instaPost">

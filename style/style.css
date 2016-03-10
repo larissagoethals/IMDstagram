@@ -116,13 +116,19 @@ header {
     display:inline-block;
 }
 
-.uploadImage {
+.uploadImage:link,
+.uploadImage:visited,
+.uploadImage:hover,
+.uploadImage:active {
+    display:block;
     background-color:white;
     border:1px solid #edeeee;
     border-radius: 3px;
     margin:20px 0px;
     padding:10px;
     text-align:center;
+    text-decoration: none;
+    color:black;
 }
 
 .uploadImage:hover {

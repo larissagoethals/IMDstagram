@@ -2,6 +2,15 @@
     //login code
     session_start();
 
+    if(isset($_SESSION['loggedinFact'])){
+        if($_SESSION['loggedinFact'] == true) {
+            header('location: timeline.php');
+        }
+        else {
+            header('location: login.php');
+        }
+    }
+
     //Include settings.php
     include_once('settings.php');
 
