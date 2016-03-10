@@ -104,7 +104,36 @@ header {
 .timeline {
     max-width:600px;
     margin:0px auto;
-    padding-top: 60px;
+    padding-top: 0px;
+}
+
+.photoUpload {
+    background-image:url(../images/photo.svg);
+    width:16px;
+    height:16px;
+    margin:2px 0px;
+    background-size:cover;
+    display:inline-block;
+}
+
+.uploadImage {
+    background-color:white;
+    border:1px solid #edeeee;
+    border-radius: 3px;
+    margin:20px 0px;
+    padding:10px;
+    text-align:center;
+}
+
+.uploadImage:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.uploadImage p {
+    line-height:21px;
+    display:inline-block;
+    margin:0px;
 }
 
 .instaPost {

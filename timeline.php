@@ -35,8 +35,14 @@
         </div>
         <div class="clearfix"></div>
     </header>
-    
+
     <section class="timeline">
+
+        <div class="uploadImage">
+            <div class="photoUpload"></div>
+            <p>Post foto</p>
+        </div>
+
        <?php foreach($posts as $post): ?>
         <div class="instaPost">
             <div class="instaPost_header">
