@@ -6,7 +6,8 @@
     include_once('settings.php');
 
 function canLogin( $p_username, $p_password ){
-    $conn = new mysqli('localhost', 'root', '', 'IMDstagram');
+    $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    //$conn = mysqli_connect(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     $sql = "select * from users
             where username = '".$conn->real_escape_string($p_username)."'";

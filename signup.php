@@ -15,7 +15,7 @@
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
     //connectie
-    $conn = new mysqli($DB_LOCATION, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
+    $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     if($conn->connect_errno){
         die("No database connection");
@@ -41,7 +41,7 @@
 <body>
 <div class="outerBox">
 
-    <div class="loginBox">
+    <div class="signupBox">
         <div class="loginLogo">
 
         </div>
@@ -60,6 +60,11 @@
             </label>
             <input type="submit" value="Registreer">
         </form>
+        <div class="loginOr">
+            <div class="loginStripe"></div>
+            <div class="loginOrText">of</div>
+            <div class="loginStripe"></div>
+        </div>
         <a href="#" class="viaFacebook">
             <div class="logoFacebook" style="margin-top:0px;"></div>
             <div class="textFacebook" style="margin-top:0px;">Registreren met Facebook</div>
@@ -74,7 +79,7 @@
     </div>
 
     <div class="registreer">
-        <a href="login.php" class="signup">Login</a>
+        <a href="login.php" class="login">Login</a>
     </div>
 </div>
 </body>
