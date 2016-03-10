@@ -16,19 +16,27 @@
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
             //connectie
-            $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
+            $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
-            if ($conn->connect_errno) {
+            //$conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+            /*if ($conn->connect_errno) {
                 die("No database connection");
-            }
+            }*/
 
             //query
-            $query = "INSERT INTO users(email, password, name, username) VALUES ('".$conn->real_escape_string($email)."', '".$conn->real_escape_string($password)."', '".$conn->real_escape_string($name)."', ''".$conn->real_escape_string($username)."'');";
+            //$query = "INSERT INTO users(email, password, name, username) VALUES (real_escape_string($email).','real_escape_string($password)', 'real_escape_string($name)', 'real_escape_string($username)');";
+            $statement = $conn->prepare("insert into users (name, email, username, password) values (:name, :email, :username, :password)");
+            $statement->bindValue(":name", $name);
+            $statement->bindValue(":email", $email);
+            $statement->bindValue(":username", $username);
+            $statement->bindValue(":password", $password);
+            $statement->execute();
 
             //echo $query;
-            if ($conn->query($query)) {
-                $error = "Welcome aboard!";
-            };
+            /*if ($conn->query($query)) {
+                $success = "Welcome aboard!";
+            };*/
         } else {
             $error = "Gelieve alle velden correct in te vullen";
         }
