@@ -1,0 +1,42 @@
+.profileImage {
+    border-radius:50%;
+    display:block;
+    width:200px;
+    height:200px;
+    margin:10px auto;
+}
+
+.changeProfile {
+    margin:0px 10px;
+    background-color:white;
+    border-radius:3px;
+    text-align:center;
+    border:1px solid #edeeee;
+    padding:10px;
+    cursor:pointer;
+}
+
+.profileInformation {
+    margin:10px;
+}
+
+h1 {
+    font-size:1.5em;
+    margin-bottom:5px;
+}
+
+.countEverything {
+    margin-top:5px;
+}
+
+.countEverything li {
+    display:inline;
+}
+
+@media (min-width: 600px) {
+    .fullProfile {
+        max-width:960px;
+        margin:0px auto;
+        background-color:yellow;
+    }
+}
