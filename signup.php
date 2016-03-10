@@ -2,33 +2,37 @@
     //include settings.php
     include_once('settings.php');
 
-    if(!empty($_POST)){
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $name = $_POST['name'];
+    if(!empty($_POST)) {
+        if (!empty($_POST['email'] && !empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['password']))) {
+            $email = $_POST['email'];
+            $username = $_POST['username'];
+            $name = $_POST['name'];
 
-        $options = [
-            'cost' => 12
-        ];
+            $options = [
+                'cost' => 12
+            ];
 
-    //Password versleutelen
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+            //Password versleutelen
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
-    //connectie
-    $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
+            //connectie
+            $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-    if($conn->connect_errno){
-        die("No database connection");
+            if ($conn->connect_errno) {
+                die("No database connection");
+            }
+
+            //query
+            $query = "INSERT INTO users(email, password, name, username) VALUES ('".$conn->real_escape_string($email)."', '".$conn->real_escape_string($password)."', '".$conn->real_escape_string($name)."', ''".$conn->real_escape_string($username)."'');";
+
+            //echo $query;
+            if ($conn->query($query)) {
+                $error = "Welcome aboard!";
+            };
+        } else {
+            $error = "Gelieve alle velden correct in te vullen";
+        }
     }
-
-    //query
-    $query = "INSERT INTO users(email, password, name, username) VALUES ('$email', '$password', '$name', '$username');" ;
-
-    //echo $query;
-    if($conn->query( $query )){
-        $success = "Welcome aboard!";
-    };
-}
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -47,16 +51,16 @@
         </div>
         <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
             <label>
-                <input type="text" name="username" placeholder="Gebruikersnaam">
+                <input type="text" name="username" placeholder="Gebruikersnaam" required>
             </label>
             <label>
-                <input type="password" name="password" placeholder="Wachtwoord">
+                <input type="password" name="password" placeholder="Wachtwoord" required>
             </label>
             <label>
-                <input type="email" name="email" placeholder="E-mail">
+                <input type="email" name="email" placeholder="E-mail" required>
             </label>
             <label>
-                <input type="text" name="name" placeholder="Naam">
+                <input type="text" name="name" placeholder="Naam" required>
             </label>
             <input type="submit" value="Registreer">
         </form>

@@ -16,7 +16,6 @@
 
 function canLogin( $p_username, $p_password ){
     $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    //$conn = mysqli_connect(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     $sql = "select * from users
             where username = '".$conn->real_escape_string($p_username)."'";
@@ -38,18 +37,22 @@ function canLogin( $p_username, $p_password ){
     };
 }
 
-if( !empty( $_POST ) ){
+if( !empty( $_POST ) ) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    if( canLogin( $username, $password ) ){
-        $_SESSION['loggedinFact'] = true;
-        $_SESSION['loggedin'] = "yes";
-        // redirect to index.php
-        header('location: timeline.php');
-    }
-    else{
-        // feedback
-        $error = "De gebruikersnaam en het wachtwoord zijn geen correcte combinatie. Gelieve opnieuw te proberen.";
+
+    if (!empty($username) && !empty($password)) {
+        if (canLogin($username, $password)) {
+            $_SESSION['loggedinFact'] = true;
+            $_SESSION['loggedin'] = "yes";
+            // redirect to index.php
+            header('location: timeline.php');
+        } else {
+            // feedback
+            $error = "De gebruikersnaam en het wachtwoord zijn geen correcte combinatie. Gelieve opnieuw te proberen.";
+        }
+    } else {
+        $error = "Gelieve gebruikersnaam en wachtwoord in te vullen.";
     }
 }
 
