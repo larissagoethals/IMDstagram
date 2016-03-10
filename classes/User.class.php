@@ -60,13 +60,14 @@ class User {
         // query INSERT / PDO
         $conn = new PDO("mysql:host=localhost;dbname=cars", "root", "");
 
-        $statement = $conn->prepare("insert into users (brand, price, maxload) values (:brand, :price, :maxload)");
-        $statement->bindValue(":brand", $this->Brand);
-        $statement->bindValue(":price", $this->Price);
-        $statement->bindValue(":maxload", $this->Maxload);
-        //BindValue ==> Doet wat je vraagt en leest de value uit en geeft die value
-        //die het nu is aan de query
-        //BindParam ==> voor query kan nog gewijzigd worden
+        $statement = $conn->prepare("insert into users (name, email, username, password, image, biotext) values (:name, :email, :username, :password, :image, :biotext)");
+        $statement->bindValue(":name", $this->Name);
+        $statement->bindValue(":email", $this->Email);
+        $statement->bindValue(":username", $this->Username);
+        $statement->bindValue(":password", $this->Password);
+        $statement->bindValue(":image", $this->Image);
+        $statement->bindValue(":biotext", $this->Biotext);
+
         $result = $statement->execute();
         return $result;
     }
