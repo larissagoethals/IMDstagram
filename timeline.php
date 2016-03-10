@@ -31,7 +31,7 @@
         </div>
         
         <div class="profileName">
-            <a href=""><?php echo $users[0]["username"] ?></a></div>
+            <a href="account.php"><?php echo $users[0]["username"] ?></a></div>
         </div>
         <div class="clearfix"></div>
     </header>
