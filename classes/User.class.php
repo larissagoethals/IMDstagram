@@ -1,5 +1,4 @@
 <?php
-//Dit is een superklasse ==> alles die gemeenschappelijk is
 class User {
     private $m_sName;
     private $m_sEmail;
@@ -58,7 +57,7 @@ class User {
     public function Save(){
         //conn
         // query INSERT / PDO
-        $conn = new PDO("mysql:host=localhost;dbname=cars", "root", "");
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
         $statement = $conn->prepare("insert into users (name, email, username, password, image, biotext) values (:name, :email, :username, :password, :image, :biotext)");
         $statement->bindValue(":name", $this->Name);
@@ -70,6 +69,12 @@ class User {
 
         $result = $statement->execute();
         return $result;
+    }
+
+    public function Update(){
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+
+            //HIER KOMT ALLES OM UP TE DATE (gebruiker)
     }
 
 }
