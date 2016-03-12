@@ -12,6 +12,7 @@
             $user->Password = $_POST['password'];
             $user->Image = "";
             $user->Biotext = "";
+            $user->Private = 0;
 
             if($user->userNameExists()){
                 $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen";
