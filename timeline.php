@@ -18,7 +18,8 @@
     
     $posts = [
             ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"],
-        ["p_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-19/10665411_1541365642763635_2097569741_a.jpg", "username" => "jackandjones_official", "time_post" => "2 u.", "post_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-15/s1080x1080/e15/fr/12748195_1707619106181407_437382664_n.jpg?ig_cache_key=MTE5MDUwMTg3MTQzNDQwNDg3Mw%3D%3D.2", "post_text" => "Sneaker kind of day? We suggest you check out these! @jackandjones_footwear #styleno12104235 #classicsneakers #lightweight #jjfootwear #jackandjones #menssneakers"]
+        ["p_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-19/10665411_1541365642763635_2097569741_a.jpg", "username" => "jackandjones_official", "time_post" => "2 u.", "post_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-15/s1080x1080/e15/fr/12748195_1707619106181407_437382664_n.jpg?ig_cache_key=MTE5MDUwMTg3MTQzNDQwNDg3Mw%3D%3D.2", "post_text" => "Sneaker kind of day? We suggest you check out these! @jackandjones_footwear #styleno12104235 #classicsneakers #lightweight #jjfootwear #jackandjones #menssneakers"],
+        ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"]
         ];
 ?><!DOCTYPE html>
 <html lang="en">
@@ -36,7 +37,11 @@
         
         <div class="search">
             <form action="" method="get">
+                <?php if(isset($_GET["search"])): ?>
+                <input name="search" value="<?php echo $_GET["search"] ?>" type="text" class="inputSearch">
+                <?php else: ?>
                 <input placeholder="Zoeken" name="search" value type="text" class="inputSearch">
+                <?php endif; ?>
             </form>
             <!--<div class="realBox">
             <div class="searchLogo"></div>
@@ -102,12 +107,15 @@
     </section>
     <?php else: ?>
     <section class="timeline">
+        <div class="infoSearch">
         <h2 class="searchText">
             <?php echo $_GET['search'] ?>
         </h2>
+        <p class="countItem">500 berichten</p>
+            </div>
         <div class="allMatches">
             <?php foreach($posts as $post):?>
-                <a href="#"><img class="searchItem" src="<?php echo $post['post_image']?>"></a>
+                <a href="#" style="background-image:url(<?php echo $post['post_image']?>)" class="searchItem"></a>
             <?php endforeach; ?>
         </div>
     </section>

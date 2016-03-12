@@ -246,3 +246,29 @@ header {
     width: 44px; 
     float:left;
 }
+
+.infoSearch {
+    margin:20px 0px;
+}
+
+.searchText {
+    margin:10px 0px;
+    color:#4b4f54;
+    font-size:2em;
+    text-align:center;
+}
+
+.countItem {
+    margin:5px 0px;
+    color:#4b4f54;
+    font-size:1em;
+    text-align:center;
+}
+
+.searchItem {
+    display:inline-block;
+    width:180px;
+    margin:0px 5px;
+    height:180px;
+    background-size:cover;
+}
