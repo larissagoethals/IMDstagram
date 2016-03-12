@@ -78,7 +78,6 @@ class User {
         $statement->bindValue(":image", $this->m_sImage);
         $statement->bindValue(":biotext", $this->m_sBiotext);
         $statement->bindValue(":private", $this->m_sPrivate);
-
         $result = $statement->execute();
         return $result;
     }
