@@ -17,7 +17,7 @@
         ];
     
     $posts = [
-            ["p_image" => "https://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12783885_191452124560709_1126048559_n.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "https://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12783885_191452124560709_1126048559_n.jpg?ig_cache_key=MTIwMTM4NDk0NTc3MjQyMTE3Nw%3D%3D.2", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"],
+            ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"],
         ["p_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-19/10665411_1541365642763635_2097569741_a.jpg", "username" => "jackandjones_official", "time_post" => "2 u.", "post_image" => "https://scontent-ams3-1.cdninstagram.com/t51.2885-15/s1080x1080/e15/fr/12748195_1707619106181407_437382664_n.jpg?ig_cache_key=MTE5MDUwMTg3MTQzNDQwNDg3Mw%3D%3D.2", "post_text" => "Sneaker kind of day? We suggest you check out these! @jackandjones_footwear #styleno12104235 #classicsneakers #lightweight #jjfootwear #jackandjones #menssneakers"]
         ];
 ?><!DOCTYPE html>
@@ -35,7 +35,9 @@
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
         
         <div class="search">
-            <input placeholder="Zoeken" value type="text" class="inputSearch">
+            <form action="" method="get">
+                <input placeholder="Zoeken" name="search" value type="text" class="inputSearch">
+            </form>
             <!--<div class="realBox">
             <div class="searchLogo"></div>
             <span class="searchText">Zoeken</span>
@@ -48,8 +50,8 @@
         <div class="clearfix"></div>
     </header>
 
+    <?php if(!isset($_GET["search"])): ?>
     <section class="timeline">
-
         <a href="postImage.php" class="uploadImage">
             <div class="photoUpload"></div>
             <p>Post foto</p>
@@ -98,5 +100,17 @@
         <?php endforeach; ?>
         <div class="insta_loadMore">Load more</div>
     </section>
+    <?php else: ?>
+    <section class="timeline">
+        <h2 class="searchText">
+            <?php echo $_GET['search'] ?>
+        </h2>
+        <div class="allMatches">
+            <?php foreach($posts as $post):?>
+                <a href="#"><img class="searchItem" src="<?php echo $post['post_image']?>"></a>
+            <?php endforeach; ?>
+        </div>
+    </section>
+    <?php endif; ?>
 </body>
 </html>
