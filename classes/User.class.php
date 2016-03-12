@@ -20,7 +20,12 @@ class User {
                 $this->m_sUsername = $p_vValue;
                 break;
             case "Password":
-                $this->m_sPassword = $p_vValue;
+                $options = [
+                    'cost' => 12
+                ];
+
+                $password = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
+                $this->m_sPassword = $password;
                 break;
             case "Image":
                 $this->m_sImage = $p_vValue;
@@ -43,10 +48,10 @@ class User {
                 return $this->m_sUsername;
                 break;
             case "Password":
-                return $this->Image;
+                return $this->m_sPassword;
                 break;
             case "Image":
-                return $this->Image;
+                return $this->m_sImage;
                 break;
             case "Biotext":
                 return $this->m_sBiotext;
@@ -55,20 +60,32 @@ class User {
     }
 
     public function Save(){
-        //conn
-        // query INSERT / PDO
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
-        $statement = $conn->prepare("insert into users (name, email, username, password, image, biotext) values (:name, :email, :username, :password, :image, :biotext)");
-        $statement->bindValue(":name", $this->Name);
-        $statement->bindValue(":email", $this->Email);
-        $statement->bindValue(":username", $this->Username);
-        $statement->bindValue(":password", $this->Password);
-        $statement->bindValue(":image", $this->Image);
-        $statement->bindValue(":biotext", $this->Biotext);
+        $statement = $conn->prepare("insert into users (name, email, username, password, profileImage, biotext) values (:name, :email, :username, :password, :image, :biotext)");
+        $statement->bindValue(":name", $this->m_sName);
+        $statement->bindValue(":email", $this->m_sEmail);
+        $statement->bindValue(":username", $this->m_sUsername);
+        $statement->bindValue(":password", $this->m_sPassword);
+        $statement->bindValue(":image", $this->m_sImage);
+        $statement->bindValue(":biotext", $this->m_sBiotext);
 
         $result = $statement->execute();
         return $result;
+    }
+
+    public function userNameExists(){
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select userID from users where username = '".$this->m_sUsername."'");
+        $statement->execute();
+        $count = count($statement->fetchAll());
+
+        if($count > 0){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public function Update(){

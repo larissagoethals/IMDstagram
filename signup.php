@@ -1,33 +1,59 @@
 <?php
     //include settings.php
     include_once('settings.php');
+    include_once('classes/User.class.php');
 
     if(!empty($_POST)){
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $name = $_POST['name'];
+        if(!empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['password'])){
+            $user = new User();
+            $user->Email = $_POST['email'];
+            $user->Username = $_POST['username'];
+            $user->Name = $_POST['name'];
+            $user->Password = $_POST['password'];
+            $user->Image = "";
+            $user->Biotext = "";
 
-        $options = [
-            'cost' => 12
-        ];
+            if($user->userNameExists()){
+                $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen";
+            }
+            else {
+                if($user->Save()){
+                    $error = "U bent geregistreerd";
+                }else{
+                    $error = "Er liep iets fout gedurende de registratie";
+                }
+            }
 
-    //Password versleutelen
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+            /*$email = $_POST['email'];
+            $username = $_POST['username'];
+            $name = $_POST['name'];
 
-    //connectie
-    $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
+            $options = [
+                'cost' => 12
+            ];
 
-    if($conn->connect_errno){
-        die("No database connection");
-    }
+            //Password versleutelen
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);*/
 
-    //query
-    $query = "INSERT INTO users(email, password, name, username) VALUES ('$email', '$password', '$name', '$username');" ;
+            //connectie
+            /*$conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-    //echo $query;
-    if($conn->query( $query )){
-        $success = "Welcome aboard!";
-    };
+            if($conn->connect_errno){
+                die("No database connection");
+            }
+
+            //query
+            $query = "INSERT INTO users(email, password, name, username) VALUES ('$email', '$password', '$name', '$username');" ;
+
+            //echo $query;
+            if($conn->query( $query )){
+                $success = "Welcome aboard!";
+            };*/
+        }
+        else {
+            $error = "Gelieve alle velden in te vullen";
+        }
+
 }
 ?><!doctype html>
 <html lang="en">
