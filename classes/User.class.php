@@ -32,6 +32,10 @@ class User {
                 break;
             case "Biotext":
                 $this->m_sBiotext = $p_vValue;
+                break;
+            case "Private":
+                $this->m_sPrivate = $p_vValue;
+                break;
         }
     }
 
