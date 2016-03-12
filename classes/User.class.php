@@ -33,9 +33,6 @@ class User {
             case "Biotext":
                 $this->m_sBiotext = $p_vValue;
                 break;
-            case "Private":
-                $this->m_sPrivate = $p_vValue;
-                break;
         }
     }
 
@@ -75,6 +72,7 @@ class User {
         $statement->bindValue(":biotext", $this->m_sBiotext);
 
         $result = $statement->execute();
+
         return $result;
     }
 
