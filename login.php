@@ -13,6 +13,7 @@
 
     //Include settings.php
     include_once('settings.php');
+    include_once('classes/User.class.php');
 
 function canLogin( $p_username, $p_password ){
     $conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
