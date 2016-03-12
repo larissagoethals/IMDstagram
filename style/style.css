@@ -265,10 +265,33 @@ header {
     text-align:center;
 }
 
+.allMatches {
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+}
+
 .searchItem {
     display:inline-block;
     width:180px;
-    margin:0px 5px;
+    margin:5px;
     height:180px;
     background-size:cover;
 }
+
+@media (max-width:580px){
+    .allMatches {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .searchItem {
+        width:300px;
+        margin:0px 0px 15px 0px;
+        height:300px;
+        background-size:cover;
+        border: 1px solid #dddede;
+    }
+}
+
