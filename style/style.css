@@ -269,13 +269,14 @@ header {
     display:flex;
     flex-direction: row;
     flex-wrap:wrap;
+    justify-content: space-between;
 }
 
 .searchItem {
     display:inline-block;
-    width:180px;
-    margin:5px;
-    height:180px;
+    width:190px;
+    margin:5px 0px;
+    height:190px;
     background-size:cover;
 }
 
