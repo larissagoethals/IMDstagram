@@ -39,7 +39,7 @@
         <div class="search">
             <form action="" method="get">
                 <?php if(isset($_GET["search"]) && !empty($_GET['search'])): ?>
-                <input name="search" value="<?php echo $_GET["search"] ?>" type="text" class="inputSearch">
+                <input name="search" value="<?php echo htmlspecialchars($_GET["search"]) ?>" type="text" class="inputSearch">
                 <?php else: ?>
                 <input placeholder="Zoeken" name="search" value type="text" class="inputSearch">
                 <?php endif; ?>
@@ -110,7 +110,7 @@
     <section class="timeline">
         <div class="infoSearch">
         <h2 class="searchText">
-            <?php echo $_GET['search'] ?>
+            <?php echo htmlspecialchars($_GET['search']) ?>
         </h2>
         <p class="countItem">500 berichten</p>
             </div>
