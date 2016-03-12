@@ -38,7 +38,7 @@
         
         <div class="search">
             <form action="" method="get">
-                <?php if(isset($_GET["search"])): ?>
+                <?php if(isset($_GET["search"]) && !empty($_GET['search'])): ?>
                 <input name="search" value="<?php echo $_GET["search"] ?>" type="text" class="inputSearch">
                 <?php else: ?>
                 <input placeholder="Zoeken" name="search" value type="text" class="inputSearch">
@@ -56,7 +56,7 @@
         <div class="clearfix"></div>
     </header>
 
-    <?php if(!isset($_GET["search"])): ?>
+    <?php if(!isset($_GET["search"]) || empty($_GET["search"])): ?>
     <section class="timeline">
         <a href="postImage.php" class="uploadImage">
             <div class="photoUpload"></div>
@@ -120,7 +120,7 @@
                 <a href="#" style="background-image:url(<?php echo $post['post_image']?>)" class="searchItem"></a>
             <?php endforeach; ?>
         </div>
-        
+
     </section>
     <?php endif; ?>
 </body>
