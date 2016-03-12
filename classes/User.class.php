@@ -6,6 +6,7 @@ class User {
     private $m_sPassword;
     private $m_sImage;
     private $m_sBiotext;
+    private $m_sPrivate;
 
     public function __set($p_sProperty, $p_vValue)
     {
@@ -59,6 +60,9 @@ class User {
                 break;
             case "Biotext":
                 return $this->m_sBiotext;
+                break;
+            case "Private":
+                return $this->m_sPrivate;
                 break;
         }
     }
