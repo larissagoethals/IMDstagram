@@ -90,6 +90,14 @@ class User {
         }
     }
 
+    public function getUserID(){
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select userID from users where username = '".$this->m_sUsername."'");
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result[0];
+    }
+
     public function Update(){
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 

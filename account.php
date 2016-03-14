@@ -1,4 +1,12 @@
-<!doctype html>
+<?php
+    session_start();
+    include_once('classes/User.class.php');
+    if(isset($_GET['myProfile'])){
+        $myUser = new User();
+        $myUser->Username = $_SESSION['username'];
+        $thisUserID = $myUser->getUserID();
+    }
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
