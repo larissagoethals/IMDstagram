@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    include_once('classes/User.class.php');
     //Check if able to be here
     /*
     if(isset($_SESSION['loggedinFact'])){
@@ -17,6 +17,10 @@
         ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"],
         ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"]
         ];
+
+    $myUser = new User();
+    $myUser->Username = $_SESSION['username'];
+    $thisUserID = $myUser->getUserID();
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +50,7 @@
         </div>
         
         <div class="profileName">
-            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php?<?php echo 'myProfile=1' ?>"><?php echo $_SESSION['username']; ?></a></div>
         </div>
         <div class="clearfix"></div>
     </header>
