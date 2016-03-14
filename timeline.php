@@ -48,7 +48,6 @@
         <div class="profileName">
             <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
         </div>
-
         <div class="clearfix"></div>
     </header>
 
