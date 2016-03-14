@@ -10,11 +10,6 @@
         header('Location: login.php');
     }
     */
-
-    $users = [
-            ["username" => "yarondassonneville"],
-            ["username" => "thomasthaens"]
-        ];
     
     $posts = [
             ["p_image" => "http://www.nic.gent/images/content/image3.jpg", "username" => "gent", "time_post" => "55 m.", "post_image" => "http://www.nic.gent/images/content/image3.jpg", "post_text" => "De jongen en zijn sojasausja #weekend #sushi #sushishopantwerp #boyfwiendtime"],
