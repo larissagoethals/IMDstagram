@@ -44,7 +44,6 @@ if( !empty( $_POST ) ){
     if( canLogin( $username, $password ) ){
         $_SESSION['loggedinFact'] = true;
         $_SESSION['loggedin'] = "yes";
-        
         // redirect to index.php
         header('location: timeline.php');
     }
