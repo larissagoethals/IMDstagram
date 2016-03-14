@@ -26,7 +26,7 @@
         </div>
 
         <div class="profileName">
-            <a href="">yarondassonneville</a></div>
+            <a href="logout.php">Uitloggen</a></div>
     </div>
     <div class="clearfix"></div>
 </header>
@@ -36,7 +36,7 @@
         <div class="imageAndChange">
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
             <div class="changeProfile">
-                Profiel bewerken
+                <a href="accountEdit.php">Profiel bewerken</a>
             </div>
         </div>
 
