@@ -1,11 +1,11 @@
 <?php
-    session_start();
-    include_once('classes/User.class.php');
-    if(isset($_GET['myProfile'])){
-        $myUser = new User();
-        $myUser->Username = $_SESSION['username'];
-        $thisUserID = $myUser->getUserID();
-    }
+session_start();
+include_once('classes/User.class.php');
+if (isset($_GET['myProfile'])) {
+    $myUser = new User();
+    $myUser->Username = $_SESSION['username'];
+    $thisUserID = $myUser->getUserID();
+}
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -21,9 +21,7 @@
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
-        <div class="search">
-            <input placeholder="Zoeken" value type="text" class="inputSearch">
-        </div>
+
 
         <div class="profileName">
             <a href="logout.php">Uitloggen</a></div>
@@ -36,13 +34,14 @@
         <div class="imageAndChange">
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
             <div class="changeProfile">
-                <a href="accountEdit.php">Profiel bewerken</a>
+                <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
             </div>
         </div>
 
         <div class="profileInformation">
-            <h1>yarondassonneville</h1>
-            <p>Yaron Dassonneville - 19y • snap: yarond • Addicted to Photography 📷 • Student Interactive Multimedia Design @ThomasMore www.yarondassonneville.be</p>
+            <h1><?php echo $_SESSION['username']; ?></h1>
+            <p>Yaron Dassonneville - 19y • snap: yarond • Addicted to Photography 📷 • Student Interactive Multimedia
+                Design @ThomasMore www.yarondassonneville.be</p>
             <ul class="countEverything">
                 <li>249 berichten</li>
                 <li>800 volgers</li>

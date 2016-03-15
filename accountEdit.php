@@ -36,7 +36,7 @@ if (isset($_GET['myProfile'])) {
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
         </div>
         <h3>Change your settings here!</h3>
-        <form action="" method="post">
+        <form action="account.php" method="post">
             <label for="name">Change name</label>
             <input type="text" name="name" id="username" placeholder="Type your new name...">
             <label for="username">Change username</label>
@@ -50,9 +50,11 @@ if (isset($_GET['myProfile'])) {
             <label for="passwordNew">New password</label>
             <input type="text" name="passwordNew" id="passwordNew" placeholder="Type your new password...">
             <label for="passwordNewRepeat">Repeat new password</label>
-            <input type="text" name="passwordNewRepeat" id="passwordNewRepeat" placeholder="Repeat your new password...">
+            <input type="text" name="passwordNewRepeat" id="passwordNewRepeat"
+                   placeholder="Repeat your new password...">
             <label for="bioText">Change your description</label>
-            <textarea name="bioText" id="bioText" cols="30" rows="10" placeholder="Type your own description..."></textarea>
+            <textarea name="bioText" id="bioText" cols="30" rows="10"
+                      placeholder="Type your own description..."></textarea>
             <label for="profilePicture">Change profile picture</label>
             <input type="file" name="profilePicture" id="profilePicture">
             <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
