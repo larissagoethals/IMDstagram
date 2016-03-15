@@ -26,6 +26,9 @@ textarea {
     padding-bottom: 10px;
     background-color: #005b9a;
     color: white;
+    width: 91%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profileImage
