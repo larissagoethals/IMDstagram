@@ -1,41 +1,46 @@
-h3
-{
+h3 {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-input, textarea{
+input, textarea {
     width: 90%;
     display: block;
     padding-left: 5px;
     padding-top: 7px;
     padding-bottom: 7px;
     font-weight: bold;
-    margin: 5px auto 10px auto;
+    margin: 5px auto 15px auto;
+    font-size: 1em;
+    border: 1px solid transparent;
 }
 
-textarea{
-    width: 89%;
+textarea {
     resize: none;
 }
 
-label
-{
-    margin-left: 5%;
+#btnChangeAccount {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #005b9a;
+    color: white;
 }
 
-#btnChangeAccount
+.profileImage
 {
-    padding: 10px 0;
-    display: block;
+    margin-top: 20px;
+}
+
+label {
+    margin-left: 5%;
 }
 
 @media (min-width: 600px) {
     .fullProfile {
-        max-width:960px;
-        margin:0px auto;
-        background-color:lightblue;
+        max-width: 960px;
+        margin: 0px auto;
+        background-color: lightblue;
     }
 }

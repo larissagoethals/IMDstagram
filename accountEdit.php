@@ -22,9 +22,7 @@ if (isset($_GET['myProfile'])) {
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
-        <div class="search">
-            <input placeholder="Zoeken" value type="text" class="inputSearch">
-        </div>
+
 
         <div class="profileName">
             <a href="logout.php">Uitloggen</a></div>
