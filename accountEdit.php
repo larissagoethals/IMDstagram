@@ -15,7 +15,9 @@ if (isset($_GET['myProfile'])) {
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/loginStyle.css">
     <link rel="stylesheet" href="style/accountEdit.css">
+
 </head>
 <body>
 <header>
@@ -43,8 +45,6 @@ if (isset($_GET['myProfile'])) {
             <input type="text" name="username" id="name" placeholder="Type your new username...">
             <label for="email">New email</label>
             <input type="email" name="email" id="email" placeholder="Type your new email...">
-            <label for="emailRepeat">Repeat new email</label>
-            <input type="text" name="emailRepeat" id="emailRepeat" placeholder="Repeat your new email...">
             <label for="passwordOld">Old password</label>
             <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
             <label for="passwordNew">New password</label>
