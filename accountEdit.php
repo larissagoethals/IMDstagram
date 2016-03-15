@@ -5,7 +5,10 @@ if (isset($_GET['myProfile'])) {
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
     $thisUserID = $myUser->getUserID();
+
+
 }
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -25,7 +28,6 @@ if (isset($_GET['myProfile'])) {
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
 
-
         <div class="profileName">
             <a href="logout.php">Uitloggen</a></div>
     </div>
@@ -40,9 +42,16 @@ if (isset($_GET['myProfile'])) {
         <h3>Change your settings here!</h3>
         <form action="account.php" method="post">
             <label for="name">Change name</label>
-            <input type="text" name="name" id="username" placeholder="Type your new name...">
+            <input type="text" name="name" id="username" placeholder="Type your new name..."
+                   value="<?php $mySettings = new User();
+                   $mySettings->Username = $_SESSION['username'];
+                   $thisUserSettings = $mySettings->showUserSettings();
+                   echo $thisUserSettings['name']; ?>">
             <label for="username">Change username</label>
-            <input type="text" name="username" id="name" placeholder="Type your new username...">
+            <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php $mySettings = new User();
+            $mySettings->Username = $_SESSION['username'];
+            $thisUserSettings = $mySettings->showUserSettings();
+            echo $thisUserSettings['username']; ?>">
             <label for="email">New email</label>
             <input type="email" name="email" id="email" placeholder="Type your new email...">
             <label for="passwordOld">Old password</label>
@@ -54,7 +63,10 @@ if (isset($_GET['myProfile'])) {
                    placeholder="Repeat your new password...">
             <label for="bioText">Change your description</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
-                      placeholder="Type your own description..."></textarea>
+                      placeholder="Type your own description..." ><?php $mySettings = new User();
+                $mySettings->Username = $_SESSION['username'];
+                $thisUserSettings = $mySettings->showUserSettings();
+                echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Change profile picture</label>
             <input type="file" name="profilePicture" id="profilePicture">
             <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
