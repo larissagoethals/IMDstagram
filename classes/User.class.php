@@ -104,6 +104,22 @@ class User {
             //HIER KOMT ALLES OM UP TE DATE (gebruiker)
     }
 
+    public function showUserSettings(){
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select name, username, biotext from users where username = '".$this->m_sUsername."'");
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result;
+    }
+
+    public function showBio(){
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select biotext from users where username = '".$this->m_sUsername."'");
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result[0];
+    }
+
 }
 
 ?>
