@@ -5,6 +5,8 @@ if (isset($_GET['myProfile'])) {
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
     $thisUserID = $myUser->getUserID();
+
+
 }
 ?><!doctype html>
 <html lang="en">
@@ -40,8 +42,12 @@ if (isset($_GET['myProfile'])) {
 
         <div class="profileInformation">
             <h1><?php echo $_SESSION['username']; ?></h1>
-            <p>Yaron Dassonneville - 19y • snap: yarond • Addicted to Photography 📷 • Student Interactive Multimedia
-                Design @ThomasMore www.yarondassonneville.be</p>
+            <p><?php
+                $myBio = new User();
+                $myBio->Username = $_SESSION['username'];
+                $bio = $myBio->showBio();
+                echo $bio;
+                ?></p>
             <ul class="countEverything">
                 <li>249 berichten</li>
                 <li>800 volgers</li>
