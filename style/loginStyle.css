@@ -36,7 +36,7 @@ div.signupBox{
     margin:5px auto;
 }
 
-input {
+input, textarea {
     background-color: #fdfdfd;
     border: 1px solid #edeeee;
     border-radius: 3px;
