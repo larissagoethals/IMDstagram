@@ -45,8 +45,8 @@ if (isset($_GET['myProfile'])) {
             <p><?php
                 $myBio = new User();
                 $myBio->Username = $_SESSION['username'];
-                $bio = $myBio->showBio();
-                echo $bio;
+                $bio = $myBio->showUserSettings();
+                echo $bio['biotext'];
                 ?></p>
             <ul class="countEverything">
                 <li>249 berichten</li>

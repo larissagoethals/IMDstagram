@@ -129,18 +129,46 @@ class User
     private function ControlUpdate()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $query = $conn->prepare("select * from users where username = '" . $this->m_sUsername . "'");;
+        $query->execute();
+        $result = $query->fetch();
+        $username = $result['username'];
+        $email = $result['email'];
+        $password = $result['password'];
+        $name = $result['name'];
+        $biotext = $result['biotext'];
+
+        if ($this->m_sUsername != $username) {
+
+        } elseif ($this->m_sName == $name) {
+
+        } elseif ($this->m_sEmail == $email) {
+
+        } elseif ($this->m_sBiotext == $biotext) {
+
+        } elseif (password_verify($this->m_sPassword, $password)) {
+
+        }elseif($this->emailExists()){
+            throw new Exception("Dit emailadres is reeds in gebruik!");
+        }
+        elseif($this->userNameExists()){
+            throw new Exception("Deze username is reeds in gebruik!");
+        }
+
+        else {
+            $query = $conn->prepare("select * from users where username = '" . $this->m_sUsername . "'");;
+            $query->execute();
+            return true;
+        }
+
+
+    }
+
+    private function UsernameUpdate()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
         $oldUsername = $conn->prepare("select username from users where username = '" . $this->m_sUsername . "'");;
         $oldUsername->execute();
-        $oldPassword = $conn->prepare("select password from users where username = '" . $this->m_sUsername . "'");;
-        $oldPassword->execute();
-        $oldEmail = $conn->prepare("select email from users where username = '" . $this->m_sUsername . "'");;
-        $oldEmail->execute();
-
-        if ($this->m_sUsername != $oldUsername) {
-            return true;
-        } else {
-            throw new Exception;
-        }
     }
 
     public function Update()
@@ -173,14 +201,6 @@ class User
         return $result;
     }
 
-    public function showBio()
-    {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select biotext from users where username = '" . $this->m_sUsername . "'");
-        $statement->execute();
-        $result = $statement->fetch();
-        return $result[0];
-    }
 
     public function canLogin() {
         if(!empty($this->m_sUsername) && !empty($this->m_sPassword)){
