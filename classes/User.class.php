@@ -20,7 +20,7 @@ class User
                 $this->m_sEmail = $p_vValue;
                 break;
             case "Username":
-                $this->m_sUsername = $p_vValue;
+                $this->m_sUsername = strtolower($p_vValue);
                 break;
             case "Password":
                 $this->m_sPassword = $p_vValue;
@@ -190,12 +190,11 @@ class User
 
             $result = $statement->fetch();
             $count = $statement->rowCount();
-            var_dump($count);
 
             $password = $this->m_sPassword;
             if($count == 1){
                 $hash = $result['password'];
-                var_dump(password_verify("secret", $hash));
+
                 if(password_verify($password, $hash)) {
                     return true;
                 }

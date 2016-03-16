@@ -23,7 +23,7 @@ if( !empty( $_POST ) ) {
         if ($user->canLogin()) {
             $_SESSION['loggedinFace'] = true;
             $_SESSION['loggedin'] = "yes";
-            $_SESSION['username'] = $_POST['username'];
+            $_SESSION['username'] = strtolower($_POST['username']);
             header('location: timeline.php');
         } else {
             $error = "De gebruikersnaam en het wachtwoord zijn geen correcte combinatie. Gelieve opnieuw te proberen.";

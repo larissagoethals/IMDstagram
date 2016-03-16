@@ -12,11 +12,13 @@ if(!empty($_POST)) {
         $user->Image = "";
         $user->Biotext = "";
         $user->Private = 0;
-        if ($user->userNameExists()) {
-            $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen";
-            /*if ($user->emailExists()) {
-                $error .= "<br> Dit emailadres werd al gebruikt, gelieve een ander te kiezen";
-            }*/
+        if ($user->userNameExists() || $user->emailExists()) {
+            if($user->userNameExists()){
+                $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen. ";
+            }
+            if($user->emailExists()){
+                $error .= "Dit emailadres werd al gebruikt, gelieve een ander te kiezen of hiermee in te loggen";
+            }
         } else {
             if ($user->Save()) {
                 $error = "U bent geregistreerd";
@@ -25,25 +27,6 @@ if(!empty($_POST)) {
             }
         }
     }
-    /*$email = $_POST['email'];
-    $username = $_POST['username'];
-    $name = $_POST['name'];
-    $options = [
-        'cost' => 12
-    ];
-    //Password versleutelen
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);*/
-    //connectie
-    /*$conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    if($conn->connect_errno){
-        die("No database connection");
-    }
-    //query
-    $query = "INSERT INTO users(email, password, name, username) VALUES ('$email', '$password', '$name', '$username');" ;
-    //echo $query;
-    if($conn->query( $query )){
-        $success = "Welcome aboard!";
-    };*/
     else {
         $error = "Gelieve alle velden in te vullen";
     }
