@@ -39,20 +39,20 @@ if (isset($_GET['myProfile'])) {
         <div class="imageAndChange">
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
         </div>
-        <h3>Change your settings here!</h3>
+        <h3>Edit your profile here!</h3>
         <form action="account.php" method="post">
-            <label for="name">Change name</label>
+            <label for="name">Name</label>
             <input type="text" name="name" id="username" placeholder="Type your new name..."
                    value="<?php $mySettings = new User();
                    $mySettings->Username = $_SESSION['username'];
                    $thisUserSettings = $mySettings->showUserSettings();
                    echo $thisUserSettings['name']; ?>">
-            <label for="username">Change username</label>
+            <label for="username">Username</label>
             <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php $mySettings = new User();
             $mySettings->Username = $_SESSION['username'];
             $thisUserSettings = $mySettings->showUserSettings();
             echo $thisUserSettings['username']; ?>">
-            <label for="email">New email</label>
+            <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Type your new email...">
             <label for="passwordOld">Old password</label>
             <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
