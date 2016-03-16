@@ -8,6 +8,7 @@ class User
     private $m_sPassword;
     private $m_sImage;
     private $m_sBiotext;
+    private $m_iPrivate;
 
     public function __set($p_sProperty, $p_vValue)
     {
@@ -35,6 +36,9 @@ class User
             case "Biotext":
                 $this->m_sBiotext = $p_vValue;
                 break;
+            case "Private":
+                $this->m_iPrivate = $p_vValue;
+                break;
         }
     }
 
@@ -59,6 +63,9 @@ class User
             case "Biotext":
                 return $this->m_sBiotext;
                 break;
+            case "Private":
+                return $this->m_iPrivate;
+                break;
         }
     }
 
@@ -66,13 +73,14 @@ class User
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
-        $statement = $conn->prepare("insert into users (name, email, username, password, profileImage, biotext) values (:name, :email, :username, :password, :image, :biotext)");
+        $statement = $conn->prepare("insert into users (name, email, username, password, profileImage, biotext, private) values (:name, :email, :username, :password, :image, :biotext, :private)");
         $statement->bindValue(":name", $this->m_sName);
         $statement->bindValue(":email", $this->m_sEmail);
         $statement->bindValue(":username", $this->m_sUsername);
         $statement->bindValue(":password", $this->m_sPassword);
         $statement->bindValue(":image", $this->m_sImage);
         $statement->bindValue(":biotext", $this->m_sBiotext);
+        $statement->bindValue(":private", $this->m_iPrivate);
 
         $result = $statement->execute();
 
@@ -83,6 +91,20 @@ class User
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
         $statement = $conn->prepare("select userID from users where username = '" . $this->m_sUsername . "'");
+        $statement->execute();
+        $count = count($statement->fetchAll());
+
+        if ($count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function emailExists()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select userID from users where email = '" . $this->m_sEmail . "'");
         $statement->execute();
         $count = count($statement->fetchAll());
 
