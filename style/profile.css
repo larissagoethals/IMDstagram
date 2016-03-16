@@ -7,22 +7,29 @@
 }
 
 .changeProfile {
-    margin:0px 10px;
-    background-color:white;
     border-radius:3px;
     text-align:center;
-    border:1px solid #edeeee;
-    padding:10px;
+    border:1px solid transparent;
+    padding:2px;
     cursor:pointer;
+    width: 90%;
+    margin-left: auto;
+    margin-right:auto;
 }
 
 .profileInformation {
-    margin:10px;
+    margin: 10px auto;
+    width: 90%;
 }
 
 h1 {
     font-size:1.5em;
-    margin-bottom:5px;
+    margin-bottom:8px;
+}
+
+p
+{
+    line-height: 1.3em;
 }
 
 .countEverything {
@@ -31,6 +38,38 @@ h1 {
 
 .countEverything li {
     display:inline;
+}
+
+#btnChangeAccount {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #005b9a;
+    color: white;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+}
+
+.logoInsta {
+    display:block;
+    background-image:url(../images/logoInstagram.png);
+    background-repeat:no-repeat;
+    background-size:contain;
+    height:28px;
+    text-indent:-9999px;
+    width: 44%;
+    margin-left: 6%;
+    margin-right: auto;
+}
+
+.profileName {
+    color: #125688;
+    font-size: 16px;
+    line-height: 22px;
+    padding:3px 0px;
+    width: 44%;
+    text-align: right;
+    margin-right: 6%;
 }
 
 @media (min-width: 600px) {

@@ -1,5 +1,7 @@
 <?php
-class User {
+
+class User
+{
     private $m_sName;
     private $m_sEmail;
     private $m_sUsername;
@@ -9,7 +11,7 @@ class User {
 
     public function __set($p_sProperty, $p_vValue)
     {
-        switch( $p_sProperty ){
+        switch ($p_sProperty) {
             case "Name":
                 $this->m_sName = $p_vValue;
                 break;
@@ -38,7 +40,7 @@ class User {
 
     public function __get($p_sProperty)
     {
-        switch( $p_sProperty ){
+        switch ($p_sProperty) {
             case "Name":
                 return $this->m_sName;
                 break;
@@ -60,7 +62,8 @@ class User {
         }
     }
 
-    public function Save(){
+    public function Save()
+    {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
         $statement = $conn->prepare("insert into users (name, email, username, password, profileImage, biotext) values (:name, :email, :username, :password, :image, :biotext)");
@@ -76,32 +79,83 @@ class User {
         return $result;
     }
 
-    public function userNameExists(){
+    public function userNameExists()
+    {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select userID from users where username = '".$this->m_sUsername."'");
+        $statement = $conn->prepare("select userID from users where username = '" . $this->m_sUsername . "'");
         $statement->execute();
         $count = count($statement->fetchAll());
 
-        if($count > 0){
+        if ($count > 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public function getUserID(){
+    public function getUserID()
+    {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select userID from users where username = '".$this->m_sUsername."'");
+        $statement = $conn->prepare("select userID from users where username = '" . $this->m_sUsername . "'");
         $statement->execute();
         $result = $statement->fetch();
         return $result[0];
     }
 
-    public function Update(){
+    private function ControlUpdate()
+    {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $oldUsername = $conn->prepare("select username from users where username = '" . $this->m_sUsername . "'");;
+        $oldUsername->execute();
+        $oldPassword = $conn->prepare("select password from users where username = '" . $this->m_sUsername . "'");;
+        $oldPassword->execute();
+        $oldEmail = $conn->prepare("select email from users where username = '" . $this->m_sUsername . "'");;
+        $oldEmail->execute();
 
-            //HIER KOMT ALLES OM UP TE DATE (gebruiker)
+        if ($this->m_sUsername != $oldUsername) {
+            return true;
+        } else {
+            throw new Exception;
+        }
+    }
+
+    public function Update()
+    {
+        try {
+            $this->ControlUpdate();
+            $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+            $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, password= :password, biotext= :biotext where username = '" . $this->m_sUsername . "'");
+            $statement->bindValue(":email", $this->m_sEmail);
+            $statement->bindValue(":name", $this->m_sName);
+            $statement->bindValue(":username", $this->m_sUsername);
+            $statement->bindValue(":password", $this->m_sPassword);
+            $statement->bindValue(":biotext", $this->m_sBiotext);
+            $statement->execute();
+            $result = $statement->fetch();
+            return $result;
+        } catch (Exception $e) {
+
+        }
+
+    }
+
+    public function showUserSettings()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select name, username, biotext from users where username = '" . $this->m_sUsername . "'");
+
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result;
+    }
+
+    public function showBio()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select biotext from users where username = '" . $this->m_sUsername . "'");
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result[0];
     }
 
 }
