@@ -23,12 +23,7 @@ class User
                 $this->m_sUsername = $p_vValue;
                 break;
             case "Password":
-                $options = [
-                    'cost' => 12
-                ];
-
-                $password = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
-                $this->m_sPassword = $password;
+                $this->m_sPassword = $p_vValue;
                 break;
             case "Image":
                 $this->m_sImage = $p_vValue;
@@ -77,7 +72,14 @@ class User
         $statement->bindValue(":name", $this->m_sName);
         $statement->bindValue(":email", $this->m_sEmail);
         $statement->bindValue(":username", $this->m_sUsername);
-        $statement->bindValue(":password", $this->m_sPassword);
+
+        $options = [
+            'cost' => 12
+        ];
+
+        $password = password_hash($this->m_sPassword, PASSWORD_DEFAULT, $options);
+
+        $statement->bindValue(":password", $password);
         $statement->bindValue(":image", $this->m_sImage);
         $statement->bindValue(":biotext", $this->m_sBiotext);
         $statement->bindValue(":private", $this->m_iPrivate);
@@ -178,6 +180,34 @@ class User
         $statement->execute();
         $result = $statement->fetch();
         return $result[0];
+    }
+
+    public function canLogin() {
+        if(!empty($this->m_sUsername) && !empty($this->m_sPassword)){
+            $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+            $statement = $conn->prepare("select * from users where username = '".$this->m_sUsername."'");
+            $statement->execute();
+
+            $result = $statement->fetch();
+            $count = $statement->rowCount();
+            var_dump($count);
+
+            $password = $this->m_sPassword;
+            if($count == 1){
+                $hash = $result['password'];
+                var_dump(password_verify("secret", $hash));
+                if(password_verify($password, $hash)) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+
+    }
     }
 
 }
