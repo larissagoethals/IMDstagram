@@ -5,11 +5,14 @@ class User
     private $m_sName;
     private $m_sEmail;
     private $m_sUsername;
+    private $m_sOldPassword;
     private $m_sPassword;
+    private $m_sPasswordRepeat;
     private $m_sImage;
     private $m_sBiotext;
     private $m_iPrivate;
 
+    //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
     {
         switch ($p_sProperty) {
@@ -25,6 +28,20 @@ class User
             case "Password":
                 $this->m_sPassword = $p_vValue;
                 break;
+            case "PasswordRepeat":
+                $options = [
+                    'cost' => 12
+                ];
+                $passwordRepeat = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
+                $this->m_sPasswordRepeat = $passwordRepeat;
+                break;
+            case "OldPassword":
+                $options = [
+                    'cost' => 12
+                ];
+                $oldPassword = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
+                $this->m_sOldPassword = $oldPassword;
+                break;
             case "Image":
                 $this->m_sImage = $p_vValue;
                 break;
@@ -37,6 +54,8 @@ class User
         }
     }
 
+
+    //waarde inputvelden terugsturen
     public function __get($p_sProperty)
     {
         switch ($p_sProperty) {
@@ -52,6 +71,12 @@ class User
             case "Password":
                 return $this->m_sPassword;
                 break;
+            case "PasswordRepeat":
+                return $this->m_sPasswordRepeat;
+                break;
+            case "OldPassword":
+                return $this->m_sOldPassword;
+                break;
             case "Image":
                 return $this->m_sImage;
                 break;
@@ -64,6 +89,7 @@ class User
         }
     }
 
+    //save van gegevens in database (signup)
     public function Save()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
@@ -89,6 +115,7 @@ class User
         return $result;
     }
 
+    //controleren of username bestaat
     public function userNameExists()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
@@ -103,6 +130,7 @@ class User
         }
     }
 
+    //controleren of email bestaat
     public function emailExists()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
@@ -117,6 +145,7 @@ class User
         }
     }
 
+
     public function getUserID()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
@@ -126,6 +155,7 @@ class User
         return $result[0];
     }
 
+    //controlefunctie updatequery (accountEdit)
     private function ControlUpdate()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
@@ -139,38 +169,46 @@ class User
         $biotext = $result['biotext'];
 
         if ($this->m_sUsername != $username) {
-
-        } elseif ($this->m_sName == $name) {
-
-        } elseif ($this->m_sEmail == $email) {
-
-        } elseif ($this->m_sBiotext == $biotext) {
-
-        } elseif (password_verify($this->m_sPassword, $password)) {
-
-        }elseif($this->emailExists()){
-            throw new Exception("Dit emailadres is reeds in gebruik!");
-        }
-        elseif($this->userNameExists()){
-            throw new Exception("Deze username is reeds in gebruik!");
+            if ($this->userNameExists()) {
+                throw new Exception("Deze username is reeds in gebruik!");
+            } else {
+                $username = $this->m_sUsername;
+            }
         }
 
-        else {
-            $query = $conn->prepare("select * from users where username = '" . $this->m_sUsername . "'");;
-            $query->execute();
-            return true;
+        if ($this->m_sName != $name) {
+            $name = $this->m_sName;
         }
 
+        if ($this->m_sEmail != $email) {
+            if ($this->emailExists()) {
+                throw new Exception("Deze username is reeds in gebruik!");
+            } else {
+                $email = $this->m_sEmail;
+            }
+        }
 
+        if ($this->m_sBiotext != $biotext) {
+            $biotext = $this->m_sBiotext;
+        }
+
+        if (password_verify($password, $this->m_sOldPassword)) {
+            if(password_verify($this->m_sPasswordRepeat, $this->m_sPassword))
+            {
+                $password = $this->m_sPasswordRepeat;
+            }
+            else
+            {
+                throw new Exception("Gelieve 2 maal hetzelfde password in te geven!");
+            }
+        }
+        else
+        {
+            throw new Exception("Het oude password is niet correct!");
+        }
     }
 
-    private function UsernameUpdate()
-    {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $oldUsername = $conn->prepare("select username from users where username = '" . $this->m_sUsername . "'");;
-        $oldUsername->execute();
-    }
-
+    //save user settings (accountEdit)
     public function Update()
     {
         try {
@@ -191,10 +229,11 @@ class User
 
     }
 
+    //tonen van user settings (account + accountedit)
     public function showUserSettings()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select name, username, biotext from users where username = '" . $this->m_sUsername . "'");
+        $statement = $conn->prepare("select name, username, biotext, email from users where username = '" . $this->m_sUsername . "'");
 
         $statement->execute();
         $result = $statement->fetch();
