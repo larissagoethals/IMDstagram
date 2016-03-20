@@ -4,9 +4,11 @@ include_once('classes/User.class.php');
 if (isset($_GET['myProfile'])) {
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
-    $thisUserID = $myUser->getUserID();
+    $thisUserID = $myUser->getUserInformation();
 
-
+    $myBio = new User();
+    $myBio->Username = $_SESSION['username'];
+    $bio = $myBio->getUserInformation();
 }
 ?><!doctype html>
 <html lang="en">
@@ -42,12 +44,7 @@ if (isset($_GET['myProfile'])) {
 
         <div class="profileInformation">
             <h1><?php echo $_SESSION['username']; ?></h1>
-            <p><?php
-                $myBio = new User();
-                $myBio->Username = $_SESSION['username'];
-                $bio = $myBio->showUserSettings();
-                echo $bio['biotext'];
-                ?></p>
+            <p><?php echo $bio['biotext']; ?></p>
             <ul class="countEverything">
                 <li>249 berichten</li>
                 <li>800 volgers</li>

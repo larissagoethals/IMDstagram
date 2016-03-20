@@ -11,7 +11,7 @@ if (isset($_GET['myProfile'])) {
 }
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
-$thisUserSettings = $myUser->showUserSettings();
+$thisUserSettings = $myUser->getUserInformation();
 
 ?><!doctype html>
 <html lang="en">
