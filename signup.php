@@ -2,8 +2,8 @@
 //include settings.php
 include_once('settings.php');
 include_once('classes/User.class.php');
-if(!empty($_POST)){
-    if(!empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['password'])){
+if(!empty($_POST)) {
+    if (!empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['password'])) {
         $user = new User();
         $user->Email = $_POST['email'];
         $user->Username = $_POST['username'];
@@ -11,35 +11,21 @@ if(!empty($_POST)){
         $user->Password = $_POST['password'];
         $user->Image = "";
         $user->Biotext = "";
-        if($user->userNameExists()){
-            $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen";
-        }
-        else {
-            if($user->Save()){
+        $user->Private = 0;
+        if ($user->userNameExists() || $user->emailExists()) {
+            if($user->userNameExists()){
+                $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen. ";
+            }
+            if($user->emailExists()){
+                $error .= "Dit emailadres werd al gebruikt, gelieve een ander te kiezen of hiermee in te loggen";
+            }
+        } else {
+            if ($user->Save()) {
                 $error = "U bent geregistreerd";
-            }else{
+            } else {
                 $error = "Er liep iets fout gedurende de registratie";
             }
         }
-        /*$email = $_POST['email'];
-        $username = $_POST['username'];
-        $name = $_POST['name'];
-        $options = [
-            'cost' => 12
-        ];
-        //Password versleutelen
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);*/
-        //connectie
-        /*$conn = new mysqli(DB_LOCATION, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        if($conn->connect_errno){
-            die("No database connection");
-        }
-        //query
-        $query = "INSERT INTO users(email, password, name, username) VALUES ('$email', '$password', '$name', '$username');" ;
-        //echo $query;
-        if($conn->query( $query )){
-            $success = "Welcome aboard!";
-        };*/
     }
     else {
         $error = "Gelieve alle velden in te vullen";
