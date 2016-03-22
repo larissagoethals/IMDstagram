@@ -1,0 +1,12 @@
+#imgPreview {
+    width: 500px;
+    background-size: cover;
+    text-align: center;
+    display: block;
+    align-content: center;
+}
+
+#form1{
+    text-align: center;
+    align-content: center;
+}
