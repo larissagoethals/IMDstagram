@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('classes/User.class.php');
+
 if (isset($_GET['myProfile'])) {
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
@@ -8,6 +9,9 @@ if (isset($_GET['myProfile'])) {
 
 
 }
+$myUser = new User();
+$myUser->Username = $_SESSION['username'];
+$thisUserSettings = $myUser->getUserInformation();
 
 ?><!doctype html>
 <html lang="en">
@@ -43,17 +47,11 @@ if (isset($_GET['myProfile'])) {
         <form action="account.php" method="post">
             <label for="name">Name</label>
             <input type="text" name="name" id="username" placeholder="Type your new name..."
-                   value="<?php $mySettings = new User();
-                   $mySettings->Username = $_SESSION['username'];
-                   $thisUserSettings = $mySettings->showUserSettings();
-                   echo $thisUserSettings['name']; ?>">
+                   value="<?php echo $thisUserSettings['name'];?>">
             <label for="username">Username</label>
-            <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php $mySettings = new User();
-            $mySettings->Username = $_SESSION['username'];
-            $thisUserSettings = $mySettings->showUserSettings();
-            echo $thisUserSettings['username']; ?>">
+            <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php echo $thisUserSettings['username']; ?>">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Type your new email...">
+            <input type="email" name="email" id="email" placeholder="Type your new email..." value="<?php echo $thisUserSettings['email']; ?>">
             <label for="passwordOld">Old password</label>
             <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
             <label for="passwordNew">New password</label>
@@ -63,10 +61,7 @@ if (isset($_GET['myProfile'])) {
                    placeholder="Repeat your new password...">
             <label for="bioText">Change your description</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
-                      placeholder="Type your own description..." ><?php $mySettings = new User();
-                $mySettings->Username = $_SESSION['username'];
-                $thisUserSettings = $mySettings->showUserSettings();
-                echo $thisUserSettings['biotext']; ?></textarea>
+                      placeholder="Type your own description..." ><?php echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Change profile picture</label>
             <input type="file" name="profilePicture" id="profilePicture">
             <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">

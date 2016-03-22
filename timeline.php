@@ -20,7 +20,7 @@
 
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
-    $thisUserID = $myUser->getUserID();
+    $thisUserID = $myUser->getUserInformation();
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
