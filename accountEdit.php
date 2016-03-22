@@ -2,13 +2,19 @@
 session_start();
 include_once('classes/User.class.php');
 
-if (isset($_GET['myProfile'])) {
-    $myUser = new User();
-    $myUser->Username = $_SESSION['username'];
-    $thisUserID = $myUser->getUserID();
-
-
+if(!empty($_POST['btnChangeAccount'])) {
+    $updateUser = new User();
+    $updateUser->Oldusername = $_SESSION['username'];
+    $updateUser->Name = $_POST['name'];
+    $updateUser->Email = $_POST['email'];
+    $updateUser->Biotext = $_POST['bioText'];
+    $updateUser->Password = $_POST['passwordNew'];
+    $updateUser->PasswordRepeat = $_POST['passwordNewRepeat'];
+    $updateUser->OldPassword = $_POST['passwordOld'];
+    $updateUser->Username = $_POST['username'];
+    $updateUser->Update();
 }
+
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserSettings = $myUser->getUserInformation();
@@ -44,7 +50,7 @@ $thisUserSettings = $myUser->getUserInformation();
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
         </div>
         <h3>Edit your profile here!</h3>
-        <form action="account.php" method="post">
+        <form action="" method="post">
             <label for="name">Name</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name'];?>">
