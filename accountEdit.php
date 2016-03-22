@@ -46,11 +46,13 @@ $thisUserSettings = $myUser->getUserInformation();
         <h3>Edit your profile here!</h3>
         <form action="account.php" method="post">
             <label for="name">Name</label>
-            <input type="text" name="name" id="username" placeholder="Type your new name..."
+            <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name'];?>">
             <label for="username">Username</label>
-            <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php echo $thisUserSettings['username']; ?>">
+            <div id="responsUsername"></div>
+            <input type="text" name="username" id="username" placeholder="Type your new username..." value="<?php echo $thisUserSettings['username']; ?>">
             <label for="email">Email</label>
+            <div id="responsEmail"></div>
             <input type="email" name="email" id="email" placeholder="Type your new email..." value="<?php echo $thisUserSettings['email']; ?>">
             <label for="passwordOld">Old password</label>
             <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
@@ -73,5 +75,55 @@ $thisUserSettings = $myUser->getUserInformation();
         <img src="" alt="">
     </div>
 </section>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#username").focusout(function(e){
+
+            // message ophalen uit het textvak
+            var username = $("#username").val();
+            $.post( "ajax/userExists.php", { username: username })
+                .done(function( response ) {
+                    if(response.status == "notexist"){
+                        var p = "<p id='greenBackground'>"+ response.message+"</p>";
+                        $("#responsUsername").html("");
+                        $("#responsUsername").append(p);
+                    }
+                    else if(response.status == "exist")
+                    {
+                        var p = "<p id='redBackground'>"+ response.message+"</p>";
+                        $("#responsUsername").html("");
+                        $("#responsUsername").append(p);
+                    }
+                });
+            e.preventDefault();
+            // update smooth laten verschijnen
+        });
+
+
+        $("#email").focusout(function(e){
+
+            // message ophalen uit het textvak
+            var email = $("#email").val();
+            $.post( "ajax/emailExists.php", { email: email })
+                .done(function( response ) {
+                    if(response.status == "notexist"){
+                        var p = "<p id='greenBackground'>"+ response.message+"</p>";
+                        $("#responsEmail").html("");
+                        $("#responsEmail").append(p);
+                    }
+                    else if(response.status == "exist")
+                    {
+                        var p = "<p id='redBackground'>"+ response.message+"</p>";
+                        $("#responsEmail").html("");
+                        $("#responsEmail").append(p);
+                    }
+                });
+            e.preventDefault();
+            // update smooth laten verschijnen
+        });
+    });
+</script>
 </body>
 </html>
