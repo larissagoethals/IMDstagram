@@ -9,7 +9,7 @@ if(!empty($_POST['saveChanges'])) {
     $updateUser->Email = $_POST['email'];
     $updateUser->Biotext = $_POST['bioText'];
     $updateUser->Username = $_POST['username'];
-    $updateUser->Update();
+    $_SESSION['username'] = $updateUser->Update();
 }
 
 $myUser = new User();
@@ -62,6 +62,7 @@ $thisUserSettings = $myUser->getUserInformation();
                       placeholder="Type your own description..." ><?php echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Change profile picture</label>
             <input type="file" name="profilePicture" id="profilePicture">
+            <input type="checkbox" value="Mijn profiel is vindbaar voor iedereen">
             <a href="passwordEdit.php">Wijzig je wachtwoord hier</a>
             <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
         </form>
