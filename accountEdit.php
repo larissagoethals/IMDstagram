@@ -2,15 +2,12 @@
 session_start();
 include_once('classes/User.class.php');
 
-if(!empty($_POST['btnChangeAccount'])) {
+if(!empty($_POST['saveChanges'])) {
     $updateUser = new User();
     $updateUser->Oldusername = $_SESSION['username'];
     $updateUser->Name = $_POST['name'];
     $updateUser->Email = $_POST['email'];
     $updateUser->Biotext = $_POST['bioText'];
-    $updateUser->Password = $_POST['passwordNew'];
-    $updateUser->PasswordRepeat = $_POST['passwordNewRepeat'];
-    $updateUser->OldPassword = $_POST['passwordOld'];
     $updateUser->Username = $_POST['username'];
     $updateUser->Update();
 }
@@ -60,18 +57,12 @@ $thisUserSettings = $myUser->getUserInformation();
             <label for="email">Email</label>
             <div id="responsEmail"></div>
             <input type="email" name="email" id="email" placeholder="Type your new email..." value="<?php echo $thisUserSettings['email']; ?>">
-            <label for="passwordOld">Old password</label>
-            <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
-            <label for="passwordNew">New password</label>
-            <input type="text" name="passwordNew" id="passwordNew" placeholder="Type your new password...">
-            <label for="passwordNewRepeat">Repeat new password</label>
-            <input type="text" name="passwordNewRepeat" id="passwordNewRepeat"
-                   placeholder="Repeat your new password...">
             <label for="bioText">Change your description</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
                       placeholder="Type your own description..." ><?php echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Change profile picture</label>
             <input type="file" name="profilePicture" id="profilePicture">
+            <a href="passwordEdit.php">Wijzig je wachtwoord hier</a>
             <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
         </form>
 

@@ -176,39 +176,39 @@ class User
         }
     }
 
+    //in de update ==> Controle
+    //getUserinformation ==> Controleren of veldjes overeenkomen met wat
+    //er nu in zit ==> OK
+    // else ==> username van iemand anders gebruikt ==> jij niet user ==> NIET OKE
 
     //save user settings (accountEdit)
     public function Update()
     {
         if ($this->emailExists() == false) {
             if ($this->userNameExists() == false) {
-                if ($this->PasswordOldOk()) {
-                    if ($this->PasswordNewOk()) {
-                        try {
-                            $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-                            $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, password= :password, biotext= :biotext where username = '" . $this->m_sOldUsername . "'");
-                            $statement->bindValue(":email", $this->m_sEmail);
-                            $statement->bindValue(":name", $this->m_sName);
-                            $statement->bindValue(":username", $this->m_sUsername);
-                            $statement->bindValue(":password", $this->m_sPassword);
-                            $statement->bindValue(":biotext", $this->m_sBiotext);
-                            $statement->execute();
-                        } catch (Exception $e) {
+                try {
+                    $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+                    $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, password= :password, biotext= :biotext where username = '" . $this->m_sOldUsername . "'");
+                    $statement->bindValue(":email", $this->m_sEmail);
+                    $statement->bindValue(":name", $this->m_sName);
+                    $statement->bindValue(":username", $this->m_sUsername);
+                    $statement->bindValue(":password", $this->m_sPassword);
+                    $statement->bindValue(":biotext", $this->m_sBiotext);
+                    $statement->execute();
+                } catch (Exception $e) {
 
-                        }
-                    } else {
-                        throw new Exception("De twee wachtwoorden komen niet overeen!");
-                    }
-
-                } else {
-                    throw new Exception("Het oude wachtwoord is niet correct");
                 }
             } else {
-                throw new Exception("Deze username is reeds in gebruik!");
+                echo "Deze username is reeds in gebruik!";
             }
         } else {
-            throw new Exception("Dit emailadres is reeds in gebruik!");
+            echo "Dit emailadres is reeds in gebruik!";
         }
+    }
+
+    public function UpdatePassword()
+    {
+        //HIER KOMT DE FUNCTIE VOOR HET WACHTWOORD
     }
 
     //tonen van user settings (account + accountedit)
@@ -223,27 +223,24 @@ class User
     }
 
 
-    public function canLogin() {
-        if(!empty($this->m_sUsername) && !empty($this->m_sPassword)){
+    public function canLogin()
+    {
+        if (!empty($this->m_sUsername) && !empty($this->m_sPassword)) {
             $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-            $statement = $conn->prepare("select * from users where username = '".$this->m_sUsername."'");
+            $statement = $conn->prepare("select * from users where username = '" . $this->m_sUsername . "'");
             $statement->execute();
-
             $result = $statement->fetch();
             $count = $statement->rowCount();
-
             $password = $this->m_sPassword;
-            if($count == 1){
+            if ($count == 1) {
                 $hash = $result['password'];
 
-                if(password_verify($password, $hash)) {
+                if (password_verify($password, $hash)) {
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
-            }
-            else {
+            } else {
                 return false;
             }
 
