@@ -57,7 +57,6 @@ class User
         }
     }
 
-
     //waarde inputvelden terugsturen
     public function __get($p_sProperty)
     {
@@ -136,6 +135,24 @@ class User
         }
     }
 
+    public function userNameExistsUpdate()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
+       $result =  $statement->execute();
+        $count = count($result);
+
+        if ($count > 0) {
+            if ($this->m_sUsername == $result) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     //controleren of email bestaat
     public function emailExists()
     {
@@ -146,6 +163,26 @@ class User
 
         if ($count > 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function emailExistsUpdate()
+    {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select * from users where email = '" . $_SESSION['username'] . "'");
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $count = count($result);
+
+        if ($count > 0) {
+            if ($this->m_sEmail == $statement) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
@@ -184,17 +221,17 @@ class User
     //save user settings (accountEdit)
     public function Update()
     {
-        if ($this->emailExists() == false) {
-            if ($this->userNameExists() == false) {
+        if ($this->emailExistsUpdate() == false) {
+            if ($this->userNameExistsUpdate() == false) {
                 try {
                     $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-                    $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, password= :password, biotext= :biotext where username = '" . $this->m_sOldUsername . "'");
-                    $statement->bindValue(":email", $this->m_sEmail);
-                    $statement->bindValue(":name", $this->m_sName);
-                    $statement->bindValue(":username", $this->m_sUsername);
-                    $statement->bindValue(":password", $this->m_sPassword);
-                    $statement->bindValue(":biotext", $this->m_sBiotext);
-                    $statement->execute();
+                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext where username = '" . $_SESSION['username'] . "'");
+                    $statement2->bindValue(":email", $this->m_sEmail);
+                    $statement2->bindValue(":name", $this->m_sName);
+                    $statement2->bindValue(":username", $this->m_sUsername);
+                    $statement2->bindValue(":biotext", $this->m_sBiotext);
+                    $statement2->execute();
+                    return $this->m_sUsername;
                 } catch (Exception $e) {
 
                 }
@@ -208,7 +245,23 @@ class User
 
     public function UpdatePassword()
     {
-        //HIER KOMT DE FUNCTIE VOOR HET WACHTWOORD
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $huidigePasswoordDB = $result['password'];
+        if ($huidigePasswoordDB == $this->m_sOldPassword && $this->m_sPassword == $this->m_sPasswordRepeat) {
+            try {
+                $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+                $statement = $conn->prepare("UPDATE users SET  password= :password where username = '" . $this->m_sOldUsername . "'");
+                $statement->bindValue(":password", $this->m_sPassword);
+                $statement->execute();
+            } catch (Exception $e) {
+
+            }
+        } else {
+            echo "Het is niet mogelijk om het wachtwoord aan te passen. Gelieve ervoor te zorgen dat beide wachtwoorden hetzelfde zijn!";
+        }
     }
 
     //tonen van user settings (account + accountedit)
@@ -234,7 +287,6 @@ class User
             $password = $this->m_sPassword;
             if ($count == 1) {
                 $hash = $result['password'];
-
                 if (password_verify($password, $hash)) {
                     return true;
                 } else {
