@@ -8,12 +8,8 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->PasswordRepeat = $_POST['passwordNewRepeat'];
     $updateUser->OldPassword = $_POST['passwordOld'];
     $updateUser->Username = $_SESSION['username'];
-    $updateUser->Update();
+    $updateUser->UpdatePassword();
 }
-
-$myUser = new User();
-$myUser->Username = $_SESSION['username'];
-$thisUserSettings = $myUser->getUserInformation();
 
 ?><!doctype html>
 <html lang="en">
