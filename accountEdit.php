@@ -2,6 +2,10 @@
 session_start();
 include_once('classes/User.class.php');
 
+$myUser = new User();
+$myUser->Username = $_SESSION['username'];
+$thisUserSettings = $myUser->getUserInformation();
+
 if(!empty($_POST['saveChanges'])) {
     $updateUser = new User();
     $updateUser->Oldusername = $_SESSION['username'];
@@ -12,9 +16,7 @@ if(!empty($_POST['saveChanges'])) {
     $_SESSION['username'] = $updateUser->Update();
 }
 
-$myUser = new User();
-$myUser->Username = $_SESSION['username'];
-$thisUserSettings = $myUser->getUserInformation();
+
 
 ?><!doctype html>
 <html lang="en">

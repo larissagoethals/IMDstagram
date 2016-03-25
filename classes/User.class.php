@@ -29,18 +29,10 @@ class User
                 $this->m_sPassword = $p_vValue;
                 break;
             case "PasswordRepeat":
-                $options = [
-                    'cost' => 12
-                ];
-                $passwordRepeat = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
-                $this->m_sPasswordRepeat = $passwordRepeat;
+                $this->m_sPasswordRepeat = $p_vValue;
                 break;
             case "OldPassword":
-                $options = [
-                    'cost' => 12
-                ];
-                $oldPassword = password_hash($p_vValue, PASSWORD_DEFAULT, $options);
-                $this->m_sOldPassword = $oldPassword;
+                $this->m_sOldPassword = $p_vValue;
                 break;
             case "Image":
                 $this->m_sImage = $p_vValue;
@@ -139,7 +131,7 @@ class User
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
         $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
-       $result =  $statement->execute();
+        $result = $statement->execute();
         $count = count($result);
 
         if ($count > 0) {
@@ -188,8 +180,8 @@ class User
         }
     }
 
-    //controleren of oude password hetzelfde is als in db
-    Public function PasswordOldOk()
+    //controleren of nieuwe password gelijk is aan de repeat
+    Public function PasswordOk()
     {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
         $statement = $conn->prepare("select password from users where username = '" . $this->m_sUsername . "'");
@@ -197,19 +189,13 @@ class User
         $result = $statement->fetchAll();
 
         if (password_verify($result, $this->m_sOldPassword)) {
-            return true;
+            if (password_verify($this->m_sPassword, $this->m_sPasswordRepeat)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
-        }
-    }
-
-    //controleren of nieuwe password gelijk is aan de repeat
-    Public function PasswordNewOk()
-    {
-        if (password_verify($this->m_sPassword, $this->m_sPasswordRepeat)) {
             return true;
-        } else {
-            return false;
         }
     }
 
@@ -245,24 +231,27 @@ class User
 
     public function UpdatePassword()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $huidigePasswoordDB = $result['password'];
-        if ($huidigePasswoordDB == $this->m_sOldPassword && $this->m_sPassword == $this->m_sPasswordRepeat) {
+        if ($this->PasswordOk()) {
             try {
                 $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-                $statement = $conn->prepare("UPDATE users SET  password= :password where username = '" . $this->m_sOldUsername . "'");
-                $statement->bindValue(":password", $this->m_sPassword);
-                $statement->execute();
+                $statement2 = $conn->prepare("UPDATE users SET password= :password where username = '" . $_SESSION['username'] . "'");
+
+                $options = [
+                    'cost' => 12
+                ];
+
+                $password = password_hash($this->m_sPassword, PASSWORD_DEFAULT, $options);
+                $statement2->bindValue(":password", $password);
+                $statement2->execute();
+                return $this->m_sUsername;
             } catch (Exception $e) {
 
             }
         } else {
-            echo "Het is niet mogelijk om het wachtwoord aan te passen. Gelieve ervoor te zorgen dat beide wachtwoorden hetzelfde zijn!";
+            echo "Het wachtwoord kan niet worden aangepast";
         }
     }
+
 
     //tonen van user settings (account + accountedit)
     public function getUserInformation()
