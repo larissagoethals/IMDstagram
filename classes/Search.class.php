@@ -14,7 +14,7 @@ class Search {
     public function __get($p_sProperty)
     {
         switch ($p_sProperty) {
-            case "text":
+            case "Text":
                 return $this->m_sText;
                 break;
         }
@@ -23,10 +23,10 @@ class Search {
     public function search() {
         $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
 
-        $statement = $conn->prepare("select * from posts where postText like '%".":text"."%'");
-        $statement->bindValue(':text', $this->m_sText);
+        $statement = $conn->prepare("select * from posts where postText like :text");
+        $statement->bindValue(':text', "%".$this->m_sText."%");
         $statement->execute();
-        $result = $statement->fetchAll;
+        $result = $statement->fetchAll();
 
         return $result;
     }
