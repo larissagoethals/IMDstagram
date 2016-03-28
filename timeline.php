@@ -1,6 +1,8 @@
 <?php
     session_start();
     include_once('classes/User.class.php');
+    include_once('classes/Search.class.php');
+    include_once('image.php');
     //Check if able to be here
     /*
     if(isset($_SESSION['loggedinFact'])){
@@ -21,6 +23,13 @@
     $myUser = new User();
     $myUser->Username = $_SESSION['username'];
     $thisUserID = $myUser->getUserInformation();
+
+    if(!empty($_GET["search"])){
+        $search = new Search();
+        $search->Text = $_GET["search"];
+        $allResults = $search->search();
+        $countSearchPosts = count($allResults);
+    }
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,12 +120,12 @@
         <h2 class="searchText">
             <?php echo htmlspecialchars($_GET['search']) ?>
         </h2>
-        <p class="countItem">500 berichten</p>
+        <p class="countItem"><?php echo $countSearchPosts ?> berichten</p>
             </div>
 
         <div class="allMatches">
-            <?php foreach($posts as $post):?>
-                <a href="#" style="background-image:url(<?php echo $post['post_image']?>)" class="searchItem"></a>
+            <?php foreach($allResults as $allResult):?>
+                <a href="?image=<?php echo $allResult['postID'] ?>" style="background-image:url(<?php echo $allResult['postImage']?>)" class="searchItem"></a>
             <?php endforeach; ?>
         </div>
 

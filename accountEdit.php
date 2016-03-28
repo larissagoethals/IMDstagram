@@ -2,16 +2,29 @@
 session_start();
 include_once('classes/User.class.php');
 
-if (isset($_GET['myProfile'])) {
-    $myUser = new User();
-    $myUser->Username = $_SESSION['username'];
-    $thisUserID = $myUser->getUserID();
-
-
+if (!empty($_POST['saveChanges'])) {
+    $updateUser = new User();
+    $updateUser->Oldusername = $_SESSION['username'];
+    $updateUser->Name = $_POST['name'];
+    $updateUser->Email = $_POST['email'];
+    $updateUser->Biotext = $_POST['bioText'];
+    $updateUser->Username = $_POST['username'];
+    $updateUser->Private = $_POST['private'];
+    $_SESSION['username'] = $updateUser->Update();
 }
+
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserSettings = $myUser->getUserInformation();
+
+if($thisUserSettings['private'] == 1)
+{
+    $private = 0;
+}
+else
+{
+    $private = 1;
+}
 
 ?><!doctype html>
 <html lang="en">
@@ -22,7 +35,6 @@ $thisUserSettings = $myUser->getUserInformation();
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
-    <link rel="stylesheet" href="style/loginStyle.css">
     <link rel="stylesheet" href="style/accountEdit.css">
 
 </head>
@@ -43,35 +55,82 @@ $thisUserSettings = $myUser->getUserInformation();
         <div class="imageAndChange">
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
         </div>
-        <h3>Edit your profile here!</h3>
-        <form action="account.php" method="post">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="username" placeholder="Type your new name..."
-                   value="<?php echo $thisUserSettings['name'];?>">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="name" placeholder="Type your new username..." value="<?php echo $thisUserSettings['username']; ?>">
+        <h3>Wijzig je profiel hier:</h3>
+        <form action="" method="post">
+            <label for="name">Naam</label>
+            <input type="text" name="name" id="name" placeholder="Type your new name..."
+                   value="<?php echo $thisUserSettings['name']; ?>">
+            <label for="username">Gebruikersnaam</label>
+            <div id="responsUsername"></div>
+            <input type="text" name="username" id="username" placeholder="Type your new username..."
+                   value="<?php echo $thisUserSettings['username']; ?>">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Type your new email..." value="<?php echo $thisUserSettings['email']; ?>">
-            <label for="passwordOld">Old password</label>
-            <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
-            <label for="passwordNew">New password</label>
-            <input type="text" name="passwordNew" id="passwordNew" placeholder="Type your new password...">
-            <label for="passwordNewRepeat">Repeat new password</label>
-            <input type="text" name="passwordNewRepeat" id="passwordNewRepeat"
-                   placeholder="Repeat your new password...">
-            <label for="bioText">Change your description</label>
+            <div id="responsEmail"></div>
+            <input type="email" name="email" id="email" placeholder="Type your new email..."
+                   value="<?php echo $thisUserSettings['email']; ?>">
+            <label for="bioText">Mijn omschrijving</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
-                      placeholder="Type your own description..." ><?php echo $thisUserSettings['biotext']; ?></textarea>
-            <label for="profilePicture">Change profile picture</label>
+                      placeholder="Type your own description..."><?php echo $thisUserSettings['biotext']; ?></textarea>
+            <label for="profilePicture">Mijn profielfoto</label>
             <input type="file" name="profilePicture" id="profilePicture">
-            <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
+            <input type="checkbox" name="private" id="checkboxPrivate" value="<?php echo $private?>" <?php if ($thisUserSettings['private'] == '1') echo "checked='checked'"; ?>>
+            <label for="private" id="labelCheckbox">Mijn account is onvindbaar</label>
+            <a id="btnPasswordEdit" href="passwordEdit.php">Wijzig je wachtwoord hier</a>
+            <input type="submit" id="btnChangeAccount" value="Wijzig mijn profiel" name="saveChanges">
         </form>
-
     </div>
 
     <div class="profileTimeline">
         <img src="" alt="">
     </div>
 </section>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#username").focusout(function (e) {
+
+            // message ophalen uit het textvak
+            var username = $("#username").val();
+            $.post("ajax/userExists.php", {username: username})
+                .done(function (response) {
+                    if (response.status == "notexist") {
+                        var p = "<p id='greenBackground'>" + response.message + "</p>";
+                        $("#responsUsername").html("");
+                        $("#responsUsername").append(p);
+                    }
+                    else if (response.status == "exist") {
+                        var p = "<p id='redBackground'>" + response.message + "</p>";
+                        $("#responsUsername").html("");
+                        $("#responsUsername").append(p);
+                    }
+                });
+            e.preventDefault();
+            // update smooth laten verschijnen
+        });
+
+
+        $("#email").focusout(function (e) {
+
+            // message ophalen uit het textvak
+            var email = $("#email").val();
+            $.post("ajax/emailExists.php", {email: email})
+                .done(function (response) {
+                    if (response.status == "notexist") {
+                        var p = "<p id='greenBackground'>" + response.message + "</p>";
+                        $("#responsEmail").html("");
+                        $("#responsEmail").append(p);
+                    }
+                    else if (response.status == "exist") {
+                        var p = "<p id='redBackground'>" + response.message + "</p>";
+                        $("#responsEmail").html("");
+                        $("#responsEmail").append(p);
+                    }
+                });
+            e.preventDefault();
+            // update smooth laten verschijnen
+        });
+    });
+</script>
 </body>
 </html>
