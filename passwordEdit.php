@@ -54,11 +54,11 @@ if (!empty($_POST['saveChangesPassword'])) {
         <?php endif; ?>
         <form action="" method="post">
             <label for="passwordOld">Oude wachtwoord</label>
-            <input type="text" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
+            <input type="password" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
             <label for="passwordNew">Nieuwe wachtwoord</label>
-            <input type="text" name="passwordNew" id="passwordNew" placeholder="Type your new password...">
+            <input type="password" name="passwordNew" id="passwordNew" placeholder="Type your new password...">
             <label for="passwordNewRepeat">Herhaal nieuwe wachtwoord</label>
-            <input type="text" name="passwordNewRepeat" id="passwordNewRepeat"
+            <input type="password" name="passwordNewRepeat" id="passwordNewRepeat"
                    placeholder="Repeat your new password...">
             <input type="submit" id="btnChangeAccount" value="Wijzig wachtwoord" name="saveChangesPassword">
         </form>

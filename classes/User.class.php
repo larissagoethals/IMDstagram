@@ -206,11 +206,12 @@ class User
             if ($this->userNameExistsUpdate() == false) {
                 try {
                     $conn = Db::getInstance();
-                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext where username = '" . $_SESSION['username'] . "'");
+                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private where username = '" . $_SESSION['username'] . "'");
                     $statement2->bindValue(":email", $this->m_sEmail);
                     $statement2->bindValue(":name", $this->m_sName);
                     $statement2->bindValue(":username", $this->m_sUsername);
                     $statement2->bindValue(":biotext", $this->m_sBiotext);
+                    $statement2->bindValue(":private", $this->m_iPrivate);
                     $statement2->execute();
                     return $this->m_sUsername;
                 } catch (Exception $e) {
@@ -248,13 +249,11 @@ class User
         }
     }
 
-
     //tonen van user settings (account + accountedit)
     public function getUserInformation()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select name, username, biotext, email from users where username = '" . $this->m_sUsername . "'");
-
+        $statement = $conn->prepare("select name, username, biotext, email, private from users where username = '" . $this->m_sUsername . "'");
         $statement->execute();
         $result = $statement->fetch();
         return $result;
