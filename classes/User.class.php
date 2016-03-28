@@ -1,5 +1,5 @@
 <?php
-
+include_once("Db.class.php");
 class User
 {
     private $m_sName;
@@ -89,7 +89,7 @@ class User
     //save van gegevens in database (signup)
     public function Save()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
 
         $statement = $conn->prepare("insert into users (name, email, username, password, profileImage, biotext, private) values (:name, :email, :username, :password, :image, :biotext, :private)");
         $statement->bindValue(":name", $this->m_sName);
@@ -115,7 +115,7 @@ class User
     //controleren of username bestaat
     public function userNameExists()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
         $statement = $conn->prepare("select userID from users where username = '" . $this->m_sUsername . "'");
         $statement->execute();
         $count = count($statement->fetchAll());
@@ -129,7 +129,7 @@ class User
 
     public function userNameExistsUpdate()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
         $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
         $result = $statement->execute();
         $count = count($result);
@@ -148,7 +148,7 @@ class User
     //controleren of email bestaat
     public function emailExists()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
         $statement = $conn->prepare("select userID from users where email = '" . $this->m_sEmail . "'");
         $statement->execute();
         $count = count($statement->fetchAll());
@@ -162,7 +162,7 @@ class User
 
     public function emailExistsUpdate()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
         $statement = $conn->prepare("select * from users where email = '" . $_SESSION['username'] . "'");
         $statement->execute();
         $result = $statement->fetchAll();
@@ -183,26 +183,21 @@ class User
     //controleren of nieuwe password gelijk is aan de repeat
     Public function PasswordOk()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-        $statement = $conn->prepare("select password from users where username = '" . $this->m_sUsername . "'");
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select password from users where username = '" . $_SESSION['username'] . "'");
         $statement->execute();
-        $result = $statement->fetchAll();
+        $result = $statement->fetchColumn();
 
-        if (password_verify($result, $this->m_sOldPassword)) {
-            if (password_verify($this->m_sPassword, $this->m_sPasswordRepeat)) {
+        if (password_verify($this->m_sOldPassword, $result)) {
+            if ($this->m_sPassword == $this->m_sPasswordRepeat) {
                 return true;
             } else {
                 return false;
             }
         } else {
-            return true;
+            return false;
         }
     }
-
-    //in de update ==> Controle
-    //getUserinformation ==> Controleren of veldjes overeenkomen met wat
-    //er nu in zit ==> OK
-    // else ==> username van iemand anders gebruikt ==> jij niet user ==> NIET OKE
 
     //save user settings (accountEdit)
     public function Update()
@@ -210,7 +205,7 @@ class User
         if ($this->emailExistsUpdate() == false) {
             if ($this->userNameExistsUpdate() == false) {
                 try {
-                    $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+                    $conn = Db::getInstance();
                     $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext where username = '" . $_SESSION['username'] . "'");
                     $statement2->bindValue(":email", $this->m_sEmail);
                     $statement2->bindValue(":name", $this->m_sName);
@@ -233,22 +228,23 @@ class User
     {
         if ($this->PasswordOk()) {
             try {
-                $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
-                $statement2 = $conn->prepare("UPDATE users SET password= :password where username = '" . $_SESSION['username'] . "'");
+                $conn = Db::getInstance();
 
                 $options = [
                     'cost' => 12
                 ];
 
                 $password = password_hash($this->m_sPassword, PASSWORD_DEFAULT, $options);
-                $statement2->bindValue(":password", $password);
-                $statement2->execute();
-                return $this->m_sUsername;
+
+                $statement = $conn->prepare("UPDATE users SET password= :password where username = '" . $_SESSION['username'] . "'");
+                $statement->bindValue(":password", $password);
+                $statement->execute();
+                return true;
             } catch (Exception $e) {
 
             }
         } else {
-            echo "Het wachtwoord kan niet worden aangepast";
+            return false;
         }
     }
 
@@ -256,7 +252,7 @@ class User
     //tonen van user settings (account + accountedit)
     public function getUserInformation()
     {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+        $conn = Db::getInstance();
         $statement = $conn->prepare("select name, username, biotext, email from users where username = '" . $this->m_sUsername . "'");
 
         $statement->execute();
@@ -268,7 +264,7 @@ class User
     public function canLogin()
     {
         if (!empty($this->m_sUsername) && !empty($this->m_sPassword)) {
-            $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+            $conn = Db::getInstance();
             $statement = $conn->prepare("select * from users where username = '" . $this->m_sUsername . "'");
             $statement->execute();
             $result = $statement->fetch();
@@ -285,6 +281,8 @@ class User
                 return false;
             }
 
+        } else {
+            return false;
         }
     }
 

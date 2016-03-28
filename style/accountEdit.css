@@ -46,6 +46,15 @@ label {
     margin:8px 4% 0px;
 }
 
+#checkboxEdit
+{
+    background-color: blue;
+    display: block;
+    width: 10px;
+    color: white;
+    margin-left: 5px;
+}
+
 @media (min-width: 600px) {
     .fullProfile {
         max-width: 960px;

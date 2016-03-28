@@ -48,25 +48,25 @@ if(!empty($_POST['saveChanges'])) {
         <div class="imageAndChange">
             <img src="images/yaron.jpg" alt="yaron" class="profileImage">
         </div>
-        <h3>Edit your profile here!</h3>
+        <h3>Wijzig je profiel hier:</h3>
         <form action="" method="post">
-            <label for="name">Name</label>
+            <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name'];?>">
-            <label for="username">Username</label>
+            <label for="username">Gebruikersnaam</label>
             <div id="responsUsername"></div>
             <input type="text" name="username" id="username" placeholder="Type your new username..." value="<?php echo $thisUserSettings['username']; ?>">
             <label for="email">Email</label>
             <div id="responsEmail"></div>
             <input type="email" name="email" id="email" placeholder="Type your new email..." value="<?php echo $thisUserSettings['email']; ?>">
-            <label for="bioText">Change your description</label>
+            <label for="bioText">Mijn omschrijving</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
                       placeholder="Type your own description..." ><?php echo $thisUserSettings['biotext']; ?></textarea>
-            <label for="profilePicture">Change profile picture</label>
+            <label for="profilePicture">Mijn profielfoto</label>
             <input type="file" name="profilePicture" id="profilePicture">
-            <input type="checkbox" value="Mijn profiel is vindbaar voor iedereen">
+            <input type="checkbox" id="checkboxEdit"  value="Mijn profiel is vindbaar voor iedereen">Mijn profiel is vindbaar voor iedereen
             <a href="passwordEdit.php">Wijzig je wachtwoord hier</a>
-            <input type="submit" id="btnChangeAccount" value="Save changes" name="saveChanges">
+            <input type="submit" id="btnChangeAccount" value="Wijzig mijn profiel" name="saveChanges">
         </form>
 
     </div>
