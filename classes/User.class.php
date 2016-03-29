@@ -1,5 +1,6 @@
 <?php
 include_once("Db.class.php");
+
 class User
 {
     private $m_sName;
@@ -12,6 +13,8 @@ class User
     private $m_sBiotext;
     private $m_iPrivate;
     private $m_sImageName;
+    private $m_sImageSize;
+    private $m_sImageTmpName;
 
     //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
@@ -49,6 +52,12 @@ class User
                 break;
             case "ImageName":
                 $this->m_sImageName = $p_vValue;
+                break;
+            case "ImageSize":
+                $this->m_sImageSize = $p_vValue;
+                break;
+            case "ImageTmpName":
+                $this->m_sImageTmpName = $p_vValue;
                 break;
         }
     }
@@ -90,6 +99,16 @@ class User
             case "ImageName":
                 return $this->m_sImageName;
                 break;
+            case "ImageSize":
+                return $this->m_sImageSize;
+                break;
+            case "ImageTmpName":
+                return $this->m_sImageName;
+                break;
+
+
+
+
         }
     }
 
@@ -207,8 +226,6 @@ class User
     }
 
 
-
-
     //save user settings (accountEdit)
     public function Update()
     {
@@ -272,11 +289,25 @@ class User
 
     Public function SaveProfileImage()
     {
+        $file_name = $_SESSION['userID'] . "-" . time() . "-" . $this->m_sImageName;
+        $file_size = $this->m_sImageSize;
+        $file_tmp = $this->m_sImageTmpName;
+        $tmp = explode('.', $file_name);
+        $file_ext = end($tmp);
 
-        $path = 'images/profilePictures/';
-        $location = $path . $_SESSION['userID'] ."-" .time()."-" . $this->m_sImageName;
-        move_uploaded_file($_FILES['profilePicture']['tmp_name'], $location);
-        return $location;
+        $expensions = array("jpeg", "jpg", "png", "gif");
+        if (in_array($file_ext, $expensions) === false) {
+            throw new Exception("extension not allowed, please choose a JPEG or PNG or GIF file.");
+        }
+        if ($file_size > 2097152) {
+            throw new Exception('File size must be excately 2 MB');
+        }
+        if (empty($errors) == true) {
+            move_uploaded_file($file_tmp, "images/profilePictures/" . $file_name);
+            return "images/profilePictures/" . $file_name;
+        } else {
+            echo "Error";
+        }
     }
 
     public function canLogin()
