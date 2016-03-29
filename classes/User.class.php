@@ -253,7 +253,7 @@ class User
     public function getUserInformation()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select name, username, biotext, email, private from users where username = '" . $this->m_sUsername . "'");
+        $statement = $conn->prepare("select name, username, biotext, email, profileImage, private from users where username = '" . $_SESSION['username'] . "'");
         $statement->execute();
         $result = $statement->fetch();
         return $result;
