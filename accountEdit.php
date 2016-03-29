@@ -3,6 +3,21 @@ session_start();
 include_once('classes/User.class.php');
 
 if (!empty($_POST['saveChanges'])) {
+
+    if(!empty($_FILES['profilePicture']['name'])) {
+        $saveImage = new User();
+        $saveImage->ImageName = $_FILES['profilePicture']['name'];
+        $location = $saveImage->SaveProfileImage();
+    }
+    else
+    {
+        $ProfilePicture = new User();
+        $ProfilePicture->Username = $_SESSION['username'];
+        $picture = $ProfilePicture->getUserInformation();
+        $location = $picture['profileImage'];
+    }
+
+
     if (isset($_POST['private'])) {
         //$stok is checked and value = 1
         $private = $_POST['private'];
@@ -18,7 +33,17 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->Biotext = $_POST['bioText'];
     $updateUser->Username = $_POST['username'];
     $updateUser->Private = $private;
+    $updateUser->Image = $location;
     $_SESSION['username'] = $updateUser->Update();
+
+    if($updateUser->Update())
+    {
+        $feedback = "Je profiel werd succesvol aangepast!";
+    }
+    else
+    {
+        $feedback = "Het is niet mogelijk om je profiel aan te passen!";
+    }
 }
 
 $myUser = new User();
@@ -53,8 +78,12 @@ $thisUserSettings = $myUser->getUserInformation();
         <div class="imageAndChange">
             <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="yaron" class="profileImage">
         </div>
-        <h3>Wijzig je profiel hier:</h3>
-        <form action="" method="post">
+        <?php if( isset( $feedback ) ) : ?>
+            <h3><?php echo $feedback; ?></h3>
+        <?php else: ?>
+            <h3>Wijzig je profiel hier:</h3>
+        <?php endif; ?>
+        <form action="" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name']; ?>">

@@ -11,6 +11,7 @@ class User
     private $m_sImage;
     private $m_sBiotext;
     private $m_iPrivate;
+    private $m_sImageName;
 
     //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
@@ -45,6 +46,9 @@ class User
                 break;
             case "Oldusername":
                 $this->m_sOldUsername = $p_vValue;
+                break;
+            case "ImageName":
+                $this->m_sImageName = $p_vValue;
                 break;
         }
     }
@@ -82,6 +86,9 @@ class User
                 break;
             case "Oldusername":
                 return $this->m_sOldUsername;
+                break;
+            case "ImageName":
+                return $this->m_sImageName;
                 break;
         }
     }
@@ -199,6 +206,9 @@ class User
         }
     }
 
+
+
+
     //save user settings (accountEdit)
     public function Update()
     {
@@ -206,11 +216,12 @@ class User
             if ($this->userNameExistsUpdate() == false) {
                 try {
                     $conn = Db::getInstance();
-                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private where username = '" . $_SESSION['username'] . "'");
+                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
                     $statement2->bindValue(":email", $this->m_sEmail);
                     $statement2->bindValue(":name", $this->m_sName);
                     $statement2->bindValue(":username", $this->m_sUsername);
                     $statement2->bindValue(":biotext", $this->m_sBiotext);
+                    $statement2->bindValue(":profileImage", $this->m_sImage);
                     $statement2->bindValue(":private", $this->m_iPrivate);
                     $statement2->execute();
                     return $this->m_sUsername;
@@ -253,12 +264,20 @@ class User
     public function getUserInformation()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select name, username, biotext, email, profileImage, private from users where username = '" . $_SESSION['username'] . "'");
+        $statement = $conn->prepare("select userID,  username, name, biotext, email, profileImage, private from users where username = '" . $_SESSION['username'] . "'");
         $statement->execute();
         $result = $statement->fetch();
         return $result;
     }
 
+    Public function SaveProfileImage()
+    {
+
+        $path = 'images/profilePictures/';
+        $location = $path . $_SESSION['userID'] ."-" .time()."-" . $this->m_sImageName;
+        move_uploaded_file($_FILES['profilePicture']['tmp_name'], $location);
+        return $location;
+    }
 
     public function canLogin()
     {
