@@ -17,6 +17,10 @@ if (!empty($_POST['saveChangesPassword'])) {
     }
 }
 
+$myUser = new User();
+$myUser->Username = $_SESSION['username'];
+$thisUserSettings = $myUser->getUserInformation();
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -45,7 +49,7 @@ if (!empty($_POST['saveChangesPassword'])) {
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="images/yaron.jpg" alt="yaron" class="profileImage">
+            <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="" class="profileImage">
         </div>
         <?php if( isset( $feedback ) ) : ?>
             <h3><?php echo $feedback; ?></h3>

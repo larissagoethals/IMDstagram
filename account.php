@@ -9,7 +9,9 @@ if (isset($_GET['myProfile'])) {
     $myBio = new User();
     $myBio->Username = $_SESSION['username'];
     $bio = $myBio->getUserInformation();
+    $profilePicture = $myBio->getUserInformation();
 }
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -25,8 +27,6 @@ if (isset($_GET['myProfile'])) {
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
-
-
         <div class="profileName">
             <a href="logout.php">Uitloggen</a></div>
     </div>
@@ -36,7 +36,7 @@ if (isset($_GET['myProfile'])) {
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="images/yaron.jpg" alt="yaron" class="profileImage">
+            <img src="<?php echo $profilePicture['profileImage']; ?>" alt="yaron" class="profileImage">
             <div class="changeProfile">
                 <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
             </div>

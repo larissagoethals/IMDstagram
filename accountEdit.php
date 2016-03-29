@@ -3,28 +3,54 @@ session_start();
 include_once('classes/User.class.php');
 
 if (!empty($_POST['saveChanges'])) {
+
+    if(!empty($_FILES['profilePicture']['name'])) {
+        $saveImage = new User();
+        $saveImage->ImageName = $_FILES['profilePicture']['name'];
+        $saveImage->ImageSize = $_FILES['profilePicture']['size'];
+        $saveImage->ImageTmpName = $_FILES['profilePicture']['tmp_name'];;
+        $location = $saveImage->SaveProfileImage();
+    }
+    else
+    {
+        $ProfilePicture = new User();
+        $ProfilePicture->Username = $_SESSION['username'];
+        $picture = $ProfilePicture->getUserInformation();
+        $location = $picture['profileImage'];
+    }
+
+
+    if (isset($_POST['private'])) {
+        //$stok is checked and value = 1
+        $private = $_POST['private'];
+    } else {
+        //$stok is nog checked and value=0
+        $private = 0;
+    }
+
     $updateUser = new User();
     $updateUser->Oldusername = $_SESSION['username'];
     $updateUser->Name = $_POST['name'];
     $updateUser->Email = $_POST['email'];
     $updateUser->Biotext = $_POST['bioText'];
     $updateUser->Username = $_POST['username'];
-    $updateUser->Private = $_POST['private'];
+    $updateUser->Private = $private;
+    $updateUser->Image = $location;
     $_SESSION['username'] = $updateUser->Update();
+
+    if($updateUser->Update())
+    {
+        $feedback = "Je profiel werd succesvol aangepast!";
+    }
+    else
+    {
+        $feedback = "Het is niet mogelijk om je profiel aan te passen!";
+    }
 }
 
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserSettings = $myUser->getUserInformation();
-
-if($thisUserSettings['private'] == 1)
-{
-    $private = 0;
-}
-else
-{
-    $private = 1;
-}
 
 ?><!doctype html>
 <html lang="en">
@@ -36,7 +62,6 @@ else
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
     <link rel="stylesheet" href="style/accountEdit.css">
-
 </head>
 <body>
 <header>
@@ -53,10 +78,14 @@ else
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="images/yaron.jpg" alt="yaron" class="profileImage">
+            <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="yaron" class="profileImage">
         </div>
-        <h3>Wijzig je profiel hier:</h3>
-        <form action="" method="post">
+        <?php if( isset( $feedback ) ) : ?>
+            <h3><?php echo $feedback; ?></h3>
+        <?php else: ?>
+            <h3>Wijzig je profiel hier:</h3>
+        <?php endif; ?>
+        <form action="" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name']; ?>">
@@ -72,8 +101,10 @@ else
             <textarea name="bioText" id="bioText" cols="30" rows="10"
                       placeholder="Type your own description..."><?php echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Mijn profielfoto</label>
-            <input type="file" name="profilePicture" id="profilePicture">
-            <input type="checkbox" name="private" id="checkboxPrivate" value="<?php echo $private?>" <?php if ($thisUserSettings['private'] == '1') echo "checked='checked'"; ?>>
+            <input type="file" name="profilePicture" id="profilePicture" accept="image/gif, image/jpeg, image/png, image/jpg">
+            <img id="imgPreview" src="<?php echo $thisUserSettings['profileImage']; ?>" alt=""/>
+            <input type="checkbox" name="private" id="checkboxPrivate"
+                   value="1" <?php if ($thisUserSettings['private'] == '1') echo "checked='checked'"; ?>>
             <label for="private" id="labelCheckbox">Mijn account is onvindbaar</label>
             <a id="btnPasswordEdit" href="passwordEdit.php">Wijzig je wachtwoord hier</a>
             <input type="submit" id="btnChangeAccount" value="Wijzig mijn profiel" name="saveChanges">
@@ -109,7 +140,6 @@ else
             // update smooth laten verschijnen
         });
 
-
         $("#email").focusout(function (e) {
 
             // message ophalen uit het textvak
@@ -129,6 +159,22 @@ else
                 });
             e.preventDefault();
             // update smooth laten verschijnen
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#profilePicture").change(function () {
+            readURL(this);
         });
     });
 </script>

@@ -1,5 +1,6 @@
 <?php
 include_once("Db.class.php");
+
 class User
 {
     private $m_sName;
@@ -11,6 +12,9 @@ class User
     private $m_sImage;
     private $m_sBiotext;
     private $m_iPrivate;
+    private $m_sImageName;
+    private $m_sImageSize;
+    private $m_sImageTmpName;
 
     //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
@@ -45,6 +49,15 @@ class User
                 break;
             case "Oldusername":
                 $this->m_sOldUsername = $p_vValue;
+                break;
+            case "ImageName":
+                $this->m_sImageName = $p_vValue;
+                break;
+            case "ImageSize":
+                $this->m_sImageSize = $p_vValue;
+                break;
+            case "ImageTmpName":
+                $this->m_sImageTmpName = $p_vValue;
                 break;
         }
     }
@@ -83,6 +96,19 @@ class User
             case "Oldusername":
                 return $this->m_sOldUsername;
                 break;
+            case "ImageName":
+                return $this->m_sImageName;
+                break;
+            case "ImageSize":
+                return $this->m_sImageSize;
+                break;
+            case "ImageTmpName":
+                return $this->m_sImageName;
+                break;
+
+
+
+
         }
     }
 
@@ -199,6 +225,7 @@ class User
         }
     }
 
+
     //save user settings (accountEdit)
     public function Update()
     {
@@ -206,11 +233,12 @@ class User
             if ($this->userNameExistsUpdate() == false) {
                 try {
                     $conn = Db::getInstance();
-                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private where username = '" . $_SESSION['username'] . "'");
+                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
                     $statement2->bindValue(":email", $this->m_sEmail);
                     $statement2->bindValue(":name", $this->m_sName);
                     $statement2->bindValue(":username", $this->m_sUsername);
                     $statement2->bindValue(":biotext", $this->m_sBiotext);
+                    $statement2->bindValue(":profileImage", $this->m_sImage);
                     $statement2->bindValue(":private", $this->m_iPrivate);
                     $statement2->execute();
                     return $this->m_sUsername;
@@ -253,12 +281,34 @@ class User
     public function getUserInformation()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select name, username, biotext, email, private from users where username = '" . $this->m_sUsername . "'");
+        $statement = $conn->prepare("select userID,  username, name, biotext, email, profileImage, private from users where username = '" . $_SESSION['username'] . "'");
         $statement->execute();
         $result = $statement->fetch();
         return $result;
     }
 
+    Public function SaveProfileImage()
+    {
+        $file_name = $_SESSION['userID'] . "-" . time() . "-" . $this->m_sImageName;
+        $file_size = $this->m_sImageSize;
+        $file_tmp = $this->m_sImageTmpName;
+        $tmp = explode('.', $file_name);
+        $file_ext = end($tmp);
+
+        $expensions = array("jpeg", "jpg", "png", "gif");
+        if (in_array($file_ext, $expensions) === false) {
+            throw new Exception("extension not allowed, please choose a JPEG or PNG or GIF file.");
+        }
+        if ($file_size > 2097152) {
+            throw new Exception('File size must be excately 2 MB');
+        }
+        if (empty($errors) == true) {
+            move_uploaded_file($file_tmp, "images/profilePictures/" . $file_name);
+            return "images/profilePictures/" . $file_name;
+        } else {
+            echo "Error";
+        }
+    }
 
     public function canLogin()
     {

@@ -9,7 +9,7 @@ if(!empty($_POST)) {
         $user->Username = $_POST['username'];
         $user->Name = $_POST['name'];
         $user->Password = $_POST['password'];
-        $user->Image = "";
+        $user->Image = "images/Unknown.png";
         $user->Biotext = "";
         $user->Private = 0;
         if ($user->userNameExists() || $user->emailExists()) {
