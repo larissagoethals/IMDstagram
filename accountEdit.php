@@ -7,6 +7,8 @@ if (!empty($_POST['saveChanges'])) {
     if(!empty($_FILES['profilePicture']['name'])) {
         $saveImage = new User();
         $saveImage->ImageName = $_FILES['profilePicture']['name'];
+        $saveImage->ImageSize = $_FILES['profilePicture']['size'];
+        $saveImage->ImageTmpName = $_FILES['profilePicture']['tmp_name'];;
         $location = $saveImage->SaveProfileImage();
     }
     else
@@ -99,7 +101,7 @@ $thisUserSettings = $myUser->getUserInformation();
             <textarea name="bioText" id="bioText" cols="30" rows="10"
                       placeholder="Type your own description..."><?php echo $thisUserSettings['biotext']; ?></textarea>
             <label for="profilePicture">Mijn profielfoto</label>
-            <input type="file" name="profilePicture" id="profilePicture" accept="image/gif, image/jpeg, image/png">
+            <input type="file" name="profilePicture" id="profilePicture" accept="image/gif, image/jpeg, image/png, image/jpg">
             <img id="imgPreview" src="<?php echo $thisUserSettings['profileImage']; ?>" alt=""/>
             <input type="checkbox" name="private" id="checkboxPrivate"
                    value="1" <?php if ($thisUserSettings['private'] == '1') echo "checked='checked'"; ?>>
