@@ -1,5 +1,6 @@
 <?php
-include_once ("Db.class.php");
+include_once("Db.class.php");
+
 class Post
 {
     private $m_sUsername;
@@ -8,6 +9,7 @@ class Post
     private $m_sImageTmpName;
     private $m_sBeschrijving;
     private $m_sPostImgUrl;
+    private $m_iCountTop;
 
     public function __set($p_sProperty, $p_vValue)
     {
@@ -29,6 +31,9 @@ class Post
                 break;
             case "PostImgUrl":
                 $this->m_sPostImgUrl = $p_vValue;
+                break;
+            case "CountTop":
+                $this->m_iCountTop = $p_vValue;
                 break;
         }
     }
@@ -54,10 +59,14 @@ class Post
             case "PostImgUrl":
                 return $this->m_sPostImgUrl;
                 break;
+            case "CountTop":
+                return $this->m_iCountTop;
+                break;
         }
     }
 
-    public function SavePostImage(){
+    public function SavePostImage()
+    {
         $file_name = $_SESSION['userID'] . "-" . time() . "-" . $this->m_sImageName;
         $file_size = $this->m_sImageSize;
         $file_tmp = $this->m_sImageTmpName;
@@ -80,7 +89,8 @@ class Post
 
     }
 
-    public function CreatePost(){
+    public function CreatePost()
+    {
         try {
             $tijd = date("Y-m-d H:i:s");
             $postUserID = $_SESSION['userID'];
@@ -98,13 +108,15 @@ class Post
         }
     }
 
-    public function getFullPost() {
+    public function getNext20Posts()
+    {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT 20");
+        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT " . $this->m_iCountTop);
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
     }
 }
+
 ?>
