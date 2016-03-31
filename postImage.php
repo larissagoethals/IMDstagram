@@ -3,19 +3,21 @@ session_start();
 include_once("classes/Post.class.php");
 
 if (!empty($_POST['btnPlaats'])) {
-    if (!empty($_FILES['postPicture']['name'])) {
+    if (!empty($_FILES['postPicture']['name']) && !empty($_POST['beschrijvingImg'])) {
         $saveImage = new Post();
         $saveImage->ImageName = $_FILES['postPicture']['name'];
         $saveImage->ImageSize = $_FILES['postPicture']['size'];
         $saveImage->ImageTmpName = $_FILES['postPicture']['tmp_name'];
         $location = $saveImage->SavePostImage();
-    }
 
-    if (!empty($_POST['beschrijvingImg'])) {
         $savePost = new Post();
         $savePost->Beschrijving = $_POST['beschrijvingImg'];
         $savePost->PostImgUrl = $location;
         $savePost->CreatePost();
+    }
+    else
+    {
+        echo "Gelieve een afbeelding te selecteren en een tekst in te voegen!";
     }
 }
 
