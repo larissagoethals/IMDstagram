@@ -98,11 +98,10 @@ class Post
         }
     }
 
-
     public function getFullPost() {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts");
+        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT 20");
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;

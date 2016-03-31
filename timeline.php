@@ -25,8 +25,8 @@ if (!empty($_GET["search"])) {
     $countSearchPosts = count($allResults);
 }
 
-$posts = new Post();
-$posts->getFullPost();
+$allPosts = new Post();
+$posts = $allPosts->getFullPost();
 
 ?><!DOCTYPE html>
 <html lang="en">
