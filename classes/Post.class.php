@@ -98,14 +98,14 @@ class Post
         }
     }
 
-    /*public function getFullPost($p_iPostID) {
+
+    public function getFullPost() {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts where postID = :postID");
-        $statement->bindValue(':postID', $p_iPostID);
+        $statement = $conn->prepare("select * from posts");
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
-    }*/
+    }
 }
 ?>
