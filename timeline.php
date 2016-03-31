@@ -26,9 +26,7 @@ if (!empty($_GET["search"])) {
     $countSearchPosts = count($allResults);
 }
 
-$count = 1;
 $allPosts = new Post();
-$allPosts->CountTop = $count;
 $posts = $allPosts->getNext20Posts();
 
 ?><!DOCTYPE html>
@@ -42,21 +40,7 @@ $posts = $allPosts->getNext20Posts();
 </head>
 <body>
 <header>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script>
-        $("#btnLoadMore").on("click", function (e) {
 
-            <?php
-            $count += 1;
-            $allPosts = new Post();
-            $allPosts->CountTop = $count;
-            $posts = $allPosts->getNext20Posts();
-            ?>
-            e.preventDefault();
-            // update smooth laten verschijnen
-        });
-
-    </script>
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
@@ -131,7 +115,7 @@ $posts = $allPosts->getNext20Posts();
         <?php endforeach; ?>
         <div class="insta_loadMore">
             <form action="">
-                <input type="submit" name="btnLoadMore" value="Load More">
+                <input type="submit" name="btnLoadMore" id="btnLoadMore" value="Load More">
             </form>
         </div>
     </section>
@@ -152,5 +136,7 @@ $posts = $allPosts->getNext20Posts();
         </div>
     </section>
 <?php endif; ?>
+
+
 </body>
 </html>
