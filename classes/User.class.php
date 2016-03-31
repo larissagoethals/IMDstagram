@@ -15,6 +15,7 @@ class User
     private $m_sImageName;
     private $m_sImageSize;
     private $m_sImageTmpName;
+    private $m_sUserID;
 
     //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
@@ -58,6 +59,9 @@ class User
                 break;
             case "ImageTmpName":
                 $this->m_sImageTmpName = $p_vValue;
+                break;
+            case "UserID":
+                $this->m_sUserID = $p_vValue;
                 break;
         }
     }
@@ -105,10 +109,9 @@ class User
             case "ImageTmpName":
                 return $this->m_sImageName;
                 break;
-
-
-
-
+            case "UserID":
+                return $this->m_sUserID;
+                break;
         }
     }
 
@@ -308,6 +311,14 @@ class User
         } else {
             echo "Error";
         }
+    }
+
+    Public function GetUsername()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select username from users where userID = '" . $this->m_sUserID . "'");
+        $result = $statement->execute();
+        return $result;
     }
 
     public function canLogin()
