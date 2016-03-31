@@ -3,12 +3,11 @@ session_start();
 include_once('classes/User.class.php');
 
 if (!empty($_POST['saveChanges'])) {
-
     if(!empty($_FILES['profilePicture']['name'])) {
         $saveImage = new User();
         $saveImage->ImageName = $_FILES['profilePicture']['name'];
         $saveImage->ImageSize = $_FILES['profilePicture']['size'];
-        $saveImage->ImageTmpName = $_FILES['profilePicture']['tmp_name'];;
+        $saveImage->ImageTmpName = $_FILES['profilePicture']['tmp_name'];
         $location = $saveImage->SaveProfileImage();
     }
     else
