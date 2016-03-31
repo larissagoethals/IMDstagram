@@ -4,6 +4,7 @@ include_once('classes/User.class.php');
 include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
 include_once('image.php');
+
 //Check if able to be here
 /*
 if(isset($_SESSION['loggedinFact'])){
@@ -25,8 +26,10 @@ if (!empty($_GET["search"])) {
     $countSearchPosts = count($allResults);
 }
 
+$count = 1;
 $allPosts = new Post();
-$posts = $allPosts->getFullPost();
+$allPosts->CountTop = $count;
+$posts = $allPosts->getNext20Posts();
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -39,6 +42,21 @@ $posts = $allPosts->getFullPost();
 </head>
 <body>
 <header>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script>
+        $("#btnLoadMore").on("click", function (e) {
+
+            <?php
+            $count += 1;
+            $allPosts = new Post();
+            $allPosts->CountTop = $count;
+            $posts = $allPosts->getNext20Posts();
+            ?>
+            e.preventDefault();
+            // update smooth laten verschijnen
+        });
+
+    </script>
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
@@ -111,7 +129,11 @@ $posts = $allPosts->getFullPost();
                 </div>
             </div>
         <?php endforeach; ?>
-        <div class="insta_loadMore">Load more</div>
+        <div class="insta_loadMore">
+            <form action="">
+                <input type="submit" name="btnLoadMore" value="Load More">
+            </form>
+        </div>
     </section>
 <?php else: ?>
     <section class="timeline">
@@ -128,7 +150,6 @@ $posts = $allPosts->getFullPost();
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
         </div>
-
     </section>
 <?php endif; ?>
 </body>
