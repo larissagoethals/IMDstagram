@@ -83,16 +83,18 @@ class Post
     public function CreatePost(){
         try {
             $tijd = date("Y-m-d H:i:s");
+            $postUserID = $_SESSION['userID'];
 
             $conn = Db::getInstance();
-            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID) VALUES (:postImage, :postText, :postTime, :postLocation, SESSION['userID'])");
+            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID) values (:postImage, :postText, :postTime, :postLocation, :postUserID)");
             $statement->bindValue(":postImage", $this->m_sPostImgUrl);
             $statement->bindValue(":postText", $this->m_sBeschrijving);
             $statement->bindValue(":postTime", $tijd);
             $statement->bindValue(":postLocation", "Mechelen");
+            $statement->bindValue(":postUserID", $postUserID);
             $statement->execute();
         } catch (Exception $e) {
-            throw new Exception('Het is onmogelijk om een post aan te maken!');
+            echo "test";
         }
     }
 
