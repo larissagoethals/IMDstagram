@@ -26,7 +26,7 @@ if (!empty($_GET["search"])) {
     $countSearchPosts = count($allResults);
 }
 
-$count = 1;
+$count = 20;
 $allPosts = new Post();
 $allPosts->CountTop = $count;
 $posts = $allPosts->getNext20Posts();
@@ -88,12 +88,15 @@ $posts = $allPosts->getNext20Posts();
             <p>Post foto</p>
         </a>
         <?php foreach ($posts as $post): ?>
+            <?php $userInformation = new Post();
+            $userInformation->userID = $post["postUserID"];
+            $thisUserInformation = $userInformation->getUserByID();?>
             <div class="instaPost">
                 <div class="instaPost_header">
                     <div class="ip_header_profile">
-                        <img src="<?php echo $post["postImage"] ?>" alt="<?php echo $post["postUserID"] ?>"
+                        <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <p><?php echo $post["postUserID"] ?></p>
+                        <p><?php echo $thisUserInformation[0]['username'] ?></p>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $post["postTime"] ?>
