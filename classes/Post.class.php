@@ -10,6 +10,7 @@ class Post
     private $m_sBeschrijving;
     private $m_sPostImgUrl;
     private $m_iCountTop;
+    private $m_sUserID;
 
     public function __set($p_sProperty, $p_vValue)
     {
@@ -34,6 +35,9 @@ class Post
                 break;
             case "CountTop":
                 $this->m_iCountTop = $p_vValue;
+                break;
+            case "userID":
+                $this->m_sUserID = $p_vValue;
                 break;
         }
     }
@@ -61,6 +65,9 @@ class Post
                 break;
             case "CountTop":
                 return $this->m_iCountTop;
+                break;
+            case "userID":
+               return $this->m_sUserID ;
                 break;
         }
     }
@@ -106,6 +113,17 @@ class Post
         } catch (Exception $e) {
             echo "test";
         }
+    }
+
+    Public function getUserByID()
+    {
+        $conn = Db::getInstance();
+
+        $statement = $conn->prepare("select username, profileImage from users where userID = :userID");
+        $statement->bindValue(":userID", $this->m_sUserID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
     }
 
     public function getNext20Posts()
