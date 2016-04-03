@@ -4,6 +4,7 @@ include_once('classes/User.class.php');
 include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
 include_once('image.php');
+    include_once("Includes/functions.php");
 
 //Check if able to be here
 /*
@@ -99,7 +100,7 @@ $posts = $allPosts->getNext20Posts();
                         <p><?php echo $thisUserInformation[0]['username'] ?></p>
                     </div>
                     <div class="instaPost_timeAgo">
-                        <?php echo $post["postTime"] ?>
+                        <?php echo timeAgo($post["postTime"]) ?>
                     </div>
                     <div class="clearfix"></div>
                 </div>

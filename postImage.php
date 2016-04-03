@@ -48,7 +48,7 @@ if (!empty($_POST['btnPlaats'])) {
     <div class="clearfix"></div>
 </header>
 
-<form id="form1" action="timeline.php" method="post" enctype="multipart/form-data">
+<form id="form1" action="" method="post" enctype="multipart/form-data">
     <input type="file" name="postPicture" id="postPicture" accept="image/gif, image/jpeg, image/png, image/jpg">
     <img id="imgPreview" src="#" alt="your image" />
     <label for="beschrijvingImg">Beschrijving</label>
