@@ -135,6 +135,16 @@ class Post
         $result = $statement->fetchAll();
         return $result;
     }
+
+    public function getFullPost($p_iPostID) {
+        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+
+        $statement = $conn->prepare("select * from posts where postID = :postID");
+        $statement->bindValue(':postID', $p_iPostID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+		}
 }
 
 ?>
