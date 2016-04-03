@@ -15,6 +15,7 @@ class User
     private $m_sImageName;
     private $m_sImageSize;
     private $m_sImageTmpName;
+    private $m_sUserID;
 
     //ophalen waarden uit inputvelden
     public function __set($p_sProperty, $p_vValue)
@@ -58,6 +59,9 @@ class User
                 break;
             case "ImageTmpName":
                 $this->m_sImageTmpName = $p_vValue;
+                break;
+            case "UserID":
+                $this->m_sUserID = $p_vValue;
                 break;
         }
     }
@@ -105,10 +109,9 @@ class User
             case "ImageTmpName":
                 return $this->m_sImageName;
                 break;
-
-
-
-
+            case "UserID":
+                return $this->m_sUserID;
+                break;
         }
     }
 
@@ -233,14 +236,14 @@ class User
             if ($this->userNameExistsUpdate() == false) {
                 try {
                     $conn = Db::getInstance();
-                    $statement2 = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
-                    $statement2->bindValue(":email", $this->m_sEmail);
-                    $statement2->bindValue(":name", $this->m_sName);
-                    $statement2->bindValue(":username", $this->m_sUsername);
-                    $statement2->bindValue(":biotext", $this->m_sBiotext);
-                    $statement2->bindValue(":profileImage", $this->m_sImage);
-                    $statement2->bindValue(":private", $this->m_iPrivate);
-                    $statement2->execute();
+                    $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
+                    $statement->bindValue(":email", $this->m_sEmail);
+                    $statement->bindValue(":name", $this->m_sName);
+                    $statement->bindValue(":username", $this->m_sUsername);
+                    $statement->bindValue(":biotext", $this->m_sBiotext);
+                    $statement->bindValue(":profileImage", $this->m_sImage);
+                    $statement->bindValue(":private", $this->m_iPrivate);
+                    $statement->execute();
                     return $this->m_sUsername;
                 } catch (Exception $e) {
 
@@ -308,6 +311,14 @@ class User
         } else {
             echo "Error";
         }
+    }
+
+    Public function GetUsername()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select username from users where userID = '" . $this->m_sUserID . "'");
+        $result = $statement->execute();
+        return $result;
     }
 
     public function canLogin()

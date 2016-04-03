@@ -1,4 +1,27 @@
-<!doctype html>
+<?php
+session_start();
+include_once("classes/Post.class.php");
+
+if (!empty($_POST['btnPlaats'])) {
+    if (!empty($_FILES['postPicture']['name']) && !empty($_POST['beschrijvingImg'])) {
+        $saveImage = new Post();
+        $saveImage->ImageName = $_FILES['postPicture']['name'];
+        $saveImage->ImageSize = $_FILES['postPicture']['size'];
+        $saveImage->ImageTmpName = $_FILES['postPicture']['tmp_name'];
+        $location = $saveImage->SavePostImage();
+
+        $savePost = new Post();
+        $savePost->Beschrijving = $_POST['beschrijvingImg'];
+        $savePost->PostImgUrl = $location;
+        $savePost->CreatePost();
+    }
+    else
+    {
+        echo "Gelieve een afbeelding te selecteren en een tekst in te voegen!";
+    }
+}
+
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,20 +43,18 @@
         </div>
 
         <div class="profileName">
-            <a href="account.php">yarondassonneville</a></div>
+            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
 
-<form id="form1" runat="server">
-    <input type='file' id="imgInp" />
+<form id="form1" action="timeline.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="postPicture" id="postPicture" accept="image/gif, image/jpeg, image/png, image/jpg">
     <img id="imgPreview" src="#" alt="your image" />
     <label for="beschrijvingImg">Beschrijving</label>
     <textarea name="beschrijvingImg" id="beschrijvingImg" cols="30" rows="10"></textarea>
     <input type="submit" value="plaats" name="btnPlaats" id="btnPlaats">
 </form>
-
-
 
 <script>
     function readURL(input) {
@@ -49,7 +70,7 @@
         }
     }
 
-    $("#imgInp").change(function(){
+    $("#postPicture").change(function(){
         readURL(this);
     });
 
