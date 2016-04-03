@@ -317,7 +317,8 @@ class User
     {
         $conn = Db::getInstance();
         $statement = $conn->prepare("select username from users where userID = '" . $this->m_sUserID . "'");
-        $result = $statement->execute();
+        $statement->execute();
+        $result = $statement->fetchAll();
         return $result;
     }
 
