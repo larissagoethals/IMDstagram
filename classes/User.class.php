@@ -322,6 +322,16 @@ class User
         return $result;
     }
 
+    Public function getUserByID()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from users where userID = '" . $this->m_sUserID . "'");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
+
     public function canLogin()
     {
         if (!empty($this->m_sUsername) && !empty($this->m_sPassword)) {

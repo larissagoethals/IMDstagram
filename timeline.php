@@ -77,7 +77,7 @@ $posts = $allPosts->getNext20Posts();
         </div>
 
         <div class="profileName">
-            <a href="account.php?<?php echo 'myProfile=1' ?>"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>

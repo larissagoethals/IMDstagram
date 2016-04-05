@@ -1,16 +1,42 @@
 <?php
 session_start();
 include_once('classes/User.class.php');
-if (isset($_GET['myProfile'])) {
-    $myUser = new User();
-    $myUser->Username = $_SESSION['username'];
-    $thisUserID = $myUser->getUserInformation();
 
-    $myBio = new User();
-    $myBio->Username = $_SESSION['username'];
-    $bio = $myBio->getUserInformation();
-    $profilePicture = $myBio->getUserInformation();
-}
+    if(isset($_GET['profile'])) {
+        $user = new User();
+        $user->Username = $_SESSION['username'];
+        $userInfo = $user->getUserInformation();
+
+        if($_GET['profile'] == $userInfo['userID'] ){
+            $myUser = new User();
+            $myUser->Username = $_SESSION['username'];
+            $thisUserID = $myUser->getUserInformation();
+
+            $myBio = new User();
+            $myBio->Username = $_SESSION['username'];
+            $bio = $myBio->getUserInformation();
+            $profilePicture = $myBio->getUserInformation();
+            $myAccount = true;
+        } else {
+            $userAccount = new User();
+            $userAccount->UserID = $_GET['profile'];
+            $bio = $userAccount->getUserByID();
+            $myAccount = false;
+        }
+    }
+    else {
+        $myUser = new User();
+        $myUser->Username = $_SESSION['username'];
+        $thisUserID = $myUser->getUserInformation();
+
+        $myBio = new User();
+        $myBio->Username = $_SESSION['username'];
+        $bio = $myBio->getUserInformation();
+        $myBio->UserID = $bio['userID'];
+        $bio = $myBio->getUserByID();
+        $profilePicture = $myBio->getUserInformation();
+        $myAccount = true;
+    }
 
 ?><!doctype html>
 <html lang="en">
@@ -36,15 +62,17 @@ if (isset($_GET['myProfile'])) {
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="<?php echo $profilePicture['profileImage']; ?>" alt="yaron" class="profileImage">
+            <img src="<?php echo $bio[0]['profileImage']; ?>" alt="yaron" class="profileImage">
+            <?php if($myAccount == true): ?>
             <div class="changeProfile">
                 <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
             </div>
+            <?php endif; //OF OF OF VOLGEN ?>
         </div>
 
         <div class="profileInformation">
-            <h1><?php echo $_SESSION['username']; ?></h1>
-            <p><?php echo $bio['biotext']; ?></p>
+            <h1><?php echo $bio[0]['username']; ?></h1>
+            <p><?php echo $bio[0]['biotext']; ?></p>
             <ul class="countEverything">
                 <li>249 berichten</li>
                 <li>800 volgers</li>
@@ -53,9 +81,18 @@ if (isset($_GET['myProfile'])) {
         </div>
     </div>
 
+    <?php if($bio[0]['private'] == 1 && $myAccount == false): ?>
+    <div class="profileTimeline">
+        <p>Dit account is privé.</p>
+        <form action="" method="POST">
+            <input type="submit" value="Stuur volgverzoek" name="volgverzoek">
+        </form>
+    </div>
+    <?php else: ?>
     <div class="profileTimeline">
         <img src="" alt="">
     </div>
+    <?php endif; ?>
 </section>
 </body>
 </html>
