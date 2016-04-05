@@ -357,6 +357,39 @@ class User
         }
     }
 
+    public function userFollowsUser($p_iThisUser, $p_iFollowUser) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from follow where userID = " . $p_iThisUser. " and userFollowID = " . $p_iFollowUser);
+        $statement->execute();
+        $count = $statement->rowCount();
+        var_dump($count);
+        if ($count == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function canViewPrivateAccount($p_iThisUser, $p_iFollowUser) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from follow where userID = " . $p_iThisUser. " and userFollowID = " . $p_iFollowUser . " and Accept = true");
+        $statement->execute();
+        $count = $statement->rowCount();
+        if ($count == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function showNotAcceptedFriends() {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from users inner join follow on users.userID=follow.userID where follow.userFollowID = " . $this->m_sUserID . " and follow.Accept = false");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
 }
 
 ?>
