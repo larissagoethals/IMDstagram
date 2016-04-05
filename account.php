@@ -3,38 +3,31 @@ session_start();
 include_once('classes/User.class.php');
 
     if(isset($_GET['profile'])) {
-        $user = new User();
-        $user->Username = $_SESSION['username'];
-        $userInfo = $user->getUserInformation();
-
-        if($_GET['profile'] == $userInfo['userID'] ){
-            $myUser = new User();
-            $myUser->Username = $_SESSION['username'];
-            $thisUserID = $myUser->getUserInformation();
-
-            $myBio = new User();
-            $myBio->Username = $_SESSION['username'];
-            $bio = $myBio->getUserInformation();
-            $profilePicture = $myBio->getUserInformation();
+        if($_GET['profile'] == $_SESSION['userID'] ){
+            $bio = new User();
+            $bio->UserID = $_SESSION['userID'];
+            $bio = $bio->getUserByID();
             $myAccount = true;
         } else {
             $userAccount = new User();
             $userAccount->UserID = $_GET['profile'];
             $bio = $userAccount->getUserByID();
+
+            //my accountID
+            $userFollow = new User();
+            if($userFollow->canViewPrivateAccount($_SESSION['userID'], $_GET['profile'])){
+                $privateFollow = true;
+            }
+            else {
+                $privateFollow = false;
+            }
             $myAccount = false;
         }
     }
     else {
-        $myUser = new User();
-        $myUser->Username = $_SESSION['username'];
-        $thisUserID = $myUser->getUserInformation();
-
-        $myBio = new User();
-        $myBio->Username = $_SESSION['username'];
-        $bio = $myBio->getUserInformation();
-        $myBio->UserID = $bio['userID'];
-        $bio = $myBio->getUserByID();
-        $profilePicture = $myBio->getUserInformation();
+        $bio = new User();
+        $bio->UserID = $_SESSION['userID'];
+        $bio = $bio->getUserByID();
         $myAccount = true;
     }
 
@@ -67,6 +60,9 @@ include_once('classes/User.class.php');
             <div class="changeProfile">
                 <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
             </div>
+                <div class="changeProfile">
+                    <a href="notifications.php" id="btnNotification">Notificaties</a>
+                </div>
             <?php endif; //OF OF OF VOLGEN ?>
         </div>
 
@@ -81,7 +77,7 @@ include_once('classes/User.class.php');
         </div>
     </div>
 
-    <?php if($bio[0]['private'] == 1 && $myAccount == false): ?>
+    <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
     <div class="profileTimeline">
         <p>Dit account is privé.</p>
         <form action="" method="POST">
@@ -91,6 +87,7 @@ include_once('classes/User.class.php');
     <?php else: ?>
     <div class="profileTimeline">
         <img src="" alt="">
+        <p>TEST</p>
     </div>
     <?php endif; ?>
 </section>
