@@ -390,6 +390,13 @@ class User
         return $result;
     }
 
+    public function acceptFriendship($p_iFollowID) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE follow SET Accept = true where followID =  " . $p_iFollowID);
+        $result = $statement->execute();
+        return $result;
+    }
+
 }
 
 ?>
