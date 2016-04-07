@@ -15,6 +15,15 @@
                 echo "Fault";
             }
         }
+
+        if(!empty($_POST['btnDeny'])){
+            $deny = new User();
+            if ($deny->deleteFriendship($_POST['followID'])) {
+                echo "Huraay";
+            } else {
+                echo "Something went wrong";
+            }
+        }
     }
 
 $user->UserID = $userID['userID'];
