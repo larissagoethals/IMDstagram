@@ -8,6 +8,9 @@ include_once('classes/User.class.php');
             $bio->UserID = $_SESSION['userID'];
             $bio = $bio->getUserByID();
             $myAccount = true;
+            $user = new User();
+            $user->UserID = $_SESSION['userID'];
+            $friendships = count($user->showNotAcceptedFriends());
         } else {
             $userAccount = new User();
             $userAccount->UserID = $_GET['profile'];
@@ -29,6 +32,9 @@ include_once('classes/User.class.php');
         $bio->UserID = $_SESSION['userID'];
         $bio = $bio->getUserByID();
         $myAccount = true;
+        $user = new User();
+        $user->UserID = $_SESSION['userID'];
+        $friendships = count($user->showNotAcceptedFriends());
     }
 
 ?><!doctype html>
@@ -61,7 +67,7 @@ include_once('classes/User.class.php');
                 <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
             </div>
                 <div class="changeProfile">
-                    <a href="notifications.php" id="btnNotification">Notificaties</a>
+                    <a href="notifications.php" id="btnNotification">Notificaties<?php echo " (" . $friendships . ")" ?></a>
                 </div>
             <?php endif; //OF OF OF VOLGEN ?>
         </div>

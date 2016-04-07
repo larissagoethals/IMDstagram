@@ -145,7 +145,13 @@ $posts = $allPosts->getNext20Posts();
             <h2 class="searchText">
                 <?php echo htmlspecialchars($_GET['search']) ?>
             </h2>
-            <p class="countItem"><?php echo $countSearchPosts ?> berichten</p>
+            <p class="countItem"><?php
+                if($countSearchPosts == 1) {
+                    echo $countSearchPosts . " bericht";
+                } else {
+                    echo $countSearchPosts . " berichten";
+                }
+                ?></p>
         </div>
 
         <div class="allMatches">
