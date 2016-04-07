@@ -57,18 +57,28 @@
     <div class="clearfix"></div>
 </header>
 
-<section class="fullProfile">
+<section style="margin:0px auto; width:300px;">
     <a href="account.php">Ga terug</a><br>
-    <div class="errorMessage"><?php if(isset($errorMessage)) { echo $errorMessage; } ?></div>
-    <div class="successMessage"><?php if(isset($message)) { echo $message; } ?></div>
+
+    <?php if(isset($errorMessage)): ?>
+    <div class="errorMessage"><?php echo $errorMessage; ?></div>
+    <?php endif; ?>
+
+    <?php if(isset($message)): ?>
+    <div class="successMessage"><?php echo $message; ?></div>
+    <?php endif; ?>
+
     <?php foreach($friendships as $friendship): ?>
-    <img src="<?php echo $friendship['profileImage'] ?>" alt="" width="50px" height="50px">
+        <div class="oneFriend">
+    <img src="<?php echo $friendship['profileImage'] ?>" alt="" width="50px" height="50px" class="accept_profileImage">
     <p><?php echo $friendship['username'] ?></p>
         <form method="post" name="<?php echo $friendship['followID'] ?>">
             <input type="text" value="<?php echo $friendship['followID'] ?>" name="followID" hidden>
-            <input type="submit" value="Goedkeuren" name="btnAccept">
-            <input type="submit" value="Weigeren" name="btnDeny">
+            <input type="submit" value="Goedkeuren" name="btnAccept" class="btnAccept">
+            <input type="submit" value="Weigeren" name="btnDeny" class="btnDeny">
         </form>
+        <div class="clearfix"></div>
+        </div>
     <?php endforeach; ?>
     </section>
 </body>

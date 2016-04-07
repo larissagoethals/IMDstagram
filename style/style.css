@@ -289,6 +289,46 @@ header {
     left: 0;
 }
 
+.errorMessage {
+    background-color: #EF5350;
+    color:white;
+    width:100%;
+    padding:10px;
+    margin-bottom:5px;
+    border-radius:4px;
+}
+
+.successMessage {
+    background-color: #43A047;
+    color:white;
+    width:100%;
+    padding:10px;
+    margin-bottom:5px;
+    border-radius:4px;
+}
+
+.normalMessage {
+    background-color:white;
+    border:1px solid #125688;
+    width:100%;
+    padding:10px;
+    margin-bottom:5px;
+    border-radius:4px;
+}
+
+.oneFriend {
+    margin-bottom:10px;
+}
+
+.accept_profileImage {
+    float:left;
+    margin-right:10px;
+}
+
+.btnAccept, .btnDeny {
+    padding:5px;
+}
+
 @media (max-width:580px){
     .allMatches {
         display:flex;
