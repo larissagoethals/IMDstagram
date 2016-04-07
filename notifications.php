@@ -42,8 +42,22 @@
     <script>
          //AJAX
     </script>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/profile.css">
 </head>
 <body>
+<header>
+    <div class="innerHeader">
+        <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
+
+        <div class="profileName">
+            <a href="logout.php">Uitloggen</a></div>
+    </div>
+    <div class="clearfix"></div>
+</header>
+
+<section class="fullProfile">
     <a href="account.php">Ga terug</a><br>
     <div class="errorMessage"><?php if(isset($errorMessage)) { echo $errorMessage; } ?></div>
     <div class="successMessage"><?php if(isset($message)) { echo $message; } ?></div>
@@ -56,5 +70,6 @@
             <input type="submit" value="Weigeren" name="btnDeny">
         </form>
     <?php endforeach; ?>
+    </section>
 </body>
 </html>

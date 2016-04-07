@@ -70,10 +70,6 @@ $posts = $allPosts->getNext20Posts();
                     <input placeholder="Zoeken" name="search" value type="text" class="inputSearch">
                 <?php endif; ?>
             </form>
-            <!--<div class="realBox">
-            <div class="searchLogo"></div>
-            <span class="searchText">Zoeken</span>
-            </div>-->
         </div>
 
         <div class="profileName">
