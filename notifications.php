@@ -9,25 +9,30 @@
         if(!empty($_POST['btnAccept'])){
             $accept = new User();
             if ($accept->acceptFriendship($_POST['followID'])) {
-                echo "Huraaaay";
+                $message = "Huraaaay";
             }
             else {
-                echo "Fault";
+                $errorMessage = "Something went wrong";
             }
         }
 
         if(!empty($_POST['btnDeny'])){
             $deny = new User();
             if ($deny->deleteFriendship($_POST['followID'])) {
-                echo "Huraay";
+                $message = "Huraay";
             } else {
-                echo "Something went wrong";
+                $errorMessage = "Something went wrong";
             }
         }
     }
 
-$user->UserID = $userID['userID'];
-$friendships = $user->showNotAcceptedFriends();
+    //Show users you have to accept
+    $user->UserID = $userID['userID'];
+    $friendships = $user->showNotAcceptedFriends();
+
+    if(count($friendships) == 0){
+        $message = "You don't have any notifications for the moment.";
+    }
 
 ?><!doctype html>
 <html lang="en">
@@ -40,6 +45,8 @@ $friendships = $user->showNotAcceptedFriends();
 </head>
 <body>
     <a href="account.php">Ga terug</a><br>
+    <div class="errorMessage"><?php if(isset($errorMessage)) { echo $errorMessage; } ?></div>
+    <div class="successMessage"><?php if(isset($message)) { echo $message; } ?></div>
     <?php foreach($friendships as $friendship): ?>
     <img src="<?php echo $friendship['profileImage'] ?>" alt="" width="50px" height="50px">
     <p><?php echo $friendship['username'] ?></p>
