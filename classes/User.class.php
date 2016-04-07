@@ -397,6 +397,13 @@ class User
         return $result;
     }
 
+    public function deleteFriendship($p_iFollowID) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE from follow where followID =  " . $p_iFollowID);
+        $result = $statement->execute();
+        return $result;
+    }
+
 }
 
 ?>
