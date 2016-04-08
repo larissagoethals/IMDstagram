@@ -4,20 +4,26 @@ include_once("classes/Post.class.php");
 
 if (!empty($_POST['btnPlaats'])) {
     if (!empty($_FILES['postPicture']['name']) && !empty($_POST['beschrijvingImg'])) {
-        $saveImage = new Post();
-        $saveImage->ImageName = $_FILES['postPicture']['name'];
-        $saveImage->ImageSize = $_FILES['postPicture']['size'];
-        $saveImage->ImageTmpName = $_FILES['postPicture']['tmp_name'];
-        $location = $saveImage->SavePostImage();
+        try {
+            $saveImage = new Post();
+            $saveImage->ImageName = $_FILES['postPicture']['name'];
+            $saveImage->ImageSize = $_FILES['postPicture']['size'];
+            $saveImage->ImageTmpName = $_FILES['postPicture']['tmp_name'];
+            $location = $saveImage->SavePostImage();
 
-        $savePost = new Post();
-        $savePost->Beschrijving = $_POST['beschrijvingImg'];
-        $savePost->PostImgUrl = $location;
-        $savePost->CreatePost();
+            $savePost = new Post();
+            $savePost->Beschrijving = $_POST['beschrijvingImg'];
+            $savePost->PostImgUrl = $location;
+            $savePost->CreatePost();
+
+            $message = "Foto werd upgeload.";
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
+        }
     }
     else
     {
-        echo "Gelieve een afbeelding te selecteren en een tekst in te voegen!";
+        $errorMessage = "Laad een afbeelding op en voeg een tekst in.";
     }
 }
 
@@ -38,23 +44,31 @@ if (!empty($_POST['btnPlaats'])) {
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
-        <div class="search">
-            <input placeholder="Zoeken" value type="text" class="inputSearch">
-        </div>
-
         <div class="profileName">
             <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
 
+<section class="uploadMyImage">
+<div class="myMessages">
+    <?php if(isset($errorMessage)): ?>
+        <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+    <?php endif; ?>
+
+    <?php if(isset($message)): ?>
+        <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+    <?php endif; ?>
+</div>
+
 <form id="form1" action="" method="post" enctype="multipart/form-data">
     <input type="file" name="postPicture" id="postPicture" accept="image/gif, image/jpeg, image/png, image/jpg">
     <img id="imgPreview" src="#" alt="your image" />
-    <label for="beschrijvingImg">Beschrijving</label>
+    <label for="beschrijvingImg" id="beschrijvingImage">Beschrijving</label>
     <textarea name="beschrijvingImg" id="beschrijvingImg" cols="30" rows="10"></textarea>
-    <input type="submit" value="plaats" name="btnPlaats" id="btnPlaats">
+    <input type="submit" value="Upload" name="btnPlaats" id="btnPlaats">
 </form>
+</section>
 
 <script>
     function readURL(input) {
@@ -63,6 +77,7 @@ if (!empty($_POST['btnPlaats'])) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
+                $("#imgPreview").css("display", "block");
                 $('#imgPreview').attr('src', e.target.result);
             }
 
@@ -75,6 +90,6 @@ if (!empty($_POST['btnPlaats'])) {
     });
 
 </script>
-
+<script src="js/messages.js" type="text/javascript"></script>
 </body>
 </html>
