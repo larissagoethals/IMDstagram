@@ -367,6 +367,11 @@ header {
     margin:0px 0px 5px 0px;
 }
 
+footer {
+    text-align:center;
+    margin-top:50px;
+}
+
 @media (max-width:580px){
     .allMatches {
         display:flex;

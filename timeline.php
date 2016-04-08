@@ -161,6 +161,9 @@ $posts = $allPosts->getNext20Posts();
                 <a href="?image=<?php echo $allResult['postID'] ?>"
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
+            <?php if($countSearchPosts == 0): ?>
+                <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts gevonden.</p>
+            <?php endif; ?>
         </div>
     </section>
 <?php endif; ?>
