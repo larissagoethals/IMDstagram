@@ -164,5 +164,13 @@ $posts = $allPosts->getNext20Posts();
         </div>
     </section>
 <?php endif; ?>
+
+<footer>
+    <ul>
+        <li>&copy; 2016 - Yaron - Damon - Kimberly </li>
+        <li>Terms of Use</li>
+    </ul>
+</footer>
+
 </body>
 </html>
