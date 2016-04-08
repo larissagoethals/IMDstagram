@@ -102,7 +102,8 @@
             var id = $(this).data("id");
             $.post("ajax/denyFriendship.php", {dataid: id})
                 .done(function (response) {
-                    //message (success)
+                    $myMessage = response['status'];
+                    $myElement.parent().parent().slideUp();
                 });
 
             e.preventDefault();
