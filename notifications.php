@@ -84,15 +84,25 @@
 <script>
     $(document).ready(function(){
         $(".btnAccept").click(function (e) {
-            var followID = $("#username").val();
             var id = $(this).data("id");
-            $.post( "ajax/facebook-fan.php", { dataid: id})
+            $.post( "ajax/acceptFriendship.php", { dataid: id})
                 .done(function( response ){
-                    $("[data-id="+id+"]").next().text(response.likes);
+                    //message (success)
+                    $myMessage = response['status'];
                 });
+
+                e.preventDefault();
+        });
+
+        $(".btnDeny").click(function (e) {
+            var id = $(this).data("id");
+            $.post( "ajax/denyFriendship.php", { dataid: id})
+                .done(function( response ){
+                    //message (success)
+                });
+
             e.preventDefault();
         });
-        }
     });
 
     $(".closeNotification").click(function(){
