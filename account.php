@@ -64,8 +64,8 @@ include_once('classes/User.class.php');
             <img src="<?php echo $bio[0]['profileImage']; ?>" alt="yaron" class="profileImage">
             <?php if($myAccount == true): ?>
                 <div class="changeProfile">
-                <a href="accountEdit.php" id="btnChangeAccount">Profiel bewerken</a>
-                <a href="notifications.php" id="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
+                <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
+                <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
                 </div>
                 <div class="clearfix"></div>
             <?php endif; //OF OF OF VOLGEN ?>
