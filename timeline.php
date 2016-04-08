@@ -106,20 +106,26 @@ $posts = $allPosts->getNext20Posts();
                 <div class="instaPost_body">
                     <div class="ip_body_content">
                         <div class="ip_body_likes">
-                            <a href="">viktoriagaa</a> and <a href="">viktoriagaa</a> vinden dit leuk.
+                            <a href="">#</a> vinden dit leuk
                         </div>
                         <div class="ip_body_textContent">
-                            <a href="" class="authorPost"><?php echo $post["postUserID"] ?></a>
-                            <p class="postText"><?php echo $post["postText"] ?></p>
-                            <div class="postReactions"></div>
+                            <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
+                            <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
+                            <div class="postReactions">
+
+                            </div>
                         </div>
                     </div>
                     <div class="likeAndReact">
                         <div class="like">
-
+                            <form action="" method="post">
+                                <!--LIKE WITH DATA-ID-->
+                            </form>
                         </div>
                         <div class="react">
-                            <input type="text" placeholder="Een reactie toevoegen...">
+                            <form action="" method="post">
+                                <input type="text" data-id="<?php echo $post['postID'] ?>" placeholder="Een reactie toevoegen...">
+                            </form>
                         </div>
                         <div class="more">
 
@@ -130,7 +136,7 @@ $posts = $allPosts->getNext20Posts();
             </div>
         <?php endforeach; ?>
         <div class="insta_loadMore">
-            <form action="">
+            <form action="" method="post">
                 <input type="submit" name="btnLoadMore" value="Load More">
             </form>
         </div>
@@ -155,8 +161,19 @@ $posts = $allPosts->getNext20Posts();
                 <a href="?image=<?php echo $allResult['postID'] ?>"
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
+            <?php if($countSearchPosts == 0): ?>
+                <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts gevonden.</p>
+            <?php endif; ?>
         </div>
     </section>
 <?php endif; ?>
+
+<footer>
+    <ul>
+        <li>&copy; 2016 - Yaron - Damon - Kimberly </li>
+        <li>Terms of Use</li>
+    </ul>
+</footer>
+
 </body>
 </html>

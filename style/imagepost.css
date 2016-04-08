@@ -1,12 +1,56 @@
 #imgPreview {
-    width: 500px;
+    width:100%;
+    max-width: 500px;
     background-size: cover;
     text-align: center;
-    display: block;
+    display: none;
     align-content: center;
+    margin:0px auto;
 }
 
-#form1{
-    text-align: center;
-    align-content: center;
+.uploadMyImage{
+    width:100%;
+    max-width:500px;
+    margin:0px auto;
+}
+
+#beschrijvingImg {
+    outline: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    max-width:500px;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding:5px;
+    color: #555;
+    font-family: Montserrat,Helvetica,sans-serif;
+    font-size: 14px;
+    margin:0px auto;
+}
+
+#beschrijvingImage {
+    display:block;
+    text-align:left;
+    margin-top:20px;
+    margin-bottom:5px;
+    margin-left:0px;
+}
+
+#postPicture {
+    margin:5px 0px;
+}
+
+#btnPlaats {
+    display:block;
+    background-color:white;
+    border:1px solid #edeeee;
+    border-radius: 3px;
+    margin:10px 0px;
+    padding:10px;
+    text-align:center;
+    text-decoration: none;
+    color:black;
 }

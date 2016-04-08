@@ -44,10 +44,29 @@ p
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: #005b9a;
+    border-radius:4px;
     color: white;
     width: 100%;
+    max-width:300px;
     display: block;
     text-decoration: none;
+    margin:0px auto;
+    text-align:center;
+    margin-bottom:5px;
+}
+
+#btnChangeAccount:hover {
+    background-color: #0065a3;
+}
+
+.friendsNoti {
+    font-size:12px;
+    line-height:16px;
+    padding:0px 6px;
+    height:16px;
+    display:inline-block;
+    border-radius:50px;
+    border:1px solid white;
 }
 
 .logoInsta {
@@ -72,9 +91,24 @@ p
     margin-right: 6%;
 }
 
+.changeProfile {
+    max-width:610px;
+    margin:0px auto;
+}
+
 @media (min-width: 600px) {
     .fullProfile {
         max-width:960px;
         margin:0px auto;
+    }
+}
+
+@media (min-width:700px) {
+    #btnChangeAccount {
+        float:left;
+    }
+
+    #btnChangeAccount:last-child {
+        margin:0px 0px 0px 10px !important;
     }
 }

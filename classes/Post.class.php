@@ -82,10 +82,10 @@ class Post
 
         $expensions = array("jpeg", "jpg", "png", "gif");
         if (in_array($file_ext, $expensions) === false) {
-            throw new Exception("extension not allowed, please choose a JPEG or PNG or GIF file.");
+            throw new Exception("Deze extensie is niet toegelaten, kies een jpg, png of gif-bestand.");
         }
         if ($file_size > 2097152) {
-            throw new Exception('File size must be excately 2 MB');
+            throw new Exception('Het bestand moet kleiner dan 2MB zijn');
         }
         if (empty($errors) == true) {
             move_uploaded_file($file_tmp, "images/postPictures/" . $file_name);
