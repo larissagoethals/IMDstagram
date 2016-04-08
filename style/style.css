@@ -318,6 +318,7 @@ header {
 
 .oneFriend {
     margin-bottom:10px;
+    width:100%;
 }
 
 .accept_profileImage {
@@ -327,6 +328,32 @@ header {
 
 .btnAccept, .btnDeny {
     padding:5px;
+}
+
+.goBackNoti:link,
+.goBackNoti:visited,
+.goBackNoti:hover,
+.goBackNoti:active {
+    display:block;
+    background-color:white;
+    border:1px solid #edeeee;
+    border-radius: 3px;
+    margin:20px 0px 0px 0px;
+    padding:10px;
+    text-align:center;
+    text-decoration: none;
+    color:#125688;
+    width:100%;
+}
+
+.goBackNoti:hover {
+    background-color: #fbfbfb;
+}
+
+.closeNotification {
+    float:right;
+    font-weight:lighter;
+    cursor:pointer;
 }
 
 @media (max-width:580px){

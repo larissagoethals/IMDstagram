@@ -9,7 +9,7 @@
         if(!empty($_POST['btnAccept'])){
             $accept = new User();
             if ($accept->acceptFriendship($_POST['followID'])) {
-                $message = "Huraaaay";
+                $message = "Volgverzoek aanvaard.";
             }
             else {
                 $errorMessage = "Something went wrong";
@@ -19,7 +19,7 @@
         if(!empty($_POST['btnDeny'])){
             $deny = new User();
             if ($deny->deleteFriendship($_POST['followID'])) {
-                $message = "Huraay";
+                $message = "Volgverzoek verwijderd.";
             } else {
                 $errorMessage = "Something went wrong";
             }
@@ -31,7 +31,7 @@
     $friendships = $user->showNotAcceptedFriends();
 
     if(count($friendships) == 0){
-        $message = "You don't have any notifications for the moment.";
+        $message = "Je hebt momenteel geen notificaties.";
     }
 
 ?><!doctype html>
@@ -39,9 +39,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Notifications</title>
-    <script>
-         //AJAX
-    </script>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
@@ -58,15 +57,17 @@
 </header>
 
 <section style="margin:0px auto; width:300px;">
-    <a href="account.php">Ga terug</a><br>
+    <a href="account.php" class="goBackNoti">Ga terug</a><br>
 
-    <?php if(isset($errorMessage)): ?>
-    <div class="errorMessage"><?php echo $errorMessage; ?></div>
-    <?php endif; ?>
+    <div class="myMessages">
+        <?php if(isset($errorMessage)): ?>
+        <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+        <?php endif; ?>
 
-    <?php if(isset($message)): ?>
-    <div class="successMessage"><?php echo $message; ?></div>
-    <?php endif; ?>
+        <?php if(isset($message)): ?>
+        <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+        <?php endif; ?>
+    </div>
 
     <?php foreach($friendships as $friendship): ?>
         <div class="oneFriend">
@@ -74,12 +75,45 @@
     <p><?php echo $friendship['username'] ?></p>
         <form method="post" name="<?php echo $friendship['followID'] ?>">
             <input type="text" value="<?php echo $friendship['followID'] ?>" name="followID" hidden>
-            <input type="submit" value="Goedkeuren" name="btnAccept" class="btnAccept">
-            <input type="submit" value="Weigeren" name="btnDeny" class="btnDeny">
+            <input type="submit" value="Goedkeuren" name="btnAccept" data-id="<?php echo $friendship['followID'] ?>" class="btnAccept">
+            <input type="submit" value="Weigeren" name="btnDeny" data-id="<?php echo $friendship['followID'] ?>" class="btnDeny">
         </form>
         <div class="clearfix"></div>
         </div>
     <?php endforeach; ?>
     </section>
+
+<script>
+    $(document).ready(function() {
+        $(".btnAccept").click(function (e) {
+            $myElement = $(this);
+            var id = $(this).data("id");
+            $.post("ajax/acceptFriendship.php", {dataid: id})
+                .done(function (response) {
+                    //message (success)
+                    $myMessage = response['status'];
+                    $myElement.parent().parent().slideUp();
+                });
+
+            e.preventDefault();
+        });
+
+        $(".btnDeny").click(function (e) {
+            var id = $(this).data("id");
+            $.post("ajax/denyFriendship.php", {dataid: id})
+                .done(function (response) {
+                    $myMessage = response['status'];
+                    $myElement.parent().parent().slideUp();
+                });
+
+            e.preventDefault();
+        });
+
+        $(".closeNotification").click(function () {
+            console.log("TEST");
+            $(this).parent().slideUp();
+        });
+    });
+</script>
 </body>
 </html>
