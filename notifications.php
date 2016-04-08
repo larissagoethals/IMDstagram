@@ -1,5 +1,5 @@
 <?php
-    /*session_start();
+    session_start();
     include_once('classes/User.class.php');
     $user = new User();
     $user->Username = $_SESSION['username'];
@@ -9,7 +9,7 @@
         if(!empty($_POST['btnAccept'])){
             $accept = new User();
             if ($accept->acceptFriendship($_POST['followID'])) {
-                $message = "Huraaaay";
+                $message = "Volgverzoek aanvaard.";
             }
             else {
                 $errorMessage = "Something went wrong";
@@ -19,7 +19,7 @@
         if(!empty($_POST['btnDeny'])){
             $deny = new User();
             if ($deny->deleteFriendship($_POST['followID'])) {
-                $message = "Huraay";
+                $message = "Volgverzoek verwijderd.";
             } else {
                 $errorMessage = "Something went wrong";
             }
@@ -31,8 +31,8 @@
     $friendships = $user->showNotAcceptedFriends();
 
     if(count($friendships) == 0){
-        $message = "You don't have any notifications for the moment.";
-    }*/
+        $message = "Je hebt momenteel geen notificaties.";
+    }
 
 ?><!doctype html>
 <html lang="en">
@@ -59,13 +59,15 @@
 <section style="margin:0px auto; width:300px;">
     <a href="account.php" class="goBackNoti">Ga terug</a><br>
 
-    <?php if(isset($errorMessage)): ?>
-    <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
-    <?php endif; ?>
+    <div class="myMessages">
+        <?php if(isset($errorMessage)): ?>
+        <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+        <?php endif; ?>
 
-    <?php if(isset($message)): ?>
-    <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
-    <?php endif; ?>
+        <?php if(isset($message)): ?>
+        <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+        <?php endif; ?>
+    </div>
 
     <?php foreach($friendships as $friendship): ?>
         <div class="oneFriend">
@@ -82,32 +84,34 @@
     </section>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         $(".btnAccept").click(function (e) {
+            $myElement = $(this);
             var id = $(this).data("id");
-            $.post( "ajax/acceptFriendship.php", { dataid: id})
-                .done(function( response ){
+            $.post("ajax/acceptFriendship.php", {dataid: id})
+                .done(function (response) {
                     //message (success)
                     $myMessage = response['status'];
+                    $myElement.parent().parent().slideUp();
                 });
 
-                e.preventDefault();
+            e.preventDefault();
         });
 
         $(".btnDeny").click(function (e) {
             var id = $(this).data("id");
-            $.post( "ajax/denyFriendship.php", { dataid: id})
-                .done(function( response ){
+            $.post("ajax/denyFriendship.php", {dataid: id})
+                .done(function (response) {
                     //message (success)
                 });
 
             e.preventDefault();
         });
-    });
 
-    $(".closeNotification").click(function(){
-        console.log("TEST");
-        $(this).parent().slideUp();
+        $(".closeNotification").click(function () {
+            console.log("TEST");
+            $(this).parent().slideUp();
+        });
     });
 </script>
 </body>
