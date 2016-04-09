@@ -25,6 +25,15 @@ include_once('classes/User.class.php');
                 $privateFollow = false;
             }
             $myAccount = false;
+
+            $followYes = new User();
+
+            if($followYes->userFollowsUser($_SESSION['userID'], $_GET['profile']) == 1){
+                $notAccepted = true;
+            }
+            else {
+                $notAccepted = false;
+            }
         }
     }
     else {
@@ -35,6 +44,20 @@ include_once('classes/User.class.php');
         $user = new User();
         $user->UserID = $_SESSION['userID'];
         $friendships = count($user->showNotAcceptedFriends());
+    }
+
+    if(isset($_POST["volgverzoek"])){
+        $sendRequest = new User();
+        $sendRequest->sendFriendRequest($_SESSION['userID'], $_GET['profile']);
+
+        $followYes = new User();
+
+        if($followYes->userFollowsUser($_SESSION['userID'], $_GET['profile']) == 1){
+            $notAccepted = true;
+        }
+        else {
+            $notAccepted = false;
+        }
     }
 
 ?><!doctype html>
@@ -85,8 +108,12 @@ include_once('classes/User.class.php');
     <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
     <div class="profileTimeline">
         <p>Dit account is privé.</p>
-        <form action="" method="POST">
+        <form action="" method="POST" name="sendFriendRequest">
+            <?php if($notAccepted == false): ?>
             <input type="submit" value="Stuur volgverzoek" name="volgverzoek">
+            <?php else: ?>
+                <p>Volgverzoek reeds verstuurd.</p>
+            <?php endif; ?>
         </form>
     </div>
     <?php else: ?>

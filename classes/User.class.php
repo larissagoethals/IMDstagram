@@ -362,7 +362,7 @@ class User
         $statement = $conn->prepare("select * from follow where userID = " . $p_iThisUser. " and userFollowID = " . $p_iFollowUser);
         $statement->execute();
         $count = $statement->rowCount();
-        var_dump($count);
+
         if ($count == 1) {
             return true;
         } else {
@@ -380,6 +380,16 @@ class User
         } else {
             return false;
         }
+    }
+
+    public function sendFriendRequest($p_iThisUser, $p_iFollowUser) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into follow (userFollowID, userID, Accept) values (:userFollowID, :userID, 0) ");
+        $statement->bindParam("userFollowID", $p_iFollowUser);
+        $statement->bindParam("userID", $p_iThisUser);
+        $result = $statement->execute();
+        
+        return $result;
     }
 
     public function showNotAcceptedFriends() {
