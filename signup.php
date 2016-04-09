@@ -49,13 +49,13 @@ if(!empty($_POST)) {
         </div>
         <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
             <label>
-                <input type="text" name="username" placeholder="Gebruikersnaam">
+                <input type="text" name="username" placeholder="Gebruikersnaam" id="usernameSignup">
             </label>
             <label>
                 <input type="password" name="password" placeholder="Wachtwoord">
             </label>
             <label>
-                <input type="email" name="email" placeholder="E-mail">
+                <input type="email" name="email" placeholder="E-mail" id="emailSignup">
             </label>
             <label>
                 <input type="text" name="name" placeholder="Naam">
@@ -84,5 +84,50 @@ if(!empty($_POST)) {
         <a href="login.php" class="login">Login</a>
     </div>
 </div>
+
+<script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script>usernameSignup
+    $(document).ready(function() {
+        $("#usernameSignup").focusout(function (e) {
+            var username = $("#usernameSignup").val();
+
+            $.post("ajax/userExists.php", {username: username})
+                .done(function (response) {
+                    if (response.status == "notexist") {
+                        $(".errorText").html("");
+                        $("#usernameSignup").css("border-color", "#edeeee");
+                    }
+                    else if (response.status == "exist") {
+                        var p = "<p>" + "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen." + "</p>";
+                        $(".errorText").html("");
+                        $(".errorText").append(p);
+                        $("#usernameSignup").css("border-color", "red");
+                    }
+                });
+
+            e.preventDefault();
+        });
+
+        $("#emailSignup").focusout(function (e) {
+            var email = $("#emailSignup").val();
+
+            $.post("ajax/emailExists.php", {email: email})
+                .done(function (response) {
+                    if (response.status == "notexist") {
+                        $(".errorText").html("");
+                        $("#emailSignup").css("border-color", "#edeeee");
+                    }
+                    else if (response.status == "exist") {
+                        var p = "<p>" + "Dit emailadres werd al gebruikt, gelieve een ander te kiezen of hiermee in te loggen." + "</p>";
+                        $(".errorText").html("");
+                        $(".errorText").append(p);
+                        $("#emailSignup").css("border-color", "red");
+                    }
+                });
+
+            e.preventDefault();
+        });
+    });
+</script>
 </body>
 </html>
