@@ -14,6 +14,11 @@ header {
     border-bottom-style: solid;
 }
 
+#postIDInap
+{
+    display: none;
+}
+
 .innerHeader {
     max-width:600px;
     padding:26px 0px;
