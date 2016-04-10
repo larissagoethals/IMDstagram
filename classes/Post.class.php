@@ -158,20 +158,38 @@ class Post
     {
         try {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("select postInappropriate from posts where postID = :postID");
+            $statement = $conn->prepare("select inapID from inappropriate where (userID = " . $_SESSION['userID'] . " and postID = :postID)");
             $statement->bindValue(':postID', $this->m_sPostID);
             $statement->execute();
             $result = $statement->fetchAll();
-            $countInappropriate = $result[0][0];
-            $countInappropriate += 1;
-            $statement2 = $conn->prepare("UPDATE posts SET postInappropriate= ".$countInappropriate." where postID = :postID");
+
+            $aantalRijen = count($result);
+            if ($aantalRijen < 1) {
+                $statement2 = $conn->prepare("insert into inappropriate (userID, postID) values (" . $_SESSION['userID'] . ", :postID)");
+                $statement2->bindValue(':postID', $this->m_sPostID);
+                $statement2->execute();
+                return true;
+            }
+        } catch (Exception $e) {
+            throw new Exception("Het is niet mogelijk om deze foto te rapporteren. Probeer later opnieuw");
+        }
+    }
+
+    public function checkInappropriate(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select inapID from inappropriate where postID = :postID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $aantalRijen = count($result);
+
+        if($aantalRijen>2)
+        {
+            $statement2 = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
             $statement2->bindValue(':postID', $this->m_sPostID);
             $statement2->execute();
             return true;
-        }
-        catch (Exception $e)
-        {
-            throw new Exception("Het is niet mogelijk om deze foto te rapporteren. Probeer later opnieuw");
         }
     }
 }

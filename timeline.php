@@ -26,7 +26,7 @@ if (!empty($_GET["search"])) {
     $allResults = $search->search();
     $countSearchPosts = count($allResults);
 }
-$postID = 0;
+
 
 $count = 20;
 $allPosts = new Post();
@@ -36,8 +36,13 @@ $posts = $allPosts->getNext20Posts();
     if(!empty($_POST['btnInappropriate']))
     {
         $inappropriate = new Post();
-        $inappropriate->postID = $postID;
+        $inappropriate->postID = $_POST['postIDInap'];
         $report = $inappropriate->inappropriate();
+        $inappropriate = new Post();
+        $inappropriate->postID = $_POST['postIDInap'];
+        $checkInap = $inappropriate->checkInappropriate();
+
+
     }
 
 ?><!DOCTYPE html>
@@ -119,6 +124,7 @@ $posts = $allPosts->getNext20Posts();
                         </div>
                         <div class="inappropriate">
                             <form action="" method="post">
+                                <input type="text" name="postIDInap" id="postIDInap" value="<?php echo $post['postID'] ?>">
                                 <input type="submit" value="Rapporteer deze foto" name="btnInappropriate" id="btnInappropriate">
                             </form>
                         </div>
