@@ -26,11 +26,19 @@ if (!empty($_GET["search"])) {
     $allResults = $search->search();
     $countSearchPosts = count($allResults);
 }
+$postID = 0;
 
 $count = 20;
 $allPosts = new Post();
 $allPosts->CountTop = $count;
 $posts = $allPosts->getNext20Posts();
+
+    if(!empty($_POST['btnInappropriate']))
+    {
+        $inappropriate = new Post();
+        $inappropriate->postID = $postID;
+        $report = $inappropriate->inappropriate();
+    }
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -87,7 +95,8 @@ $posts = $allPosts->getNext20Posts();
         <?php foreach ($posts as $post): ?>
             <?php $userInformation = new Post();
             $userInformation->userID = $post["postUserID"];
-            $thisUserInformation = $userInformation->getUserByID();?>
+            $thisUserInformation = $userInformation->getUserByID();
+            $postID = $post['postID'];?>
             <div class="instaPost">
                 <div class="instaPost_header">
                     <div class="ip_header_profile">
@@ -107,6 +116,11 @@ $posts = $allPosts->getNext20Posts();
                     <div class="ip_body_content">
                         <div class="ip_body_likes">
                             <a href="">#</a> vinden dit leuk
+                        </div>
+                        <div class="inappropriate">
+                            <form action="" method="post">
+                                <input type="submit" value="Rapporteer deze foto" name="btnInappropriate" id="btnInappropriate">
+                            </form>
                         </div>
                         <div class="ip_body_textContent">
                             <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>

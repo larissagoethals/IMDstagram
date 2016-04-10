@@ -11,6 +11,7 @@ class Post
     private $m_sPostImgUrl;
     private $m_iCountTop;
     private $m_sUserID;
+    private $m_sPostID;
 
     public function __set($p_sProperty, $p_vValue)
     {
@@ -38,6 +39,9 @@ class Post
                 break;
             case "userID":
                 $this->m_sUserID = $p_vValue;
+                break;
+            case "postID":
+                $this->m_sPostID = $p_vValue;
                 break;
         }
     }
@@ -67,7 +71,10 @@ class Post
                 return $this->m_iCountTop;
                 break;
             case "userID":
-               return $this->m_sUserID ;
+                return $this->m_sUserID;
+                break;
+            case "postID":
+                return $this->m_sPostID;
                 break;
         }
     }
@@ -103,7 +110,7 @@ class Post
             $postUserID = $_SESSION['userID'];
 
             $conn = Db::getInstance();
-            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID) values (:postImage, :postText, :postTime, :postLocation, :postUserID)");
+            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID, postInappropriate) values (:postImage, :postText, :postTime, :postLocation, :postUserID, 0)");
             $statement->bindValue(":postImage", $this->m_sPostImgUrl);
             $statement->bindValue(":postText", $this->m_sBeschrijving);
             $statement->bindValue(":postTime", $tijd);
@@ -136,15 +143,37 @@ class Post
         return $result;
     }
 
-    public function getFullPost($p_iPostID) {
-        $conn = new PDO("mysql:host=159.253.0.121;dbname=yaronxk83_insta", "yaronxk83_insta", "thomasmore");
+    public function getFullPost($p_iPostID)
+    {
+        $conn = Db::getInstance();
 
         $statement = $conn->prepare("select * from posts where postID = :postID");
         $statement->bindValue(':postID', $p_iPostID);
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
-		}
+    }
+
+    public function inappropriate()
+    {
+        try {
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("select postInappropriate from posts where postID = :postID");
+            $statement->bindValue(':postID', $this->m_sPostID);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $countInappropriate = $result[0][0];
+            $countInappropriate += 1;
+            $statement2 = $conn->prepare("UPDATE posts SET postInappropriate= ".$countInappropriate." where postID = :postID");
+            $statement2->bindValue(':postID', $this->m_sPostID);
+            $statement2->execute();
+            return true;
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Het is niet mogelijk om deze foto te rapporteren. Probeer later opnieuw");
+        }
+    }
 }
 
 ?>
