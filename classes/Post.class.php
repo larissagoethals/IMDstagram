@@ -13,6 +13,7 @@ class Post
     private $m_sUserID;
     private $m_sPostID;
 
+    //ophalen waarde uit velden
     public function __set($p_sProperty, $p_vValue)
     {
         switch ($p_sProperty) {
@@ -46,6 +47,7 @@ class Post
         }
     }
 
+    //terugsturen van de opgehaalde waarden
     public function __get($p_sProperty)
     {
         switch ($p_sProperty) {
@@ -79,6 +81,7 @@ class Post
         }
     }
 
+    //save post image into folder postPictures
     public function SavePostImage()
     {
         $file_name = $_SESSION['userID'] . "-" . time() . "-" . $this->m_sImageName;
@@ -100,9 +103,9 @@ class Post
         } else {
             echo "Error";
         }
-
     }
 
+    //create post
     public function CreatePost()
     {
         try {
@@ -122,6 +125,7 @@ class Post
         }
     }
 
+    //Receive username/profileimage by userID
     Public function getUserByID()
     {
         $conn = Db::getInstance();
@@ -133,6 +137,7 @@ class Post
         return $result;
     }
 
+    //possibility for load 20 (extra) posts
     public function getNext20Posts()
     {
         $conn = Db::getInstance();
@@ -143,6 +148,7 @@ class Post
         return $result;
     }
 
+    //full post receive
     public function getFullPost($p_iPostID)
     {
         $conn = Db::getInstance();
@@ -154,6 +160,7 @@ class Post
         return $result;
     }
 
+    //let user mark post as inappropriate
     public function inappropriate()
     {
         try {
@@ -168,13 +175,13 @@ class Post
                 $statement2 = $conn->prepare("insert into inappropriate (userID, postID) values (" . $_SESSION['userID'] . ", :postID)");
                 $statement2->bindValue(':postID', $this->m_sPostID);
                 $statement2->execute();
-                return true;
             }
         } catch (Exception $e) {
             throw new Exception("Het is niet mogelijk om deze foto te rapporteren. Probeer later opnieuw");
         }
     }
 
+    //check for delete post after 3 inappropriates
     public function checkInappropriate(){
         $conn = Db::getInstance();
         $statement = $conn->prepare("select inapID from inappropriate where postID = :postID");
@@ -189,7 +196,6 @@ class Post
             $statement2 = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
             $statement2->bindValue(':postID', $this->m_sPostID);
             $statement2->execute();
-            return true;
         }
     }
 }

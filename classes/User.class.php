@@ -156,6 +156,7 @@ class User
         }
     }
 
+    //check if username exists --> for update
     public function userNameExistsUpdate()
     {
         $conn = Db::getInstance();
@@ -189,6 +190,7 @@ class User
         }
     }
 
+    //check if email exists --> for update
     public function emailExistsUpdate()
     {
         $conn = Db::getInstance();
@@ -256,6 +258,7 @@ class User
         }
     }
 
+    //update password in database (first control password)
     public function UpdatePassword()
     {
         if ($this->PasswordOk()) {
@@ -290,6 +293,7 @@ class User
         return $result;
     }
 
+    //save profile image into folder profilePictures
     Public function SaveProfileImage()
     {
         $file_name = $_SESSION['userID'] . "-" . time() . "-" . $this->m_sImageName;
@@ -313,6 +317,7 @@ class User
         }
     }
 
+    //get username by userID
     Public function GetUsername()
     {
         $conn = Db::getInstance();
@@ -322,6 +327,7 @@ class User
         return $result;
     }
 
+    //get all by userID
     Public function getUserByID()
     {
         $conn = Db::getInstance();
@@ -331,7 +337,7 @@ class User
         return $result;
     }
 
-
+    //check if user can login
     public function canLogin()
     {
         if (!empty($this->m_sUsername) && !empty($this->m_sPassword)) {
@@ -357,6 +363,7 @@ class User
         }
     }
 
+    //user can follow other user
     public function userFollowsUser($p_iThisUser, $p_iFollowUser) {
         $conn = Db::getInstance();
         $statement = $conn->prepare("select * from follow where userID = " . $p_iThisUser. " and userFollowID = " . $p_iFollowUser);
@@ -370,6 +377,7 @@ class User
         }
     }
 
+    //control function for private account
     public function canViewPrivateAccount($p_iThisUser, $p_iFollowUser) {
         $conn = Db::getInstance();
         $statement = $conn->prepare("select * from follow where userID = " . $p_iThisUser. " and userFollowID = " . $p_iFollowUser . " and Accept = true");
@@ -382,6 +390,7 @@ class User
         }
     }
 
+    //send friendrequests to other users
     public function sendFriendRequest($p_iThisUser, $p_iFollowUser) {
         $conn = Db::getInstance();
         $statement = $conn->prepare("insert into follow (userFollowID, userID, Accept) values (:userFollowID, :userID, 0) ");
@@ -392,6 +401,7 @@ class User
         return $result;
     }
 
+    //show not accepted friends
     public function showNotAcceptedFriends() {
         $conn = Db::getInstance();
         $statement = $conn->prepare("select * from users inner join follow on users.userID=follow.userID where follow.userFollowID = " . $this->m_sUserID . " and follow.Accept = false");
@@ -400,6 +410,7 @@ class User
         return $result;
     }
 
+    //show accepted friends
     public function acceptFriendship($p_iFollowID) {
         $conn = Db::getInstance();
         $statement = $conn->prepare("UPDATE follow SET Accept = true where followID =  " . $p_iFollowID);
@@ -407,13 +418,13 @@ class User
         return $result;
     }
 
+    //delete friends
     public function deleteFriendship($p_iFollowID) {
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE from follow where followID =  " . $p_iFollowID);
         $result = $statement->execute();
         return $result;
     }
-
 }
 
 ?>
