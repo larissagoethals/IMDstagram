@@ -26,7 +26,12 @@ if (!empty($_GET["search"])) {
     $allResults = $search->search();
     $countSearchPosts = count($allResults);
 }
+if (!empty($_POST['btnDeletePost'])) {
+    $deletePost = new Post();
+    $deletePost->postID = $_POST['postIDDelete'];
+    $deletePost->deletePost();
 
+}
 
 $count = 20;
 $allPosts = new Post();
@@ -42,6 +47,10 @@ if (!empty($_POST['btnInappropriate'])) {
     $inappropriate->postID = $_POST['postIDInap'];
     $checkInap = $inappropriate->checkInappropriate();
 }
+
+
+
+
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -102,6 +111,14 @@ if (!empty($_POST['btnInappropriate'])) {
                 $feedback = false;
             }
 
+            $delete = new Post();
+            $delete->postID = $post["postID"];
+            if ($delete->checkPostDelete()) {
+                $feedbackDeletePost = true;
+            } else {
+                $feedbackDeletePost = false;
+            }
+
             ?>
             <div class="instaPost">
                 <div class="instaPost_header">
@@ -133,6 +150,17 @@ if (!empty($_POST['btnInappropriate'])) {
                                        id="btnInappropriate">
                                 <?php } ?>
                             </form>
+                        </div>
+                        <form action="" method="post">
+                            <input type="text" name="postIDDelete" id="postIDDelete"
+                                   value="<?php echo $post['postID'] ?>">
+                            <?php if ($feedbackDeletePost == true){?>
+                                <input type="submit" value="Delete deze post" name="btnDeletePost"
+                                       id="btnDeletePost">
+                            <?php } ?>
+                        </form>
+                        <div class="deletePost">
+
                         </div>
                         <div class="ip_body_textContent">
                             <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
