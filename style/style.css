@@ -14,7 +14,7 @@ header {
     border-bottom-style: solid;
 }
 
-#postIDInap
+#postIDInap, #postIDDelete
 {
     display: none;
 }

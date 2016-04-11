@@ -221,6 +221,34 @@ class Post
             return true;
         }
     }
+
+    public function checkPostDelete()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select postID from posts where (postUserID = " . $_SESSION['userID'] . " and postID = :postID)");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $aantalRijen = count($result);
+
+        if ($aantalRijen > 0) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function deletePost(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->execute();
+        return true;
+        }
+
 }
 
 ?>
