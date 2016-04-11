@@ -176,8 +176,30 @@ class Post
                 $statement2->bindValue(':postID', $this->m_sPostID);
                 $statement2->execute();
             }
+            else
+            {
+                return false;
+            }
         } catch (Exception $e) {
             throw new Exception("Het is niet mogelijk om deze foto te rapporteren. Probeer later opnieuw");
+        }
+    }
+
+    public function checkUserInappropriate()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select inapID from inappropriate where (userID = " . $_SESSION['userID'] . " and postID = :postID)");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $aantalRijen = count($result);
+        if ($aantalRijen < 1) {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -196,6 +218,7 @@ class Post
             $statement2 = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
             $statement2->bindValue(':postID', $this->m_sPostID);
             $statement2->execute();
+            return true;
         }
     }
 }
