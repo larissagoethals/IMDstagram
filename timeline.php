@@ -4,7 +4,7 @@ include_once('classes/User.class.php');
 include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
 include_once('image.php');
-    include_once("Includes/functions.php");
+include_once("Includes/functions.php");
 
 //Check if able to be here
 /*
@@ -26,19 +26,31 @@ if (!empty($_GET["search"])) {
     $allResults = $search->search();
     $countSearchPosts = count($allResults);
 }
-$postID = 0;
+if (!empty($_POST['btnDeletePost'])) {
+    $deletePost = new Post();
+    $deletePost->postID = $_POST['postIDDelete'];
+    $deletePost->deletePost();
+
+}
 
 $count = 20;
 $allPosts = new Post();
 $allPosts->CountTop = $count;
 $posts = $allPosts->getNext20Posts();
 
-    if(!empty($_POST['btnInappropriate']))
-    {
-        $inappropriate = new Post();
-        $inappropriate->postID = $postID;
-        $report = $inappropriate->inappropriate();
-    }
+if (!empty($_POST['btnInappropriate'])) {
+    $inappropriate = new Post();
+    $inappropriate->postID = $_POST['postIDInap'];
+    $report = $inappropriate->inappropriate();
+
+    $inappropriate = new Post();
+    $inappropriate->postID = $_POST['postIDInap'];
+    $checkInap = $inappropriate->checkInappropriate();
+}
+
+
+
+
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -55,14 +67,7 @@ $posts = $allPosts->getNext20Posts();
     <script>
         $("#btnLoadMore").on("click", function (e) {
 
-            <?php
-            $count += 1;
-            $allPosts = new Post();
-            $allPosts->CountTop = $count;
-            $posts = $allPosts->getNext20Posts();
-            ?>
-            e.preventDefault();
-            // update smooth laten verschijnen
+
         });
 
     </script>
@@ -96,11 +101,30 @@ $posts = $allPosts->getNext20Posts();
             <?php $userInformation = new Post();
             $userInformation->userID = $post["postUserID"];
             $thisUserInformation = $userInformation->getUserByID();
-            $postID = $post['postID'];?>
+            $postID = $post['postID'];
+
+            $inappropriate = new Post();
+            $inappropriate->postID = $post["postID"];
+            if ($inappropriate->checkUserInappropriate()) {
+                $feedback = true;
+            } else {
+                $feedback = false;
+            }
+
+            $delete = new Post();
+            $delete->postID = $post["postID"];
+            if ($delete->checkPostDelete()) {
+                $feedbackDeletePost = true;
+            } else {
+                $feedbackDeletePost = false;
+            }
+
+            ?>
             <div class="instaPost">
                 <div class="instaPost_header">
                     <div class="ip_header_profile">
-                        <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="<?php echo $post["postUserID"] ?>"
+                        <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
+                             alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
                         <p><?php echo $thisUserInformation[0]['username'] ?></p>
                     </div>
@@ -119,8 +143,24 @@ $posts = $allPosts->getNext20Posts();
                         </div>
                         <div class="inappropriate">
                             <form action="" method="post">
-                                <input type="submit" value="Rapporteer deze foto" name="btnInappropriate" id="btnInappropriate">
+                                <input type="text" name="postIDInap" id="postIDInap"
+                                       value="<?php echo $post['postID'] ?>">
+                                <?php if ($feedback == true){?>
+                                <input type="submit" value="Rapporteer deze foto" name="btnInappropriate"
+                                       id="btnInappropriate">
+                                <?php } ?>
                             </form>
+                        </div>
+                        <form action="" method="post">
+                            <input type="text" name="postIDDelete" id="postIDDelete"
+                                   value="<?php echo $post['postID'] ?>">
+                            <?php if ($feedbackDeletePost == true){?>
+                                <input type="submit" value="Delete deze post" name="btnDeletePost"
+                                       id="btnDeletePost">
+                            <?php } ?>
+                        </form>
+                        <div class="deletePost">
+
                         </div>
                         <div class="ip_body_textContent">
                             <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
@@ -138,7 +178,8 @@ $posts = $allPosts->getNext20Posts();
                         </div>
                         <div class="react">
                             <form action="" method="post">
-                                <input type="text" data-id="<?php echo $post['postID'] ?>" placeholder="Een reactie toevoegen...">
+                                <input type="text" data-id="<?php echo $post['postID'] ?>"
+                                       placeholder="Een reactie toevoegen...">
                             </form>
                         </div>
                         <div class="more">
@@ -162,7 +203,7 @@ $posts = $allPosts->getNext20Posts();
                 <?php echo htmlspecialchars($_GET['search']) ?>
             </h2>
             <p class="countItem"><?php
-                if($countSearchPosts == 1) {
+                if ($countSearchPosts == 1) {
                     echo $countSearchPosts . " bericht";
                 } else {
                     echo $countSearchPosts . " berichten";
@@ -175,8 +216,9 @@ $posts = $allPosts->getNext20Posts();
                 <a href="?image=<?php echo $allResult['postID'] ?>"
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
-            <?php if($countSearchPosts == 0): ?>
-                <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts gevonden.</p>
+            <?php if ($countSearchPosts == 0): ?>
+                <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts
+                    gevonden.</p>
             <?php endif; ?>
         </div>
     </section>
@@ -184,7 +226,7 @@ $posts = $allPosts->getNext20Posts();
 
 <footer>
     <ul>
-        <li>&copy; 2016 - Yaron - Damon - Kimberly </li>
+        <li>&copy; 2016 - Yaron - Damon - Kimberly</li>
         <li>Terms of Use</li>
     </ul>
 </footer>
