@@ -21,7 +21,7 @@ $myUser->Username = $_SESSION['username'];
 $thisUserID = $myUser->getUserInformation();
 
 if (!empty($_GET["search"])) {
-    $search = new Search();
+    $search = new SearchClass();
     $search->Text = $_GET["search"];
     $allResults = $search->search();
     $countSearchPosts = count($allResults);

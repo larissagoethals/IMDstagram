@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('classes/User.class.php');
+    include_once('classes/Search.class.php');
 
     if(isset($_GET['profile'])) {
         if($_GET['profile'] == $_SESSION['userID'] ){
@@ -60,6 +61,11 @@ include_once('classes/User.class.php');
         }
     }
 
+$search = new SearchClass();
+$search->UserID = $_SESSION['userID'];
+$allResults = $search->searchOwnPost();
+$countSearchPosts = count($allResults);
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -105,6 +111,16 @@ include_once('classes/User.class.php');
         </div>
     </div>
 
+    <div class="allMatches">
+        <?php foreach ($allResults as $allResult): ?>
+            <a href="?image=<?php echo $allResult['postID'] ?>"
+               style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
+        <?php endforeach; ?>
+        <?php if ($countSearchPosts == 0): ?>
+            <p style="text-align:center; display:block; width:100%;">Voor deze gebruiker zijn er nog geen posts gevonden.</p>
+        <?php endif; ?>
+    </div>
+
     <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
     <div class="profileTimeline">
         <p>Dit account is privé.</p>
@@ -119,7 +135,7 @@ include_once('classes/User.class.php');
     <?php else: ?>
     <div class="profileTimeline">
         <img src="" alt="">
-        <p>TEST</p>
+
     </div>
     <?php endif; ?>
 </section>
