@@ -113,7 +113,7 @@ class Post
             $postUserID = $_SESSION['userID'];
 
             $conn = Db::getInstance();
-            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID, postInappropriate) values (:postImage, :postText, :postTime, :postLocation, :postUserID, 0)");
+            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID) values (:postImage, :postText, :postTime, :postLocation, :postUserID)");
             $statement->bindValue(":postImage", $this->m_sPostImgUrl);
             $statement->bindValue(":postText", $this->m_sBeschrijving);
             $statement->bindValue(":postTime", $tijd);
@@ -175,9 +175,7 @@ class Post
                 $statement2 = $conn->prepare("insert into inappropriate (userID, postID) values (" . $_SESSION['userID'] . ", :postID)");
                 $statement2->bindValue(':postID', $this->m_sPostID);
                 $statement2->execute();
-            }
-            else
-            {
+            } else {
                 return false;
             }
         } catch (Exception $e) {
@@ -194,17 +192,39 @@ class Post
         $result = $statement->fetchAll();
 
         $aantalRijen = count($result);
-        if ($aantalRijen < 1) {
-            return true;
+
+
+        if ($this->isPostFromThisUser()) {
+            return false;
+        } else {
+            if ($aantalRijen < 1) {
+                return true;
+            } else {
+                return false;
+            }
         }
-        else
-        {
+
+    }
+
+    private function isPostFromThisUser()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("Select postID FROM posts WHERE (postID = :postID and postUserID = " . $_SESSION['userID'] . ")");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $aantalRijen = count($result);
+        if ($aantalRijen > 0) {
+            echo "TEST";
+            return true;
+        } else {
             return false;
         }
     }
 
     //check for delete post after 3 inappropriates
-    public function checkInappropriate(){
+    public function checkInappropriate()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("select inapID from inappropriate where postID = :postID");
         $statement->bindValue(':postID', $this->m_sPostID);
@@ -213,13 +233,13 @@ class Post
 
         $aantalRijen = count($result);
 
-        if($aantalRijen>2)
-        {
+        if ($aantalRijen > 2) {
             $statement2 = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
             $statement2->bindValue(':postID', $this->m_sPostID);
             $statement2->execute();
             return true;
         }
+
     }
 
     public function checkPostDelete()
@@ -234,20 +254,19 @@ class Post
 
         if ($aantalRijen > 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    public function deletePost(){
+    public function deletePost()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM posts WHERE postID = :postID");
         $statement->bindValue(':postID', $this->m_sPostID);
         $statement->execute();
         return true;
-        }
+    }
 
 }
 
