@@ -129,7 +129,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <p><?php echo $thisUserInformation[0]['username'] ?></p>
                     </div>
                     <div class="instaPost_timeAgo">
-                        <?php echo timeAgo($post["postTime"]) ?>
+                        <?php echo $userInformation->timeAgo($post["postTime"]) ?>
                     </div>
                     <div class="clearfix"></div>
                 </div>

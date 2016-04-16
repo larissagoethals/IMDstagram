@@ -121,7 +121,7 @@ class Post
             $statement->bindValue(":postUserID", $postUserID);
             $statement->execute();
         } catch (Exception $e) {
-            echo "test";
+            var_dump("helaas");
         }
     }
 
@@ -142,7 +142,7 @@ class Post
     {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT " . $this->m_iCountTop);
+        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT " . 20);
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;
@@ -267,6 +267,50 @@ class Post
         $statement->execute();
         return true;
     }
+
+    public function timeAgo($p_tTime) {
+        $dateOlder = strtotime($p_tTime);
+        $difference = time() - $dateOlder;
+
+        switch (true) {
+            case $difference == 0:
+                return $difference . " seconden geleden";
+                break;
+            case $difference == 1:
+                return $difference . " seconde geleden";
+                break;
+            case $difference < 59:
+                return $difference . " seconden geleden";
+                break;
+            case $difference < 119:
+                return round($difference / 60) . " minuut geleden";
+                break;
+            case $difference < 3599:
+                return round($difference / 60) . " minuten geleden";
+                break;
+            case $difference < 86399:
+                return round($difference / (60 * 60) ) . " uur geleden";
+                break;
+            case $difference < 172799:
+                return floor($difference / (60 * 60 * 24)) . " dag geleden";
+                break;
+            case $difference < 604799:
+                return round($difference / (60 * 60 * 24)) . " dagen geleden";
+                break;
+            case $difference < 907200:
+                return round($difference / (60 * 60 * 24)) . " week geleden";
+                break;
+            case $difference < 31449600:
+                return round($difference / (60 * 60 * 24 * 7)) . " weken geleden";
+                break;
+            case $difference > 31449599:
+                return round($difference / (60 * 60 * 24 * 7 * 52)) . " jaar geleden";
+                break;
+        }
+
+
+    }
+
 
 }
 
