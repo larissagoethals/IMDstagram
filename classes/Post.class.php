@@ -298,7 +298,7 @@ class Post
                 return round($difference / (60 * 60 * 24)) . " dagen geleden";
                 break;
             case $difference < 907200:
-                return round($difference / (60 * 60 * 24)) . " week geleden";
+                return round($difference / (60 * 60 * 24 * 7)) . " week geleden";
                 break;
             case $difference < 31449600:
                 return round($difference / (60 * 60 * 24 * 7)) . " weken geleden";
