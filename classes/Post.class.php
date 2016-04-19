@@ -215,7 +215,6 @@ class Post
         $result = $statement->fetchAll();
         $aantalRijen = count($result);
         if ($aantalRijen > 0) {
-            echo "TEST";
             return true;
         } else {
             return false;
