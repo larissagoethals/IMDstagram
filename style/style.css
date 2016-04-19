@@ -450,6 +450,22 @@ header {
     float:right;
 }
 
+.locationPost {
+    position:absolute;
+    margin-top:-35px;
+    background-color:white;
+    margin-left:20px;
+    padding:4px 6px;
+}
+
+.positionIcon {
+    width:10px;
+    height:10px;
+    background-image:url(../images/map.svg);
+    background-size:contain;
+    display:inline-block;
+}
+
 footer {
     text-align:center;
     margin-top:50px;

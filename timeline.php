@@ -135,6 +135,10 @@ if (!empty($_POST['btnInappropriate'])) {
                 </div>
                 <div class="instaPost_image">
                     <img src="<?php echo $post["postImage"] ?>" alt="">
+                    <div class="locationPost">
+                        <span class="positionIcon"></span>
+                        <?php echo $post['postLocation']; ?>
+                    </div>
                 </div>
                 <div class="instaPost_body">
                     <div class="ip_body_content">
