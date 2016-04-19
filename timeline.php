@@ -141,6 +141,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <div class="ip_body_likes">
                             <a href="">#</a> vinden dit leuk
                         </div>
+                        <div class="postActions">
                         <div class="inappropriate">
                             <form action="" method="post">
                                 <input type="text" name="postIDInap" id="postIDInap"
@@ -158,10 +159,10 @@ if (!empty($_POST['btnInappropriate'])) {
                                 <input type="submit" value="Delete deze post" name="btnDeletePost"
                                        id="btnDeletePost">
                             <?php } ?>
+                            <div class="clearfix"></div>
                         </form>
-                        <div class="deletePost">
-
                         </div>
+                        <div class="clearfix"></div>
                         <div class="ip_body_textContent">
                             <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>

@@ -214,6 +214,7 @@ header {
     color: #4b4f54;
     font-weight: 600;
     font-size:15px;
+    float:left;
 }
 
 .insta_loadMore {
@@ -419,6 +420,34 @@ header {
 .inheritParent {
     color:inherit;
     text-decoration: inherit;
+}
+
+#btnDeletePost {
+    background-image:url(../images/can.svg);
+    height:25px;
+    width:25px;
+    outline: none;
+    background-size:cover;
+    border:0px solid white;
+    text-indent:-9999px;
+    background-color:transparent;
+    margin-top:-10px;
+}
+
+#btnInappropriate {
+    background-image:url(../images/flag.svg);
+    height:25px;
+    width:25px;
+    outline: none;
+    background-size:cover;
+    border:0px solid white;
+    text-indent:-9999px;
+    background-color:transparent;
+    margin-top:-10px;
+}
+
+.postActions {
+    float:right;
 }
 
 footer {
