@@ -12,6 +12,7 @@ class Post
     private $m_iCountTop;
     private $m_sUserID;
     private $m_sPostID;
+    private $m_sPostLocation;
 
     //ophalen waarde uit velden
     public function __set($p_sProperty, $p_vValue)
@@ -43,6 +44,9 @@ class Post
                 break;
             case "postID":
                 $this->m_sPostID = $p_vValue;
+                break;
+            case "PostLocation":
+                $this->m_sPostLocation = $p_vValue;
                 break;
         }
     }
@@ -77,6 +81,9 @@ class Post
                 break;
             case "postID":
                 return $this->m_sPostID;
+                break;
+            case "PostLocation":
+                return $this->m_sPostLocation;
                 break;
         }
     }
@@ -117,7 +124,7 @@ class Post
             $statement->bindValue(":postImage", $this->m_sPostImgUrl);
             $statement->bindValue(":postText", $this->m_sBeschrijving);
             $statement->bindValue(":postTime", $tijd);
-            $statement->bindValue(":postLocation", "Mechelen");
+            $statement->bindValue(":postLocation", $this->m_sPostLocation);
             $statement->bindValue(":postUserID", $postUserID);
             $statement->execute();
         } catch (Exception $e) {
@@ -308,6 +315,13 @@ class Post
         }
 
 
+    }
+
+    public function getFilters(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM filters");
+        $statement->execute();
+        return $statement->fetchAll();
     }
 
 

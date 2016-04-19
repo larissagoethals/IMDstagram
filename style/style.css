@@ -432,6 +432,7 @@ header {
     text-indent:-9999px;
     background-color:transparent;
     margin-top:-10px;
+    cursor:pointer;
 }
 
 #btnInappropriate {
@@ -444,6 +445,7 @@ header {
     text-indent:-9999px;
     background-color:transparent;
     margin-top:-10px;
+    cursor:pointer;
 }
 
 .postActions {
@@ -464,6 +466,16 @@ header {
     background-image:url(../images/map.svg);
     background-size:contain;
     display:inline-block;
+}
+
+.filter {
+    display:flex;
+    flex-direction:row;
+}
+
+.filters #imgPreview.imgPreview {
+    width:40px;
+    cursor: pointer;
 }
 
 footer {
