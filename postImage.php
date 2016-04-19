@@ -14,6 +14,7 @@ if (!empty($_POST['btnPlaats'])) {
             $savePost = new Post();
             $savePost->Beschrijving = $_POST['beschrijvingImg'];
             $savePost->PostImgUrl = $location;
+            $savePost->PostLocation = $_POST['place'];
             $savePost->CreatePost();
 
             $message = "Foto werd upgeload.";
@@ -37,7 +38,6 @@ if (!empty($_POST['btnPlaats'])) {
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/imagepost.css">
     <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
-
 </head>
 <body>
 <header>
@@ -66,6 +66,7 @@ if (!empty($_POST['btnPlaats'])) {
     <img id="imgPreview" src="#" alt="your image" />
     <label for="beschrijvingImg" id="beschrijvingImage">Beschrijving</label>
     <textarea name="beschrijvingImg" id="beschrijvingImg" cols="30" rows="10"></textarea>
+    <input hidden id="place" name="place" type="text" value="">
     <input type="submit" value="Upload" name="btnPlaats" id="btnPlaats">
 </form>
 </section>
@@ -91,5 +92,6 @@ if (!empty($_POST['btnPlaats'])) {
 
 </script>
 <script src="js/messages.js" type="text/javascript"></script>
+<script src="js/geolocation.js" type="text/javascript"></script>
 </body>
 </html>
