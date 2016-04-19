@@ -165,10 +165,24 @@ if (!empty($_POST['btnInappropriate'])) {
                         <div class="ip_body_textContent">
                             <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
-                            <div class="postReactions">
-
-                            </div>
                         </div>
+                    </div>
+                    <h2 class="titleReact">Reacties:</h2>
+                    <div class="reactions">
+                        <!-- HIER START EEN REACTIE -->
+                        <div class="reactionOne">
+                            <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
+                            <div class="rightReaction">
+                                <div class="rightReactionName">
+                                    <a href="account.php?profile=" class="inheritParent">yarondassonneville</a>
+                                </div>
+                                <div class="myReaction">
+                                    Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie.
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!-- EINDE VAN EEN REACTIE -->
                     </div>
                     <div class="likeAndReact">
                         <div class="like">
@@ -213,7 +227,7 @@ if (!empty($_POST['btnInappropriate'])) {
 
         <div class="allMatches">
             <?php foreach ($allResults as $allResult): ?>
-                <a href="?image=<?php echo $allResult['postID'] ?>"
+                <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $allResult['postID'] ?>"
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
             <?php if ($countSearchPosts == 0): ?>

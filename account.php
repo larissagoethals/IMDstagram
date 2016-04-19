@@ -2,6 +2,7 @@
 session_start();
 include_once('classes/User.class.php');
     include_once('classes/Search.class.php');
+    include_once('image.php');
 
     if(isset($_GET['profile'])) {
         if($_GET['profile'] == $_SESSION['userID'] ){
@@ -104,9 +105,9 @@ $countSearchPosts = count($allResults);
             <h1><?php echo $bio[0]['username']; ?></h1>
             <p><?php echo $bio[0]['biotext']; ?></p>
             <ul class="countEverything">
-                <li>249 berichten</li>
-                <li>800 volgers</li>
-                <li>394 volgend</li>
+                <li><span class="bold">249</span> berichten</li>
+                <li><span class="bold">800</span> volgers</li>
+                <li><span class="bold">394</span> volgend</li>
             </ul>
         </div>
     </div>
@@ -114,7 +115,7 @@ $countSearchPosts = count($allResults);
     <div class="allMatches">
         <?php foreach ($allResults as $allResult): ?>
             <a href="?image=<?php echo $allResult['postID'] ?>"
-               style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
+               style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile"></a>
         <?php endforeach; ?>
         <?php if ($countSearchPosts == 0): ?>
             <p style="text-align:center; display:block; width:100%;">Voor deze gebruiker zijn er nog geen posts gevonden.</p>
