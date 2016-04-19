@@ -468,6 +468,16 @@ header {
     display:inline-block;
 }
 
+.filter {
+    display:flex;
+    flex-direction:row;
+}
+
+.filters #imgPreview.imgPreview {
+    width:40px;
+    cursor: pointer;
+}
+
 footer {
     text-align:center;
     margin-top:50px;

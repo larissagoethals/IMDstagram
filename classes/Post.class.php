@@ -317,6 +317,13 @@ class Post
 
     }
 
+    public function getFilters(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM filters");
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
 
 }
 

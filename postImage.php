@@ -28,6 +28,9 @@ if (!empty($_POST['btnPlaats'])) {
     }
 }
 
+    $getAllFilters = new Post();
+    $allFilters = $getAllFilters->getFilters();
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -37,6 +40,7 @@ if (!empty($_POST['btnPlaats'])) {
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/imagepost.css">
+    <link rel="stylesheet" href="style/cssgram.min.css">
     <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
 </head>
 <body>
@@ -63,7 +67,15 @@ if (!empty($_POST['btnPlaats'])) {
 
 <form id="form1" action="" method="post" enctype="multipart/form-data">
     <input type="file" name="postPicture" id="postPicture" accept="image/gif, image/jpeg, image/png, image/jpg">
-    <img id="imgPreview" src="#" alt="your image" />
+    <img id="imgPreview" class="imgPreview imgPreview__big" src="#" alt="your image" />
+
+    <div class="filters">
+        <input type="text" id="filter" name="filter" val="" hidden>
+    <?php foreach($allFilters as $filter): ?>
+        <img id="imgPreview" src="#" alt="" data-id="<?php echo $filter['filterClass'] ?>" class="imgPreview imgPreview__filter <?php echo $filter['filterClass'] ?>">
+    <?php endforeach; ?>
+    </div>
+
     <label for="beschrijvingImg" id="beschrijvingImage">Beschrijving</label>
     <textarea name="beschrijvingImg" id="beschrijvingImg" cols="30" rows="10"></textarea>
     <input hidden id="place" name="place" type="text" value="">
@@ -78,8 +90,10 @@ if (!empty($_POST['btnPlaats'])) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $("#imgPreview").css("display", "block");
-                $('#imgPreview').attr('src', e.target.result);
+                $('.imgPreview__big').css("display", "block");
+                $('.imgPreview__big').css("margin-bottom", "10px");
+                $('.imgPreview__filter').css("display", "inline-block");
+                $('.imgPreview').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
@@ -88,6 +102,15 @@ if (!empty($_POST['btnPlaats'])) {
 
     $("#postPicture").change(function(){
         readURL(this);
+    });
+
+    $(".filters img").click(function(){
+        var element = $(".imgPreview__big");
+        $(".imgPreview__big").removeClass();
+        element.addClass($(this).data("id"));
+        element.addClass("imgPreview");
+        element.addClass("imgPreview__big");
+        $("#filter").val($(this).data("id"));
     });
 
 </script>
