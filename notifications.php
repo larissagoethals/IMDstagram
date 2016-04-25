@@ -57,7 +57,7 @@
 </header>
 
 <section style="margin:0px auto; width:300px;">
-    <a href="account.php" class="goBackNoti">Ga terug</a><br>
+    <a href="account.php?profile=<?php echo $_SESSION['userID']?>" class="goBackNoti">Ga terug</a><br>
 
     <div class="myMessages">
         <?php if(isset($errorMessage)): ?>

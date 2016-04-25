@@ -67,6 +67,11 @@ $search->UserID = $_SESSION['userID'];
 $allResults = $search->searchOwnPost();
 $countSearchPosts = count($allResults);
 
+$userPost = new Post();
+$userPost->userID = $_GET['profile'];
+$allResultsPost = $userPost->getAllPostsfromUser();
+
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -91,7 +96,7 @@ $countSearchPosts = count($allResults);
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="<?php echo $bio[0]['profileImage']; ?>" alt="yaron" class="profileImage">
+            <img src="<?php echo $bio[0]['profileImage']; ?>" alt="" class="profileImage">
             <?php if($myAccount == true): ?>
                 <div class="changeProfile">
                 <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
@@ -113,9 +118,10 @@ $countSearchPosts = count($allResults);
     </div>
 
     <div class="allMatches">
-        <?php foreach ($allResults as $allResult): ?>
+        <?php foreach ($allResultsPost as $allResult): ?>
             <a href="?image=<?php echo $allResult['postID'] ?>"
                style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile"></a>
+
         <?php endforeach; ?>
         <?php if ($countSearchPosts == 0): ?>
             <p style="text-align:center; display:block; width:100%;">Voor deze gebruiker zijn er nog geen posts gevonden.</p>

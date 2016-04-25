@@ -324,7 +324,13 @@ class Post
         return $statement->fetchAll();
     }
 
-
+public function getAllPostsfromUser(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("select * FROM posts where postUserID = :userid ");
+    $statement->bindValue(':userid', $this->m_sUserID);
+    $statement->execute();
+    return $statement->fetchAll();
+}
 }
 
 ?>

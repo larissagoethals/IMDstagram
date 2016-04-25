@@ -194,14 +194,14 @@ class User
     public function emailExistsUpdate()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from users where email = '" . $_SESSION['username'] . "'");
+        $statement = $conn->prepare("select * from users where email = '" . $this->m_sEmail . "'");
         $statement->execute();
         $result = $statement->fetchAll();
 
         $count = count($result);
-
-        if ($count > 0) {
-            if ($this->m_sEmail == $statement) {
+        echo $result[0][1];
+       if ($count > 0) {
+            if ($this->m_sEmail == $result[0][1]) {
                 return false;
             } else {
                 return true;
