@@ -86,7 +86,7 @@ if (!empty($_POST['btnInappropriate'])) {
         </div>
 
         <div class="profileName">
-            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo $_SESSION['username']; ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
@@ -102,6 +102,7 @@ if (!empty($_POST['btnInappropriate'])) {
             $userInformation->userID = $post["postUserID"];
             $thisUserInformation = $userInformation->getUserByID();
             $postID = $post['postID'];
+            $userID = $post["postUserID"];
 
             $inappropriate = new Post();
             $inappropriate->postID = $post["postID"];
@@ -126,7 +127,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
                              alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <p><?php echo $thisUserInformation[0]['username'] ?></p>
+                        <a href="account.php?profile=<?php echo $userID ?>"><?php echo $thisUserInformation[0]['username'] ?></a>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $userInformation->timeAgo($post["postTime"]) ?>
