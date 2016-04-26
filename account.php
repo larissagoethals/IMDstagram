@@ -62,6 +62,19 @@ include_once('classes/User.class.php');
         }
     }
 
+$AlreadyFriend = new User();
+$AlreadyFriend->UserID = $_GET['profile'];
+if( $AlreadyFriend->alreadyFriends())
+{
+    $feedbackFriendship = "Verwijder vriend";
+}
+else
+{
+    $feedbackFriendship = "Stuur vriendschapsverzoek";
+}
+
+
+
 $search = new SearchClass();
 $search->UserID = $_SESSION['userID'];
 $allResults = $search->searchOwnPost();
@@ -83,6 +96,21 @@ $countPostUserFollow = new Post();
 $countPostUserFollow->userID = $_GET['profile'];
 $PostCountUserFollow = $countPostUserFollow->countFollowUser();
 
+
+if(isset($_POST["addFriend"]))
+{
+    $AlreadyFriend = new User();
+    $AlreadyFriend->UserID = $_GET['profile'];
+    if( $AlreadyFriend->alreadyFriends())
+    {
+
+    }
+    else
+    {
+        $addFriend = new User();
+        $addFriend->sendFriendRequest($_GET['profile'], $_SESSION['userID']);
+    }
+}
 
 ?><!doctype html>
 <html lang="en">
@@ -109,13 +137,21 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     <div class="profileHeader">
         <div class="imageAndChange">
             <img src="<?php echo $bio[0]['profileImage']; ?>" alt="" class="profileImage">
-            <?php if($myAccount == true): ?>
+            <?php if($myAccount == true){ ?>
                 <div class="changeProfile">
                 <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
                 <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
                 </div>
                 <div class="clearfix"></div>
-            <?php endif; //OF OF OF VOLGEN ?>
+            <?php }else{ ?>
+            <div class="changeProfile">
+                <form action="" method="post" name="friendrequest">
+                    <input type="button" name="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
+                </form>
+            </div>
+                <div class="clearfix"></div>
+            <?php }; //OF OF OF VOLGEN ?>
+
         </div>
 
         <div class="profileInformation">
