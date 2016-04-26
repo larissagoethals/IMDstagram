@@ -119,7 +119,7 @@ $allResultsPost = $userPost->getAllPostsfromUser();
 
     <div class="allMatches">
         <?php foreach ($allResultsPost as $allResult): ?>
-            <a href="?image=<?php echo $allResult['postID'] ?>"
+            <a href="?profile=<?php echo $allResult['postUserID']; ?>&image=<?php echo $allResult['postID']; ?>"
                style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile"></a>
 
         <?php endforeach; ?>
