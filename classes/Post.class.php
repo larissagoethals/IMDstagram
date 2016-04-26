@@ -331,6 +331,47 @@ public function getAllPostsfromUser(){
     $statement->execute();
     return $statement->fetchAll();
 }
+
+    public function countLikes($p_iPostID){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select count(*) FROM postLikes where postID = :postID");
+        $statement->bindValue(':postID', $p_iPostID);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result[0];
+    }
+
+    public function newLike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into postLikes (postID, userID) values (:postID, :userID)");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        return $statement->execute();
+    }
+
+    public function didUserLike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from postLikes where postID = :postID and userID = :userID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $aantalRijen = count($result);
+
+        if ($aantalRijen > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function unlike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("delete from postLikes where postID = :postID and userID = :userID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        return $statement->execute();
+    }
 }
 
 ?>
