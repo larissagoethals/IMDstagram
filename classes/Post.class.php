@@ -331,6 +331,33 @@ public function getAllPostsfromUser(){
     $statement->execute();
     return $statement->fetchAll();
 }
+
+    public function countPostUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM posts where postUserID = :userid ");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+       $result = count($statement->fetchAll());
+        return $result;
+    }
+
+    public function countFollowersUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM follow where userFollowID = :userid and Accept = '1' ");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+        $result = count($statement->fetchAll());
+        return $result;
+    }
+
+    public function countFollowUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM follow where userID = :userid and Accept = '1'  ");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+        $result = count($statement->fetchAll());
+        return $result;
+    }
 }
 
 ?>

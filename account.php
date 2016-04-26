@@ -71,6 +71,18 @@ $userPost = new Post();
 $userPost->userID = $_GET['profile'];
 $allResultsPost = $userPost->getAllPostsfromUser();
 
+$countPostUser = new Post();
+    $countPostUser->userID = $_GET['profile'];
+    $PostCountUser = $countPostUser->countPostUser();
+
+$countPostUserFollowers = new Post();
+$countPostUserFollowers->userID = $_GET['profile'];
+$PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
+
+$countPostUserFollow = new Post();
+$countPostUserFollow->userID = $_GET['profile'];
+$PostCountUserFollow = $countPostUserFollow->countFollowUser();
+
 
 ?><!doctype html>
 <html lang="en">
@@ -110,9 +122,19 @@ $allResultsPost = $userPost->getAllPostsfromUser();
             <h1><?php echo $bio[0]['username']; ?></h1>
             <p><?php echo $bio[0]['biotext']; ?></p>
             <ul class="countEverything">
-                <li><span class="bold">249</span> berichten</li>
-                <li><span class="bold">800</span> volgers</li>
-                <li><span class="bold">394</span> volgend</li>
+                <?php if($PostCountUser == 1): ?>
+                <li><span class="bold"><?php echo $PostCountUser; ?></span> bericht</li>
+                <?php else: ?>
+                    <li><span class="bold"><?php echo $PostCountUser; ?></span> berichten</li>
+                <?php endif; ?>
+
+                <?php if($PostCountUser == 1): ?>
+                    <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volger</li>
+                <?php else: ?>
+                    <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volgers</li>
+                <?php endif; ?>
+
+                <li><span class="bold"><?php echo $PostCountUserFollow; ?></span> volgend</li>
             </ul>
         </div>
     </div>
