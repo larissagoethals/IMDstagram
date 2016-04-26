@@ -20,6 +20,30 @@ $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserID = $myUser->getUserInformation();
 
+    if(isset($_POST["btnLike"])){
+        $postLikeMe = new Post();
+        $postLikeMe->userID = $thisUserID[0];
+        $postLikeMe->postID = $_POST["postID"];
+        if($postLikeMe->newLike()){
+            //hartje changed
+        }
+        else {
+            //geen hartje veranderen
+        }
+    }
+
+if(isset($_POST["btnUnlike"])){
+    $postUnlike = new Post();
+    $postUnlike->userID = $thisUserID[0];
+    $postUnlike->postID = $_POST["postID"];
+    if($postUnlike->unlike()){
+        //hartje changed
+    }
+    else {
+        //geen hartje veranderen
+    }
+}
+
 if (!empty($_GET["search"])) {
     $search = new SearchClass();
     $search->Text = $_GET["search"];
@@ -63,14 +87,6 @@ if (!empty($_POST['btnInappropriate'])) {
 </head>
 <body>
 <header>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script>
-        $("#btnLoadMore").on("click", function (e) {
-
-
-        });
-
-    </script>
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
@@ -120,8 +136,13 @@ if (!empty($_POST['btnInappropriate'])) {
                 $feedbackDeletePost = false;
             }
 
+            $userLiked = new Post();
+            $userLiked->postID = $post['postID'];
+            $userLiked->userID = $thisUserID[0];
+            $didUserLike = $userLiked->didUserLike();
+
             ?>
-            <div class="instaPost">
+            <div class="instaPost" data-id="<?php echo $post['postID']?>">
                 <div class="instaPost_header">
                     <div class="ip_header_profile">
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
@@ -146,7 +167,8 @@ if (!empty($_POST['btnInappropriate'])) {
                 <div class="instaPost_body">
                     <div class="ip_body_content">
                         <div class="ip_body_likes">
-                            <a href="">#</a> vinden dit leuk
+                            <?php $telLikes = new Post(); ?>
+                            <?php echo $telLikes->countLikes($post["postID"]); ?> vinden dit leuk
                         </div>
                         <div class="postActions">
                         <div class="inappropriate">
@@ -194,8 +216,15 @@ if (!empty($_POST['btnInappropriate'])) {
                     </div>
                     <div class="likeAndReact">
                         <div class="like">
-                            <form action="" method="post">
+                            <form action="" method="post" class="likeMe">
+                                <?php if($didUserLike == true): ?>
+                                    <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
+                                    <input type="submit" name="btnUnlike" id="btnUnlike" value="Unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                <?php else: ?>
+                                <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
+                                <input type="submit" name="btnLike" id="btnLike" value="Like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <!--LIKE WITH DATA-ID-->
+                                <?php endif; ?>
                             </form>
                         </div>
                         <div class="react">
@@ -252,6 +281,43 @@ if (!empty($_POST['btnInappropriate'])) {
         <li>Terms of Use</li>
     </ul>
 </footer>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#btnLike").click(function (e) {
+            $myElement = $(this);
+            var id = $(this).data("id");
+            var user = $(this).data("user");
+            $.post("ajax/likePhoto.php", {dataid: id, datauser: user})
+                .done(function (response) {
+                    if(response.liked == true){
+                        $(".instaPost[data-id=" + response.dataid + "] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        $(".instaPost[data-id=" + response.dataid + "] .likeMe").append("<input type='submit' name='btnUnlike' id='btnUnlike' value='Unlike' data-id=" + response.dataid + " data-user=" + response.datauser + ">")
+                        $(".instaPost[data-id=" + response.dataid + "] .likeMe #btnLike").remove();
+                        $('script').load(document.URL +  'script');
+                    }
+                });
 
+            e.preventDefault();
+        });
+
+        $("#btnUnlike").click(function (e) {
+            $myElement = $(this);
+            var id = $(this).data("id");
+            var user = $(this).data("user");
+            $.post("ajax/unlikePhoto.php", {dataid: id, datauser: user})
+                .done(function (response) {
+                    if(response.unliked == true){
+                        $(".instaPost[data-id=" + response.dataid + "] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        $(".instaPost[data-id=" + response.dataid + "] .likeMe").append("<input type='submit' name='btnLike' id='btnLike' value='Like' data-id=" + response.dataid + " data-user=" + response.datauser + ">")
+                        $(".instaPost[data-id=" + response.dataid + "] .likeMe #btnUnlike").remove();
+                        $('script').load(document.URL +  'script');
+                    }
+                });
+
+            e.preventDefault();
+        });
+    });
+</script>
 </body>
 </html>
