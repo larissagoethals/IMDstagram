@@ -193,7 +193,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="clearfix"></div>
                         <div class="ip_body_textContent">
-                            <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
+                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
                         </div>
                     </div>

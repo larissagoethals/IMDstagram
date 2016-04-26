@@ -425,6 +425,20 @@ class User
         $result = $statement->execute();
         return $result;
     }
+
+    public function alreadyFriends(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from follow where userFollowID =  " . $_SESSION['userID']. "and userID = :userFriendID");
+        $statement->bindParam(":userFriendID", $this->m_sUserID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $count = count($result);
+        if ($count > 0) {
+             return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>
