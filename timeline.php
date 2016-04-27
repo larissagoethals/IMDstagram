@@ -219,10 +219,10 @@ if (!empty($_POST['btnInappropriate'])) {
                             <form action="" method="post" class="likeMe">
                                 <?php if($didUserLike == true): ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                    <input type="submit" name="btnUnlike" id="btnUnlike" value="Unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                    <input type="submit" name="btnUnlike" id="btnUnlike" class="unlike" value="Unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <?php else: ?>
                                 <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                <input type="submit" name="btnLike" id="btnLike" value="Like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                <input type="submit" name="btnLike" id="btnLike" class="like" value="Like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <!--LIKE WITH DATA-ID-->
                                 <?php endif; ?>
                             </form>
