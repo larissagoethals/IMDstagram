@@ -199,7 +199,7 @@ class User
         $result = $statement->fetchAll();
 
         $count = count($result);
-        echo $result[0][1];
+
        if ($count > 0) {
             if ($this->m_sEmail == $result[0][1]) {
                 return false;
@@ -426,18 +426,30 @@ class User
         return $result;
     }
 
-    public function alreadyFriends(){
+ /*   public function alreadyFriends(){
+
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from follow where userFollowID =  " . $_SESSION['userID']. "and userID = :userFriendID");
-        $statement->bindParam(":userFriendID", $this->m_sUserID);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $count = count($result);
-        if ($count > 0) {
+        $statement = $conn->prepare("select count(userFollowID) from follow where userFollowID = :userFollowID and userID = :userID");
+        $statement->bindParam(":userFollowID", $_SESSION['userID']);
+        $statement->bindParam(":userID", $this->m_sUserID);
+         $statement->execute();
+
+       if ($statement->rowcount() > 0) {
              return true;
         } else {
-            return false;
+             return false;
         }
+    } */
+
+    public function unfollowUser()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE from follow where userFollowID = :userFollowID and userID = :userID");
+        $statement->bindParam(":userFollowID", $this->m_sUserID);
+        $statement->bindParam(":userID", $_SESSION['userID']);
+        $result = $statement->execute();
+
+        return $result;
     }
 }
 
