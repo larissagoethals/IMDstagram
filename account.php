@@ -149,20 +149,38 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     <div class="profileHeader">
         <div class="imageAndChange">
             <img src="<?php echo $bio[0]['profileImage']; ?>" alt="" class="profileImage">
-            <?php if($myAccount == true){ ?>
-                <div class="changeProfile">
-                <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
-                <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
+
+
+            <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
+                <div class="profileTimeline">
+                    <p>Dit account is privé.</p>
+                    <form action="" method="POST" name="sendFriendRequest">
+                        <?php if($notAccepted == false): ?>
+                            <input type="submit" value="Stuur volgverzoek" class="btnChangeAccount" name="volgverzoek">
+                        <?php else: ?>
+                            <p>Volgverzoek reeds verstuurd.</p>
+                        <?php endif; ?>
+                    </form>
                 </div>
-                <div class="clearfix"></div>
-            <?php }else{ ?>
-            <div class="changeProfile">
-                <form action="" method="post" name="friendrequest">
-                    <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
-                </form>
-            </div>
-                <div class="clearfix"></div>
-            <?php }; //OF OF OF VOLGEN ?>
+            <?php else: ?>
+                <div class="profileTimeline">
+                    <img src="" alt="">
+                    <?php if($myAccount == true){ ?>
+                        <div class="changeProfile">
+                            <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
+                            <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    <?php }else{ ?>
+                        <div class="changeProfile">
+                            <form action="" method="post" name="friendrequest">
+                                <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
+                    <?php }; //OF OF OF VOLGEN ?>
+                </div>
+            <?php endif; ?>
 
         </div>
 
@@ -198,23 +216,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
         <?php endif; ?>
     </div>
 
-    <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
-    <div class="profileTimeline">
-        <p>Dit account is privé.</p>
-        <form action="" method="POST" name="sendFriendRequest">
-            <?php if($notAccepted == false): ?>
-            <input type="submit" value="Stuur volgverzoek" name="volgverzoek">
-            <?php else: ?>
-                <p>Volgverzoek reeds verstuurd.</p>
-            <?php endif; ?>
-        </form>
-    </div>
-    <?php else: ?>
-    <div class="profileTimeline">
-        <img src="" alt="">
 
-    </div>
-    <?php endif; ?>
 </section>
 </body>
 </html>

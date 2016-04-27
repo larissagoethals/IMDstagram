@@ -426,21 +426,6 @@ class User
         return $result;
     }
 
- /*   public function alreadyFriends(){
-
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("select count(userFollowID) from follow where userFollowID = :userFollowID and userID = :userID");
-        $statement->bindParam(":userFollowID", $_SESSION['userID']);
-        $statement->bindParam(":userID", $this->m_sUserID);
-         $statement->execute();
-
-       if ($statement->rowcount() > 0) {
-             return true;
-        } else {
-             return false;
-        }
-    } */
-
     public function unfollowUser()
     {
         $conn = Db::getInstance();
