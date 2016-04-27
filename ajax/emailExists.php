@@ -12,7 +12,7 @@ $activity = new User();
 if(!empty($_POST['email'])) {
     try {
         $activity->Email = $_POST['email'];
-        if($activity->emailExists()) {
+        if($activity->emailExistsUpdate()) {
             $response['status'] = 'exist';
             $response['message'] = ":( Email not available!";
         }

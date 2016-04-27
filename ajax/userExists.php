@@ -12,7 +12,7 @@ $activity = new User();
 if(!empty($_POST['username'])) {
     try {
         $activity->Username = $_POST['username'];
-        if($activity->userNameExists()) {
+        if($activity->userNameExistsUpdate()) {
             $response['status'] = 'exist';
             $response['message'] = ":( Username not available!";
         }
