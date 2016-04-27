@@ -62,16 +62,36 @@ include_once('classes/User.class.php');
         }
     }
 
+
+
 $AlreadyFriend = new User();
-$AlreadyFriend->UserID = $_GET['profile'];
-if( $AlreadyFriend->alreadyFriends())
+if( $AlreadyFriend->userFollowsUser($_SESSION['userID'],$_GET['profile'] ))
 {
-    $feedbackFriendship = "Verwijder vriend";
+    $feedbackFriendship = "Volg deze persoon niet meer";
 }
-else
+    else
+    {
+        $feedbackFriendship = "Volg deze persoon";
+    }
+
+if(isset($_POST["addFriend"]))
 {
-    $feedbackFriendship = "Stuur vriendschapsverzoek";
+    $AlreadyFriend = new User();
+    if( $AlreadyFriend->userFollowsUser($_SESSION['userID'], $_GET['profile'] ))
+    {
+        $deleteFriend = new User();
+        $deleteFriend->UserID = $_GET['profile'];
+        $deleteFriend->unfollowUser();
+        $feedbackFriendship = "Volg deze persoon";
+    }
+    else
+    {
+        $addFriend = new User();
+        $addFriend->sendFriendRequest( $_SESSION['userID'], $_GET['profile']);
+        $feedbackFriendship = "Volg deze persoon niet meer";
+    }
 }
+
 
 
 
@@ -97,20 +117,12 @@ $countPostUserFollow->userID = $_GET['profile'];
 $PostCountUserFollow = $countPostUserFollow->countFollowUser();
 
 
-if(isset($_POST["addFriend"]))
-{
-    $AlreadyFriend = new User();
-    $AlreadyFriend->UserID = $_GET['profile'];
-    if( $AlreadyFriend->alreadyFriends())
-    {
 
-    }
-    else
-    {
-        $addFriend = new User();
-        $addFriend->sendFriendRequest($_GET['profile'], $_SESSION['userID']);
-    }
-}
+
+
+
+
+
 
 ?><!doctype html>
 <html lang="en">
@@ -146,7 +158,7 @@ if(isset($_POST["addFriend"]))
             <?php }else{ ?>
             <div class="changeProfile">
                 <form action="" method="post" name="friendrequest">
-                    <input type="button" name="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
+                    <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
                 </form>
             </div>
                 <div class="clearfix"></div>
@@ -164,7 +176,7 @@ if(isset($_POST["addFriend"]))
                     <li><span class="bold"><?php echo $PostCountUser; ?></span> berichten</li>
                 <?php endif; ?>
 
-                <?php if($PostCountUser == 1): ?>
+                <?php if($PostCountUserFollower == 1): ?>
                     <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volger</li>
                 <?php else: ?>
                     <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volgers</li>
