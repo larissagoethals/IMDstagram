@@ -105,8 +105,8 @@ $userPost->userID = $_GET['profile'];
 $allResultsPost = $userPost->getAllPostsfromUser();
 
 $countPostUser = new Post();
-    $countPostUser->userID = $_GET['profile'];
-    $PostCountUser = $countPostUser->countPostUser();
+$countPostUser->userID = $_GET['profile'];
+$PostCountUser = $countPostUser->countPostUser();
 
 $countPostUserFollowers = new Post();
 $countPostUserFollowers->userID = $_GET['profile'];
@@ -115,7 +115,6 @@ $PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
 $countPostUserFollow = new Post();
 $countPostUserFollow->userID = $_GET['profile'];
 $PostCountUserFollow = $countPostUserFollow->countFollowUser();
-
 
 
 
@@ -156,7 +155,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
                     <p>Dit account is privé.</p>
                     <form action="" method="POST" name="sendFriendRequest">
                         <?php if($notAccepted == false): ?>
-                            <input type="submit" value="Stuur volgverzoek" class="btnChangeAccount" name="volgverzoek">
+                            <input type="submit" value="Stuur volgverzoek" class="btnChangeAccountOne" name="volgverzoek">
                         <?php else: ?>
                             <p>Volgverzoek reeds verstuurd.</p>
                         <?php endif; ?>
@@ -174,7 +173,11 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
                     <?php }else{ ?>
                         <div class="changeProfile">
                             <form action="" method="post" name="friendrequest">
-                                <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccount">
+                                <?php if($feedbackFriendship == "Volg deze persoon"): ?>
+                                <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccountOne">
+                                <?php else: ?>
+                                    <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccountOneRed">
+                            <?php endif; ?>
                             </form>
                         </div>
                         <div class="clearfix"></div>
