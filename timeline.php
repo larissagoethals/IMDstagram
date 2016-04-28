@@ -33,10 +33,10 @@ $thisUserID = $myUser->getUserInformation();
     }
 
 if(isset($_POST["btnUnlike"])){
-    $postUnlike = new Post();
-    $postUnlike->userID = $thisUserID[0];
-    $postUnlike->postID = $_POST["postID"];
-    if($postUnlike->unlike()){
+    $postLikeMe = new Post();
+    $postLikeMe->userID = $thisUserID[0];
+    $postLikeMe->postID = $_POST["postID"];
+    if($postLikeMe->unlike()){
         //hartje changed
     }
     else {
@@ -217,6 +217,7 @@ if (!empty($_POST['btnInappropriate'])) {
                     <div class="likeAndReact">
                         <div class="like">
                             <form action="" method="post" class="likeMe">
+
                                 <?php if($didUserLike == true): ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
                                     <input type="submit" name="btnUnlike" id="btnUnlike" class="unlike" value="Unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
@@ -291,10 +292,7 @@ if (!empty($_POST['btnInappropriate'])) {
             $.post("ajax/likePhoto.php", {dataid: id, datauser: user})
                 .done(function (response) {
                     if(response.liked == true){
-                        $(".instaPost[data-id=" + response.dataid + "] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
-                        $(".instaPost[data-id=" + response.dataid + "] .likeMe").append("<input type='submit' name='btnUnlike' id='btnUnlike' value='Unlike' data-id=" + response.dataid + " data-user=" + response.datauser + ">")
-                        $(".instaPost[data-id=" + response.dataid + "] .likeMe #btnLike").remove();
-                        $('script').load(document.URL +  'script');
+                        /*$(".likeMe").html('<input type="submit" name="btnUnlike" id="btnUnlike" class="unlike" value="Unlike" data-id="<?/*php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] */?>">');*/
                     }
                 });
 
@@ -308,10 +306,7 @@ if (!empty($_POST['btnInappropriate'])) {
             $.post("ajax/unlikePhoto.php", {dataid: id, datauser: user})
                 .done(function (response) {
                     if(response.unliked == true){
-                        $(".instaPost[data-id=" + response.dataid + "] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
-                        $(".instaPost[data-id=" + response.dataid + "] .likeMe").append("<input type='submit' name='btnLike' id='btnLike' value='Like' data-id=" + response.dataid + " data-user=" + response.datauser + ">")
-                        $(".instaPost[data-id=" + response.dataid + "] .likeMe #btnUnlike").remove();
-                        $('script').load(document.URL +  'script');
+                        //$(".likeMe").html('<input type="submit" name="btnLike" id="btnLike" class="Like" value="Like" data-id="<?/*php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] */?>">');
                     }
                 });
 
