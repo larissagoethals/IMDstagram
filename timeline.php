@@ -5,6 +5,7 @@ include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
 include_once('image.php');
 include_once("Includes/functions.php");
+include_once ('classes/Reaction.class.php');
 
 //Check if able to be here
 /*
@@ -72,6 +73,12 @@ if (!empty($_POST['btnInappropriate'])) {
     $checkInap = $inappropriate->checkInappropriate();
 }
 
+    if (!empty($_POST['btnReact'])){
+        $reaction = new Reaction();
+        $reaction->PostID = $_POST['postID'];
+        $reaction->CommentText = $_POST['commentText'];
+        $addReaction = $reaction->AddReaction();
+    }
 
 
 
@@ -141,6 +148,10 @@ if (!empty($_POST['btnInappropriate'])) {
             $userLiked->userID = $thisUserID[0];
             $didUserLike = $userLiked->didUserLike();
 
+            $postReactions = new Reaction();
+            $postReactions->PostID = $post['postID'];
+            $allReactions = $postReactions->allReaction();
+
             ?>
             <div class="instaPost" data-id="<?php echo $post['postID']?>">
                 <div class="instaPost_header">
@@ -199,20 +210,20 @@ if (!empty($_POST['btnInappropriate'])) {
                     </div>
                     <h2 class="titleReact">Reacties:</h2>
                     <div class="reactions">
-                        <!-- HIER START EEN REACTIE -->
+                        <?php foreach($allReactions as $myReaction): ?>
                         <div class="reactionOne">
                             <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
                             <div class="rightReaction">
                                 <div class="rightReactionName">
-                                    <a href="account.php?profile=" class="inheritParent">yarondassonneville</a>
+                                    <a href="account.php?profile=" class="inheritParent"><?php echo $myReaction['userID'] ?></a>
                                 </div>
                                 <div class="myReaction">
-                                    Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie.
+                                    <?php echo $myReaction['commentText'] ?>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <!-- EINDE VAN EEN REACTIE -->
+                        <?php endforeach; ?>
                     </div>
                     <div class="likeAndReact">
                         <div class="like">
@@ -229,8 +240,9 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="react">
                             <form action="" method="post">
-                                <input type="text" data-id="<?php echo $post['postID'] ?>"
-                                       placeholder="Een reactie toevoegen...">
+                                <input type="text" name="postID" id="postID" value="<?php echo $postID?>" style="visibility:hidden">
+                                <input type="text" name="commentText" id="commentText" placeholder="Een reactie toevoegen..." data-text="<?php echo $post["postID"]?>">
+                                <input type="submit" data-id="<?php echo $post['postID'] ?>" value="voeg toe" name="btnReact" id="btnReact" data-user="<?php echo $thisUserID[0] ?>" class="reactIt">
                             </form>
                         </div>
                         <div class="more">
@@ -305,6 +317,26 @@ if (!empty($_POST['btnInappropriate'])) {
                     });
 
                 e.preventDefault();
+        });
+
+        $(".reactIt").click(function (e) {
+            // message ophalen uit het textvak
+            $myElement = $(this);
+            var id = $(this).data("id");
+            var postReaction = $(this).data("text");
+            var valPostReaction = postReaction.val();
+
+            // AJAX call: verzenden naar PHP file (om query uit te voeren)
+            $.post( "ajax/addReaction.php", { postReaction: valPostReaction, dataid: id})
+                .done(function( response ) {
+                    if(response.status == 'success'){
+                        var nieuweReactie = "<li style='display: none;'>"+postReaction+"</li>";
+                        $(".myReaction").prepend(nieuweReactie);
+                    }
+                });
+
+
+            e.preventDefault(); // submit tegenhouden
         });
     });
 </script>
