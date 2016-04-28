@@ -401,6 +401,16 @@ class User
         return $result;
     }
 
+    public function sendFriendRequestNotPrivate($p_iThisUser, $p_iFollowUser) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into follow (userFollowID, userID, Accept) values (:userFollowID, :userID, 1) ");
+        $statement->bindParam("userFollowID", $p_iFollowUser);
+        $statement->bindParam("userID", $p_iThisUser);
+        $result = $statement->execute();
+
+        return $result;
+    }
+
     //show not accepted friends
     public function showNotAcceptedFriends() {
         $conn = Db::getInstance();

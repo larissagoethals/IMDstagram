@@ -87,7 +87,7 @@ if(isset($_POST["addFriend"]))
     else
     {
         $addFriend = new User();
-        $addFriend->sendFriendRequest( $_SESSION['userID'], $_GET['profile']);
+        $addFriend->sendFriendRequestNotPrivate( $_SESSION['userID'], $_GET['profile']);
         $feedbackFriendship = "Volg deze persoon niet meer";
     }
 }
