@@ -1,4 +1,6 @@
 <?php
+include_once("Db.class.php");
+
 class Reaction {
     private $m_iUserID;
     private $m_sCommentText;
