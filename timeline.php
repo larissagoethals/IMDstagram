@@ -20,7 +20,7 @@ $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserID = $myUser->getUserInformation();
 
-    if(isset($_POST["btnLike"])){
+    /*if(isset($_POST["btnLike"])){
         $postLikeMe = new Post();
         $postLikeMe->userID = $thisUserID[0];
         $postLikeMe->postID = $_POST["postID"];
@@ -30,9 +30,9 @@ $thisUserID = $myUser->getUserInformation();
         else {
             //geen hartje veranderen
         }
-    }
+    }*/
 
-if(isset($_POST["btnUnlike"])){
+/*if(isset($_POST["btnUnlike"])){
     $postLikeMe = new Post();
     $postLikeMe->userID = $thisUserID[0];
     $postLikeMe->postID = $_POST["postID"];
@@ -42,7 +42,7 @@ if(isset($_POST["btnUnlike"])){
     else {
         //geen hartje veranderen
     }
-}
+}*/
 
 if (!empty($_GET["search"])) {
     $search = new SearchClass();
@@ -220,11 +220,10 @@ if (!empty($_POST['btnInappropriate'])) {
 
                                 <?php if($didUserLike == true): ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                    <input type="submit" name="btnUnlike" id="btnUnlike" class="unlike" value="Unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <?php else: ?>
-                                <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                <input type="submit" name="btnLike" id="btnLike" class="like" value="Like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
-                                <!--LIKE WITH DATA-ID-->
+                                    <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Like" data-action="like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <?php endif; ?>
                             </form>
                         </div>
@@ -285,32 +284,27 @@ if (!empty($_POST['btnInappropriate'])) {
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("#btnLike").click(function (e) {
+        $(".likeIt").click(function (e) {
             $myElement = $(this);
             var id = $(this).data("id");
             var user = $(this).data("user");
-            $.post("ajax/likePhoto.php", {dataid: id, datauser: user})
-                .done(function (response) {
-                    if(response.liked == true){
-                        /*$(".likeMe").html('<input type="submit" name="btnUnlike" id="btnUnlike" class="unlike" value="Unlike" data-id="<?/*php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] */?>">');*/
-                    }
-                });
+            var action = $(this).data("action");
+            console.log(action);
+                $.post("ajax/likePhoto.php", {dataid: id, datauser: user, dataaction: action})
+                    .done(function (response) {
+                        if(response.liked == true){
+                            $myElement.data("action", "unlike");
+                            $myElement.attr("value", "Unlike");
+                            $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        }
+                        if(response.unliked == true){
+                            $myElement.data("action", "like");
+                            $myElement.attr("value", "Like");
+                            $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        }
+                    });
 
-            e.preventDefault();
-        });
-
-        $("#btnUnlike").click(function (e) {
-            $myElement = $(this);
-            var id = $(this).data("id");
-            var user = $(this).data("user");
-            $.post("ajax/unlikePhoto.php", {dataid: id, datauser: user})
-                .done(function (response) {
-                    if(response.unliked == true){
-                        //$(".likeMe").html('<input type="submit" name="btnLike" id="btnLike" class="Like" value="Like" data-id="<?/*php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] */?>">');
-                    }
-                });
-
-            e.preventDefault();
+                e.preventDefault();
         });
     });
 </script>
