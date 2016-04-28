@@ -73,11 +73,13 @@ if (!empty($_POST['btnInappropriate'])) {
     $checkInap = $inappropriate->checkInappropriate();
 }
 
-    if (!empty($_POST['btnReact'])){
-        $reaction = new Reaction();
-        $reaction->PostID = $_POST['postID'];
-        $reaction->CommentText = $_POST['commentText'];
-        $addReaction = $reaction->AddReaction();
+    if (!empty($_POST['btnReact']) && isset($_POST['commentText'])){
+        if(!empty($_POST['commentText'])) {
+            $reaction = new Reaction();
+            $reaction->PostID = $_POST['postID'];
+            $reaction->CommentText = $_POST['commentText'];
+            $addReaction = $reaction->AddReaction();
+        }
     }
 
 
@@ -209,7 +211,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                     </div>
                     <h2 class="titleReact">Reacties:</h2>
-                    <div class="reactions">
+                    <div class="reactions" data-id="<?php echo $post['postID']?>">
                         <?php foreach($allReactions as $myReaction): ?>
                         <div class="reactionOne">
                             <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
@@ -218,7 +220,7 @@ if (!empty($_POST['btnInappropriate'])) {
                                     <a href="account.php?profile=" class="inheritParent"><?php echo $myReaction['userID'] ?></a>
                                 </div>
                                 <div class="myReaction">
-                                    <?php echo $myReaction['commentText'] ?>
+                                    <?php echo htmlspecialchars($myReaction['commentText']) ?>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -241,7 +243,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <div class="react">
                             <form action="" method="post">
                                 <input type="text" name="postID" id="postID" value="<?php echo $postID?>" style="visibility:hidden">
-                                <input type="text" name="commentText" id="commentText" placeholder="Een reactie toevoegen..." data-text="<?php echo $post["postID"]?>">
+                                <input type="text" name="commentText" id="commentText" placeholder="Een reactie toevoegen..." data-id="<?php echo $post["postID"]?>">
                                 <input type="submit" data-id="<?php echo $post['postID'] ?>" value="voeg toe" name="btnReact" id="btnReact" data-user="<?php echo $thisUserID[0] ?>" class="reactIt">
                             </form>
                         </div>
@@ -323,18 +325,19 @@ if (!empty($_POST['btnInappropriate'])) {
             // message ophalen uit het textvak
             $myElement = $(this);
             var id = $(this).data("id");
-            var postReaction = $(this).data("text");
-            var valPostReaction = postReaction.val();
+            var valPostReaction = $myElement.prev().val();
+            if(valPostReaction == ""){
 
-            // AJAX call: verzenden naar PHP file (om query uit te voeren)
-            $.post( "ajax/addReaction.php", { postReaction: valPostReaction, dataid: id})
-                .done(function( response ) {
-                    if(response.status == 'success'){
-                        var nieuweReactie = "<li style='display: none;'>"+postReaction+"</li>";
-                        $(".myReaction").prepend(nieuweReactie);
-                    }
-                });
-
+            } else {
+                $.post("ajax/addReaction.php", {postReaction: valPostReaction, dataid: id})
+                    .done(function (response) {
+                        if (response.status == 'success') {
+                            var nieuweReactie = "<div class='reactionOne'><img src='" + "" + "' alt='me' class='postProfileImage reactOne'><div class='rightReaction'><div class='rightReactionName'><a href='account.php?profile=' class='inheritParent'>" + response.username + "</a></div><div class='myReaction'>" + response.text + "</div></div><div class='clearfix'></div></div>";
+                            $(".reactions[data-id=" + response.dataid + "]").append(nieuweReactie);
+                            $myElement.prev().val("");
+                        }
+                    });
+            }
 
             e.preventDefault(); // submit tegenhouden
         });
