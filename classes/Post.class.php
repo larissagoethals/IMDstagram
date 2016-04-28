@@ -163,9 +163,8 @@ class Post
 
 
         $allFriends = array_column($friends, 0);
-        var_dump($allFriends);
         $array = implode(" , ",$allFriends);
-        var_dump($array);
+      
             $conn = Db::getInstance();
             $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
             $statement->execute();
