@@ -40,7 +40,7 @@ p
     display:inline;
 }
 
-.btnChangeAccount {
+.btnChangeAccount, .btnChangeAccountOne, .btnChangeAccountOneRed {
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: #005b9a;
@@ -55,8 +55,24 @@ p
     margin-bottom:5px;
 }
 
-.btnChangeAccount:hover {
+.btnChangeAccountOne, .btnChangeAccountOneRed
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btnChangeAccount:hover, .btnChangeAccountOne:hover {
     background-color: #0065a3;
+}
+
+.btnChangeAccountOneRed
+{
+    background-color: #d60205;
+}
+
+.btnChangeAccountOneRed:hover
+{
+    background-color: #e70206;
 }
 
 .friendsNoti {
