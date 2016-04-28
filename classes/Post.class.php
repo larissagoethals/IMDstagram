@@ -144,16 +144,36 @@ class Post
         return $result;
     }
 
-    //possibility for load 20 (extra) posts
-    public function getNext20Posts()
+    public function getFriends()
     {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT " . 20);
+        $statement = $conn->prepare("select userFollowID from follow WHERE userID = " . $_SESSION['userID']);
         $statement->execute();
         $result = $statement->fetchAll();
+
         return $result;
     }
+
+
+    //possibility for load 20 (extra) posts
+    public function getNext20Posts()
+    {
+        $friends = $this->getFriends(); // [1, 4, 5, 10];
+
+
+        $allFriends = array_column($friends, 0);
+        var_dump($allFriends);
+        $array = implode(" , ",$allFriends);
+        var_dump($array);
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
+            $statement->execute();
+            $result = $statement->fetchAll();
+        return $result;
+    }
+
+
 
     //full post receive
     public function getFullPost($p_iPostID)
@@ -313,8 +333,6 @@ class Post
                 return round($difference / (60 * 60 * 24 * 7 * 52)) . " jaar geleden";
                 break;
         }
-
-
     }
 
     public function getFilters(){
@@ -401,5 +419,4 @@ public function getAllPostsfromUser(){
         return $statement->execute();
     }
 }
-
 ?>
