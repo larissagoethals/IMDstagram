@@ -49,7 +49,10 @@ if (!empty($_GET["search"])) {
     $search = new SearchClass();
     $search->Text = $_GET["search"];
     $allResults = $search->search();
+    $locationResults = $search->searchLocation();
+    $userResults = $search->searchUsers();
     $countSearchPosts = count($allResults);
+    $countUserSearch = count($userResults);
 }
 if (!empty($_POST['btnDeletePost'])) {
     $deletePost = new Post();
@@ -214,10 +217,15 @@ if (!empty($_POST['btnInappropriate'])) {
                     <div class="reactions" data-id="<?php echo $post['postID']?>">
                         <?php foreach($allReactions as $myReaction): ?>
                         <div class="reactionOne">
-                            <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
+                            <?php
+                                $reactionOfUser = new User();
+                                $reactionOfUser->UserID = $myReaction['userID'];
+                                $reactionUserInfo = $reactionOfUser->getUserByID();
+                            ?>
+                            <img src="<?php echo $reactionUserInfo[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
                             <div class="rightReaction">
                                 <div class="rightReactionName">
-                                    <a href="account.php?profile=" class="inheritParent"><?php echo $myReaction['userID'] ?></a>
+                                    <a href="account.php?profile=<?php echo $myReaction['userID'] ?>" class="inheritParent"><?php echo $reactionUserInfo[0]['username'] ?></a>
                                 </div>
                                 <div class="myReaction">
                                     <?php echo htmlspecialchars($myReaction['commentText']) ?>
@@ -269,11 +277,23 @@ if (!empty($_POST['btnInappropriate'])) {
             </h2>
             <p class="countItem"><?php
                 if ($countSearchPosts == 1) {
-                    echo $countSearchPosts . " bericht";
+                    echo $countSearchPosts . " bericht - ";
                 } else {
-                    echo $countSearchPosts . " berichten";
+                    echo $countSearchPosts . " berichten - ";
+                }
+                if ($countUserSearch == 1) {
+                    echo $countUserSearch . " persoon";
+                } else {
+                    echo $countUserSearch . " personen";
                 }
                 ?></p>
+
+            <ul>
+                <?php foreach($userResults as $userSearch): ?>
+                    <li><img class="postProfileImage" src="<?php echo $userSearch['profileImage'] ?>"><a href="account.php?profile=<?php echo $userSearch['userID']; ?>"><?php echo htmlspecialchars($userSearch['username']) ?></a></li>
+                    <div class="clearfix"></div>
+                <?php endforeach; ?>
+            </ul>
         </div>
 
         <div class="allMatches">
@@ -332,7 +352,7 @@ if (!empty($_POST['btnInappropriate'])) {
                 $.post("ajax/addReaction.php", {postReaction: valPostReaction, dataid: id})
                     .done(function (response) {
                         if (response.status == 'success') {
-                            var nieuweReactie = "<div class='reactionOne'><img src='" + "" + "' alt='me' class='postProfileImage reactOne'><div class='rightReaction'><div class='rightReactionName'><a href='account.php?profile=' class='inheritParent'>" + response.username + "</a></div><div class='myReaction'>" + response.text + "</div></div><div class='clearfix'></div></div>";
+                            var nieuweReactie = "<div class='reactionOne'><img src='" + response.userphoto + "' alt='me' class='postProfileImage reactOne'><div class='rightReaction'><div class='rightReactionName'><a href='account.php?profile=" + response.userID + "' class='inheritParent'>" + response.username + "</a></div><div class='myReaction'>" + response.text + "</div></div><div class='clearfix'></div></div>";
                             $(".reactions[data-id=" + response.dataid + "]").append(nieuweReactie);
                             $myElement.prev().val("");
                         }

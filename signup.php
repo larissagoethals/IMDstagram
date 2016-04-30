@@ -2,6 +2,7 @@
 //include settings.php
 include_once('settings.php');
 include_once('classes/User.class.php');
+    session_start();
 if(!empty($_POST)) {
     if (!empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['password'])) {
         $user = new User();
@@ -22,6 +23,12 @@ if(!empty($_POST)) {
         } else {
             if ($user->Save()) {
                 $error = "U bent geregistreerd";
+                $_SESSION['loggedinFace'] = true;
+                $_SESSION['loggedin'] = "yes";
+                $_SESSION['username'] = strtolower($_POST['username']);
+                $userID = $user->getUserInformation();
+                $_SESSION['userID'] = $userID['userID'];
+                header('location: timeline.php');
             } else {
                 $error = "Er liep iets fout gedurende de registratie";
             }
@@ -86,7 +93,7 @@ if(!empty($_POST)) {
 </div>
 
 <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
-<script>usernameSignup
+<script>
     $(document).ready(function() {
         $("#usernameSignup").focusout(function (e) {
             var username = $("#usernameSignup").val();

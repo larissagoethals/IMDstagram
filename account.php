@@ -4,6 +4,8 @@ include_once('classes/User.class.php');
     include_once('classes/Search.class.php');
     include_once('image.php');
 
+    $errorNotFound = false;
+
     if(isset($_GET['profile'])) {
         if($_GET['profile'] == $_SESSION['userID'] ){
             $bio = new User();
@@ -18,23 +20,26 @@ include_once('classes/User.class.php');
             $userAccount->UserID = $_GET['profile'];
             $bio = $userAccount->getUserByID();
 
-            //my accountID
-            $userFollow = new User();
-            if($userFollow->canViewPrivateAccount($_SESSION['userID'], $_GET['profile'])){
-                $privateFollow = true;
-            }
-            else {
-                $privateFollow = false;
-            }
-            $myAccount = false;
+            if(empty($bio)){
+                $errorMessage = "Deze gebruiker werd helaas niet gevonden.";
+                $errorNotFound = true;
+            } else {
+                //my accountID
+                $userFollow = new User();
+                if ($userFollow->canViewPrivateAccount($_SESSION['userID'], $_GET['profile'])) {
+                    $privateFollow = true;
+                } else {
+                    $privateFollow = false;
+                }
+                $myAccount = false;
 
-            $followYes = new User();
+                $followYes = new User();
 
-            if($followYes->userFollowsUser($_SESSION['userID'], $_GET['profile']) == 1){
-                $notAccepted = true;
-            }
-            else {
-                $notAccepted = false;
+                if ($followYes->userFollowsUser($_SESSION['userID'], $_GET['profile']) == 1) {
+                    $notAccepted = true;
+                } else {
+                    $notAccepted = false;
+                }
             }
         }
     }
@@ -145,6 +150,19 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
 </header>
 
 <section class="fullProfile">
+    <div class="myMessages">
+        <?php if(isset($errorMessage)): ?>
+            <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+        <?php endif; ?>
+
+        <?php if(isset($message)): ?>
+            <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+        <?php endif; ?>
+    </div>
+
+    <?php if($errorNotFound == true): ?>
+
+    <?php else: ?>
     <div class="profileHeader">
         <div class="imageAndChange">
             <img src="<?php echo $bio[0]['profileImage']; ?>" alt="" class="profileImage">
@@ -219,7 +237,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
         <?php endif; ?>
     </div>
 
-
+    <?php endif; ?>
 </section>
 </body>
 </html>

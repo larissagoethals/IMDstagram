@@ -18,6 +18,8 @@ if (!empty($_POST['btnPlaats'])) {
             $savePost->CreatePost();
 
             $message = "Foto werd upgeload.";
+            $_SESSION['message'] = "Foto werd geupload.";
+            header('Location: timeline.php');
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
         }

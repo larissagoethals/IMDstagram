@@ -166,8 +166,12 @@ class User
         $count = $statement->rowCount();
 
         if ($count > 0) {
-            if ($this->m_sUsername == $_SESSION['username']) {
-                return false;
+            if(isset($_SESSION['username'])){
+                if ($this->m_sUsername == $_SESSION['username']) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
                 return true;
             }
@@ -229,13 +233,18 @@ class User
     public function checkEmail(){
         if($this->emailExistsUpdate() == true)
         {
-            if($this->isEmailMy() == true)
-            {
-                return false;
-            }
-            else{
+            if(isset($_SESSION['userID'])){
+                if($this->isEmailMy() == true)
+                {
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            } else {
                 return true;
             }
+
         }
         else
         {
