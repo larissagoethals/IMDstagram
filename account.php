@@ -161,7 +161,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     </div>
 
     <?php if($errorNotFound == true): ?>
-
+        <img src="images/usernotfound.png" alt="user wasn't found" style="width:50%; margin:0px auto; display:block;">
     <?php else: ?>
     <div class="profileHeader">
         <div class="imageAndChange">
