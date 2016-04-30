@@ -6,9 +6,12 @@ if (!empty($_POST['btnPlaats'])) {
     if (!empty($_FILES['postPicture']['name']) && !empty($_POST['beschrijvingImg'])) {
         try {
             $saveImage = new Post();
-            $saveImage->ImageName = $_FILES['postPicture']['name'];
-            $saveImage->ImageSize = $_FILES['postPicture']['size'];
-            $saveImage->ImageTmpName = $_FILES['postPicture']['tmp_name'];
+            $nameWithoutSpace = preg_replace('/\s+/','',$_FILES['postPicture']['name']);
+            $nameWithoutSpaceTMP = preg_replace('/\s+/','',$_FILES['postPicture']['tmp_name']);
+            $nameWithoutSpaceSize = preg_replace('/\s+/','',$_FILES['postPicture']['size']);
+            $saveImage->ImageName = $nameWithoutSpace;
+            $saveImage->ImageSize = $nameWithoutSpaceSize;
+            $saveImage->ImageTmpName = $nameWithoutSpaceTMP;
             $location = $saveImage->SavePostImage();
 
             $savePost = new Post();
