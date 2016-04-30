@@ -144,16 +144,35 @@ class Post
         return $result;
     }
 
-    //possibility for load 20 (extra) posts
-    public function getNext20Posts()
+    public function getFriends()
     {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select * from posts order by postTime DESC LIMIT " . 20);
+        $statement = $conn->prepare("select userFollowID from follow WHERE userID = " . $_SESSION['userID']);
         $statement->execute();
         $result = $statement->fetchAll();
+
         return $result;
     }
+
+
+    //possibility for load 20 (extra) posts
+    public function getNext20Posts()
+    {
+        $friends = $this->getFriends(); // [1, 4, 5, 10];
+
+
+        $allFriends = array_column($friends, 0);
+        $array = implode(" , ",$allFriends);
+      
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
+            $statement->execute();
+            $result = $statement->fetchAll();
+        return $result;
+    }
+
+
 
     //full post receive
     public function getFullPost($p_iPostID)
@@ -313,8 +332,6 @@ class Post
                 return round($difference / (60 * 60 * 24 * 7 * 52)) . " jaar geleden";
                 break;
         }
-
-
     }
 
     public function getFilters(){
@@ -324,7 +341,81 @@ class Post
         return $statement->fetchAll();
     }
 
-
+public function getAllPostsfromUser(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("select * FROM posts where postUserID = :userid ");
+    $statement->bindValue(':userid', $this->m_sUserID);
+    $statement->execute();
+    return $statement->fetchAll();
 }
 
+    public function countPostUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM posts where postUserID = :userid ");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+       $result = count($statement->fetchAll());
+        return $result;
+    }
+
+    public function countFollowersUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM follow where userFollowID = :userid and Accept = '1'");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+        $result = count($statement->fetchAll());
+        return $result;
+    }
+
+    public function countFollowUser()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * FROM follow where userID = :userid and Accept = '1' ");
+        $statement->bindValue(':userid', $this->m_sUserID);
+        $statement->execute();
+        $result = count($statement->fetchAll());
+        return $result;
+    }
+
+    public function countLikes($p_iPostID){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select count(*) FROM postLikes where postID = :postID");
+        $statement->bindValue(':postID', $p_iPostID);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result[0];
+    }
+
+    public function newLike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into postLikes (postID, userID) values (:postID, :userID)");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        return $statement->execute();
+    }
+
+    public function didUserLike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from postLikes where postID = :postID and userID = :userID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $aantalRijen = count($result);
+
+        if ($aantalRijen > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function unlike(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("delete from postLikes where postID = :postID and userID = :userID");
+        $statement->bindValue(':postID', $this->m_sPostID);
+        $statement->bindValue(':userID', $this->m_sUserID);
+        return $statement->execute();
+    }
+}
 ?>

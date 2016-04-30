@@ -5,6 +5,7 @@ include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
 include_once('image.php');
 include_once("Includes/functions.php");
+include_once ('classes/Reaction.class.php');
 
 //Check if able to be here
 /*
@@ -19,6 +20,30 @@ else {
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserID = $myUser->getUserInformation();
+
+    /*if(isset($_POST["btnLike"])){
+        $postLikeMe = new Post();
+        $postLikeMe->userID = $thisUserID[0];
+        $postLikeMe->postID = $_POST["postID"];
+        if($postLikeMe->newLike()){
+            //hartje changed
+        }
+        else {
+            //geen hartje veranderen
+        }
+    }*/
+
+/*if(isset($_POST["btnUnlike"])){
+    $postLikeMe = new Post();
+    $postLikeMe->userID = $thisUserID[0];
+    $postLikeMe->postID = $_POST["postID"];
+    if($postLikeMe->unlike()){
+        //hartje changed
+    }
+    else {
+        //geen hartje veranderen
+    }
+}*/
 
 if (!empty($_GET["search"])) {
     $search = new SearchClass();
@@ -48,6 +73,14 @@ if (!empty($_POST['btnInappropriate'])) {
     $checkInap = $inappropriate->checkInappropriate();
 }
 
+    if (!empty($_POST['btnReact']) && isset($_POST['commentText'])){
+        if(!empty($_POST['commentText'])) {
+            $reaction = new Reaction();
+            $reaction->PostID = $_POST['postID'];
+            $reaction->CommentText = $_POST['commentText'];
+            $addReaction = $reaction->AddReaction();
+        }
+    }
 
 
 
@@ -63,14 +96,6 @@ if (!empty($_POST['btnInappropriate'])) {
 </head>
 <body>
 <header>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script>
-        $("#btnLoadMore").on("click", function (e) {
-
-
-        });
-
-    </script>
     <div class="innerHeader">
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
@@ -86,7 +111,7 @@ if (!empty($_POST['btnInappropriate'])) {
         </div>
 
         <div class="profileName">
-            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo $_SESSION['username']; ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
@@ -102,6 +127,7 @@ if (!empty($_POST['btnInappropriate'])) {
             $userInformation->userID = $post["postUserID"];
             $thisUserInformation = $userInformation->getUserByID();
             $postID = $post['postID'];
+            $userID = $post["postUserID"];
 
             $inappropriate = new Post();
             $inappropriate->postID = $post["postID"];
@@ -119,14 +145,23 @@ if (!empty($_POST['btnInappropriate'])) {
                 $feedbackDeletePost = false;
             }
 
+            $userLiked = new Post();
+            $userLiked->postID = $post['postID'];
+            $userLiked->userID = $thisUserID[0];
+            $didUserLike = $userLiked->didUserLike();
+
+            $postReactions = new Reaction();
+            $postReactions->PostID = $post['postID'];
+            $allReactions = $postReactions->allReaction();
+
             ?>
-            <div class="instaPost">
+            <div class="instaPost" data-id="<?php echo $post['postID']?>">
                 <div class="instaPost_header">
                     <div class="ip_header_profile">
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
                              alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <p><?php echo $thisUserInformation[0]['username'] ?></p>
+                        <a href="account.php?profile=<?php echo $userID ?>"><?php echo $thisUserInformation[0]['username'] ?></a>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $userInformation->timeAgo($post["postTime"]) ?>
@@ -145,7 +180,8 @@ if (!empty($_POST['btnInappropriate'])) {
                 <div class="instaPost_body">
                     <div class="ip_body_content">
                         <div class="ip_body_likes">
-                            <a href="">#</a> vinden dit leuk
+                            <?php $telLikes = new Post(); ?>
+                            <?php echo $telLikes->countLikes($post["postID"]); ?> vinden dit leuk
                         </div>
                         <div class="postActions">
                         <div class="inappropriate">
@@ -170,37 +206,45 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="clearfix"></div>
                         <div class="ip_body_textContent">
-                            <a href="" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
+                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
                         </div>
                     </div>
                     <h2 class="titleReact">Reacties:</h2>
-                    <div class="reactions">
-                        <!-- HIER START EEN REACTIE -->
+                    <div class="reactions" data-id="<?php echo $post['postID']?>">
+                        <?php foreach($allReactions as $myReaction): ?>
                         <div class="reactionOne">
                             <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
                             <div class="rightReaction">
                                 <div class="rightReactionName">
-                                    <a href="account.php?profile=" class="inheritParent">yarondassonneville</a>
+                                    <a href="account.php?profile=" class="inheritParent"><?php echo $myReaction['userID'] ?></a>
                                 </div>
                                 <div class="myReaction">
-                                    Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie. Dit is een extra grote hardcoded reactie. Mijn reactie is hier en ik ben gewoon een reactie.
+                                    <?php echo htmlspecialchars($myReaction['commentText']) ?>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <!-- EINDE VAN EEN REACTIE -->
+                        <?php endforeach; ?>
                     </div>
                     <div class="likeAndReact">
                         <div class="like">
-                            <form action="" method="post">
-                                <!--LIKE WITH DATA-ID-->
+                            <form action="" method="post" class="likeMe">
+
+                                <?php if($didUserLike == true): ?>
+                                    <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                <?php else: ?>
+                                    <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Like" data-action="like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                <?php endif; ?>
                             </form>
                         </div>
                         <div class="react">
                             <form action="" method="post">
-                                <input type="text" data-id="<?php echo $post['postID'] ?>"
-                                       placeholder="Een reactie toevoegen...">
+                                <input type="text" name="postID" id="postID" value="<?php echo $postID?>" style="visibility:hidden">
+                                <input type="text" name="commentText" id="commentText" placeholder="Een reactie toevoegen..." data-id="<?php echo $post["postID"]?>">
+                                <input type="submit" data-id="<?php echo $post['postID'] ?>" value="voeg toe" name="btnReact" id="btnReact" data-user="<?php echo $thisUserID[0] ?>" class="reactIt">
                             </form>
                         </div>
                         <div class="more">
@@ -251,6 +295,53 @@ if (!empty($_POST['btnInappropriate'])) {
         <li>Terms of Use</li>
     </ul>
 </footer>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".likeIt").click(function (e) {
+            $myElement = $(this);
+            var id = $(this).data("id");
+            var user = $(this).data("user");
+            var action = $(this).data("action");
+            console.log(action);
+                $.post("ajax/likePhoto.php", {dataid: id, datauser: user, dataaction: action})
+                    .done(function (response) {
+                        if(response.liked == true){
+                            $myElement.data("action", "unlike");
+                            $myElement.attr("value", "Unlike");
+                            $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        }
+                        if(response.unliked == true){
+                            $myElement.data("action", "like");
+                            $myElement.attr("value", "Like");
+                            $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
+                        }
+                    });
 
+                e.preventDefault();
+        });
+
+        $(".reactIt").click(function (e) {
+            // message ophalen uit het textvak
+            $myElement = $(this);
+            var id = $(this).data("id");
+            var valPostReaction = $myElement.prev().val();
+            if(valPostReaction == ""){
+
+            } else {
+                $.post("ajax/addReaction.php", {postReaction: valPostReaction, dataid: id})
+                    .done(function (response) {
+                        if (response.status == 'success') {
+                            var nieuweReactie = "<div class='reactionOne'><img src='" + "" + "' alt='me' class='postProfileImage reactOne'><div class='rightReaction'><div class='rightReactionName'><a href='account.php?profile=' class='inheritParent'>" + response.username + "</a></div><div class='myReaction'>" + response.text + "</div></div><div class='clearfix'></div></div>";
+                            $(".reactions[data-id=" + response.dataid + "]").append(nieuweReactie);
+                            $myElement.prev().val("");
+                        }
+                    });
+            }
+
+            e.preventDefault(); // submit tegenhouden
+        });
+    });
+</script>
 </body>
 </html>

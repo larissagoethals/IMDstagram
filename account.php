@@ -62,10 +62,66 @@ include_once('classes/User.class.php');
         }
     }
 
+
+
+$AlreadyFriend = new User();
+if( $AlreadyFriend->userFollowsUser($_SESSION['userID'],$_GET['profile'] ))
+{
+    $feedbackFriendship = "Volg deze persoon niet meer";
+}
+    else
+    {
+        $feedbackFriendship = "Volg deze persoon";
+    }
+
+if(isset($_POST["addFriend"]))
+{
+    $AlreadyFriend = new User();
+    if( $AlreadyFriend->userFollowsUser($_SESSION['userID'], $_GET['profile'] ))
+    {
+        $deleteFriend = new User();
+        $deleteFriend->UserID = $_GET['profile'];
+        $deleteFriend->unfollowUser();
+        $feedbackFriendship = "Volg deze persoon";
+    }
+    else
+    {
+        $addFriend = new User();
+        $addFriend->sendFriendRequestNotPrivate( $_SESSION['userID'], $_GET['profile']);
+        $feedbackFriendship = "Volg deze persoon niet meer";
+    }
+}
+
+
+
+
 $search = new SearchClass();
 $search->UserID = $_SESSION['userID'];
 $allResults = $search->searchOwnPost();
 $countSearchPosts = count($allResults);
+
+$userPost = new Post();
+$userPost->userID = $_GET['profile'];
+$allResultsPost = $userPost->getAllPostsfromUser();
+
+$countPostUser = new Post();
+$countPostUser->userID = $_GET['profile'];
+$PostCountUser = $countPostUser->countPostUser();
+
+$countPostUserFollowers = new Post();
+$countPostUserFollowers->userID = $_GET['profile'];
+$PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
+
+$countPostUserFollow = new Post();
+$countPostUserFollow->userID = $_GET['profile'];
+$PostCountUserFollow = $countPostUserFollow->countFollowUser();
+
+
+
+
+
+
+
 
 ?><!doctype html>
 <html lang="en">
@@ -91,54 +147,79 @@ $countSearchPosts = count($allResults);
 <section class="fullProfile">
     <div class="profileHeader">
         <div class="imageAndChange">
-            <img src="<?php echo $bio[0]['profileImage']; ?>" alt="yaron" class="profileImage">
-            <?php if($myAccount == true): ?>
-                <div class="changeProfile">
-                <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
-                <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
+            <img src="<?php echo $bio[0]['profileImage']; ?>" alt="" class="profileImage">
+
+
+            <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
+                <div class="profileTimeline">
+                    <p>Dit account is privé.</p>
+                    <form action="" method="POST" name="sendFriendRequest">
+                        <?php if($notAccepted == false): ?>
+                            <input type="submit" value="Stuur volgverzoek" class="btnChangeAccountOne" name="volgverzoek">
+                        <?php else: ?>
+                            <p>Volgverzoek reeds verstuurd.</p>
+                        <?php endif; ?>
+                    </form>
                 </div>
-                <div class="clearfix"></div>
-            <?php endif; //OF OF OF VOLGEN ?>
+            <?php else: ?>
+                <div class="profileTimeline">
+                    <img src="" alt="">
+                    <?php if($myAccount == true){ ?>
+                        <div class="changeProfile">
+                            <a href="accountEdit.php" class="btnChangeAccount">Profiel bewerken</a>
+                            <a href="notifications.php" class="btnChangeAccount">Notificaties <span class="friendsNoti"><?php echo  $friendships ?></span></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    <?php }else{ ?>
+                        <div class="changeProfile">
+                            <form action="" method="post" name="friendrequest">
+                                <?php if($feedbackFriendship == "Volg deze persoon"): ?>
+                                <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccountOne">
+                                <?php else: ?>
+                                    <input type="submit" name="addFriend" id="addFriend" value="<?php echo $feedbackFriendship ?>" class="btnChangeAccountOneRed">
+                            <?php endif; ?>
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
+                    <?php }; //OF OF OF VOLGEN ?>
+                </div>
+            <?php endif; ?>
+
         </div>
 
         <div class="profileInformation">
             <h1><?php echo $bio[0]['username']; ?></h1>
             <p><?php echo $bio[0]['biotext']; ?></p>
             <ul class="countEverything">
-                <li><span class="bold">249</span> berichten</li>
-                <li><span class="bold">800</span> volgers</li>
-                <li><span class="bold">394</span> volgend</li>
+                <?php if($PostCountUser == 1): ?>
+                <li><span class="bold"><?php echo $PostCountUser; ?></span> bericht</li>
+                <?php else: ?>
+                    <li><span class="bold"><?php echo $PostCountUser; ?></span> berichten</li>
+                <?php endif; ?>
+
+                <?php if($PostCountUserFollower == 1): ?>
+                    <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volger</li>
+                <?php else: ?>
+                    <li><span class="bold"><?php echo $PostCountUserFollower; ?></span> volgers</li>
+                <?php endif; ?>
+
+                <li><span class="bold"><?php echo $PostCountUserFollow; ?></span> volgend</li>
             </ul>
         </div>
     </div>
 
     <div class="allMatches">
-        <?php foreach ($allResults as $allResult): ?>
-            <a href="?image=<?php echo $allResult['postID'] ?>"
+        <?php foreach ($allResultsPost as $allResult): ?>
+            <a href="?profile=<?php echo $allResult['postUserID']; ?>&image=<?php echo $allResult['postID']; ?>"
                style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile"></a>
+
         <?php endforeach; ?>
         <?php if ($countSearchPosts == 0): ?>
             <p style="text-align:center; display:block; width:100%;">Voor deze gebruiker zijn er nog geen posts gevonden.</p>
         <?php endif; ?>
     </div>
 
-    <?php if($bio[0]['private'] == 1 && $myAccount == false && $privateFollow == false): ?>
-    <div class="profileTimeline">
-        <p>Dit account is privé.</p>
-        <form action="" method="POST" name="sendFriendRequest">
-            <?php if($notAccepted == false): ?>
-            <input type="submit" value="Stuur volgverzoek" name="volgverzoek">
-            <?php else: ?>
-                <p>Volgverzoek reeds verstuurd.</p>
-            <?php endif; ?>
-        </form>
-    </div>
-    <?php else: ?>
-    <div class="profileTimeline">
-        <img src="" alt="">
 
-    </div>
-    <?php endif; ?>
 </section>
 </body>
 </html>

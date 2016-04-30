@@ -8,18 +8,17 @@
 include_once("../classes/User.class.php");
 $activity = new User();
 
-
 if(!empty($_POST['email'])) {
     try {
         $activity->Email = $_POST['email'];
-        if($activity->emailExists()) {
-            $response['status'] = 'exist';
-            $response['message'] = ":( Email not available!";
+        if($activity->checkEmail() == true) {
+            $response['status'] = 'notexist';
+            $response['message'] = "): Email not available!";
         }
         else
         {
             $response['status'] = 'notexist';
-            $response['message'] = ":) Email available!";
+            $response['message'] = "";
         }
     } catch (Exception $e) {
         $feedback = $e->getMessage();

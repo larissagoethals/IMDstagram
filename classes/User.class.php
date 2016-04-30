@@ -160,12 +160,13 @@ class User
     public function userNameExistsUpdate()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from users where username = '" . $_SESSION['username'] . "'");
-        $result = $statement->execute();
-        $count = count($result);
+        $statement = $conn->prepare("select * from users where username = :username");
+        $statement->bindParam(":username", $this->m_sUsername);
+        $statement->execute();
+        $count = $statement->rowCount();
 
         if ($count > 0) {
-            if ($this->m_sUsername == $result) {
+            if ($this->m_sUsername == $_SESSION['username']) {
                 return false;
             } else {
                 return true;
@@ -194,19 +195,50 @@ class User
     public function emailExistsUpdate()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from users where email = '" . $_SESSION['username'] . "'");
+        $statement = $conn->prepare("select * from users where email = :email");
+        $statement->bindParam(":email", $this->m_sEmail);
         $statement->execute();
-        $result = $statement->fetchAll();
+        $count = $statement->rowCount();
 
-        $count = count($result);
+       if ($count > 0) {
+           return true;
+       }
+       else {
+            return false;
+        }
+    }
+
+    public function isEmailMy()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from users where email = :email and userID = :userID");
+        $statement->bindParam(":email", $this->m_sEmail);
+        $statement->bindParam(":userID", $_SESSION['userID']);
+        $statement->execute();
+
+        $count = $statement->rowCount();
 
         if ($count > 0) {
-            if ($this->m_sEmail == $statement) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function checkEmail(){
+        if($this->emailExistsUpdate() == true)
+        {
+            if($this->isEmailMy() == true)
+            {
                 return false;
-            } else {
+            }
+            else{
                 return true;
             }
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -234,28 +266,28 @@ class User
     //save user settings (accountEdit)
     public function Update()
     {
-        if ($this->emailExistsUpdate() == false) {
-            if ($this->userNameExistsUpdate() == false) {
-                try {
-                    $conn = Db::getInstance();
-                    $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
-                    $statement->bindValue(":email", $this->m_sEmail);
-                    $statement->bindValue(":name", $this->m_sName);
-                    $statement->bindValue(":username", $this->m_sUsername);
-                    $statement->bindValue(":biotext", $this->m_sBiotext);
-                    $statement->bindValue(":profileImage", $this->m_sImage);
-                    $statement->bindValue(":private", $this->m_iPrivate);
-                    $statement->execute();
-                    return $this->m_sUsername;
-                } catch (Exception $e) {
+        if ($this->checkEmail() == false) {
+                if ($this->userNameExistsUpdate() == false) {
+                    try {
+                        $conn = Db::getInstance();
+                        $statement = $conn->prepare("UPDATE users SET email= :email, name= :name, username= :username, biotext= :biotext, private= :private, profileImage= :profileImage where username = '" . $_SESSION['username'] . "'");
+                        $statement->bindValue(":email", $this->m_sEmail);
+                        $statement->bindValue(":name", $this->m_sName);
+                        $statement->bindValue(":username", $this->m_sUsername);
+                        $statement->bindValue(":biotext", $this->m_sBiotext);
+                        $statement->bindValue(":profileImage", $this->m_sImage);
+                        $statement->bindValue(":private", $this->m_iPrivate);
+                        $statement->execute();
+                        return $this->m_sUsername;
+                    } catch (Exception $e) {
 
+                    }
+                } else {
+                    echo "Deze username is reeds in gebruik!";
                 }
             } else {
-                echo "Deze username is reeds in gebruik!";
+                echo "Dit emailadres is reeds in gebruik!";
             }
-        } else {
-            echo "Dit emailadres is reeds in gebruik!";
-        }
     }
 
     //update password in database (first control password)
@@ -401,6 +433,16 @@ class User
         return $result;
     }
 
+    public function sendFriendRequestNotPrivate($p_iThisUser, $p_iFollowUser) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into follow (userFollowID, userID, Accept) values (:userFollowID, :userID, 1) ");
+        $statement->bindParam("userFollowID", $p_iFollowUser);
+        $statement->bindParam("userID", $p_iThisUser);
+        $result = $statement->execute();
+
+        return $result;
+    }
+
     //show not accepted friends
     public function showNotAcceptedFriends() {
         $conn = Db::getInstance();
@@ -423,6 +465,17 @@ class User
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE from follow where followID =  " . $p_iFollowID);
         $result = $statement->execute();
+        return $result;
+    }
+
+    public function unfollowUser()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE from follow where userFollowID = :userFollowID and userID = :userID");
+        $statement->bindParam(":userFollowID", $this->m_sUserID);
+        $statement->bindParam(":userID", $_SESSION['userID']);
+        $result = $statement->execute();
+
         return $result;
     }
 }
