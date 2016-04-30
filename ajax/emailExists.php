@@ -12,13 +12,13 @@ if(!empty($_POST['email'])) {
     try {
         $activity->Email = $_POST['email'];
         if($activity->checkEmail() == true) {
-            $response['status'] = 'notexist';
+            $response['status'] = 'exist';
             $response['message'] = "): Email not available!";
         }
         else
         {
             $response['status'] = 'notexist';
-            $response['message'] = "";
+            $response['message'] = "): Email available!";
         }
     } catch (Exception $e) {
         $feedback = $e->getMessage();

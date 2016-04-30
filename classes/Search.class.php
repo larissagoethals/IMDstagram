@@ -53,5 +53,26 @@ class SearchClass {
     public function getTrendingHashtags() {
         
     }
+
+    public function searchLocation()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select DISTINCT postLocation from posts where postLocation like :text LIMIT 5");
+        $statement->bindValue(':text', "%" . $this->m_sText . "%");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
+    public function searchUsers()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from users where username like :text order by username asc LIMIT 5");
+        $statement->bindValue(':text', "%" . $this->m_sText . "%");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
 }
 ?>
