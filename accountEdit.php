@@ -37,6 +37,8 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->Image = $location;
     $_SESSION['username'] = $updateUser->Update();
 
+
+
     if($updateUser->Update())
     {
         $feedback = "Je profiel werd succesvol aangepast!";
@@ -45,11 +47,14 @@ if (!empty($_POST['saveChanges'])) {
     {
         $feedback = "Het is niet mogelijk om je profiel aan te passen!";
     }
+
 }
 
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];
 $thisUserSettings = $myUser->getUserInformation();
+
+
 
 ?><!doctype html>
 <html lang="en">
@@ -84,7 +89,7 @@ $thisUserSettings = $myUser->getUserInformation();
         <?php else: ?>
             <h3>Wijzig je profiel hier:</h3>
         <?php endif; ?>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="#" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
                    value="<?php echo $thisUserSettings['name']; ?>">
@@ -140,20 +145,22 @@ $thisUserSettings = $myUser->getUserInformation();
         });
 
         $("#email").focusout(function (e) {
-
             // message ophalen uit het textvak
             var email = $("#email").val();
+
             $.post("ajax/emailExists.php", {email: email})
                 .done(function (response) {
                     if (response.status == "notexist") {
-                        var p = "<p id='greenBackground'>" + response.message + "</p>";
+                        var p = "<p>" + response.message + "</p>";
                         $("#responsEmail").html("");
                         $("#responsEmail").append(p);
+                        console.log("djhkjhkh");
                     }
                     else if (response.status == "exist") {
-                        var p = "<p id='redBackground'>" + response.message + "</p>";
+                        var p = "<p>" + response.message + "</p>";
                         $("#responsEmail").html("");
                         $("#responsEmail").append(p);
+                        console.log("djhkjhkh");
                     }
                 });
             e.preventDefault();
