@@ -53,7 +53,14 @@ if (!empty($_GET["search"])) {
     $userResults = $search->searchUsers();
     $countSearchPosts = count($allResults);
     $countUserSearch = count($userResults);
+    $countLocation = count($locationResults);
 }
+    if(isset($_GET['location'])){
+        $location = true;
+    } else {
+        $location = false;
+    }
+
 if (!empty($_POST['btnDeletePost'])) {
     $deletePost = new Post();
     $deletePost->postID = $_POST['postIDDelete'];
@@ -156,7 +163,7 @@ if (!empty($_POST['btnInappropriate'])) {
             $postReactions = new Reaction();
             $postReactions->PostID = $post['postID'];
             $allReactions = $postReactions->allReaction();
-
+            $countReactions = count($allReactions);
             ?>
             <div class="instaPost" data-id="<?php echo $post['postID']?>">
                 <div class="instaPost_header">
@@ -164,7 +171,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
                              alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <a href="account.php?profile=<?php echo $userID ?>"><?php echo $thisUserInformation[0]['username'] ?></a>
+                        <a href="account.php?profile=<?php echo $userID ?>" class="authorPost authorPost__link"><?php echo $thisUserInformation[0]['username'] ?></a>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $userInformation->timeAgo($post["postTime"]) ?>
@@ -215,6 +222,11 @@ if (!empty($_POST['btnInappropriate'])) {
                     </div>
                     <h2 class="titleReact">Reacties:</h2>
                     <div class="reactions" data-id="<?php echo $post['postID']?>">
+                        <?php if($countReactions == 0): ?>
+                        <div class="reactionOne">
+                            Voor deze post zijn nog geen reacties.
+                        </div>
+                        <?php endif; ?>
                         <?php foreach($allReactions as $myReaction): ?>
                         <div class="reactionOne">
                             <?php
@@ -241,7 +253,7 @@ if (!empty($_POST['btnInappropriate'])) {
 
                                 <?php if($didUserLike == true): ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt iLike" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <?php else: ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
                                     <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Like" data-action="like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
@@ -250,7 +262,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="react">
                             <form action="" method="post">
-                                <input type="text" name="postID" id="postID" value="<?php echo $postID?>" style="visibility:hidden">
+                                <input type="text" name="postID" id="postID" value="<?php echo $postID?>" style="visibility:hidden; width:0px">
                                 <input type="text" name="commentText" id="commentText" placeholder="Een reactie toevoegen..." data-id="<?php echo $post["postID"]?>">
                                 <input type="submit" data-id="<?php echo $post['postID'] ?>" value="voeg toe" name="btnReact" id="btnReact" data-user="<?php echo $thisUserID[0] ?>" class="reactIt">
                             </form>
@@ -287,15 +299,49 @@ if (!empty($_POST['btnInappropriate'])) {
                     echo $countUserSearch . " personen";
                 }
                 ?></p>
+            <?php if($location == true): ?>
+                <a href="?search=<?php echo $_GET['search'] ?>" id="btnLocationCheck">Niet zoeken op locatie.</a>
+            <?php else: ?>
+                <a href="?search=<?php echo $_GET['search'] ?>&location" id="btnLocationCheck">Zoeken op locatie.</a>
+            <?php endif; ?>
 
-            <ul>
+            <?php if($location == true): ?>
+
+            <?php else: ?>
+            <?php if($countUserSearch == 0): ?>
+
+            <?php else: ?>
+            <ul class="userSearch">
+                <h3>Users:</h3>
                 <?php foreach($userResults as $userSearch): ?>
                     <li><img class="postProfileImage" src="<?php echo $userSearch['profileImage'] ?>"><a href="account.php?profile=<?php echo $userSearch['userID']; ?>"><?php echo htmlspecialchars($userSearch['username']) ?></a></li>
                     <div class="clearfix"></div>
                 <?php endforeach; ?>
             </ul>
+            <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if($location == false): ?>
+
+            <?php else: ?>
+            <?php if($countLocation == 0): ?>
+
+            <?php else: ?>
+            <p>Foto's op locatie's zoals: <?php echo $_GET['search'] ?></p>
+            <div class="allMatches">
+                <?php foreach ($locationResults as $locationResult): ?>
+                    <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $locationResult['postID'] ?>"
+                       style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem"></a>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            <?php endif; ?>
         </div>
 
+        <?php if($location == true): ?>
+
+        <?php else: ?>
+        <p>Berichten:</p>
         <div class="allMatches">
             <?php foreach ($allResults as $allResult): ?>
                 <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $allResult['postID'] ?>"
@@ -306,6 +352,7 @@ if (!empty($_POST['btnInappropriate'])) {
                     gevonden.</p>
             <?php endif; ?>
         </div>
+        <?php endif; ?>
     </section>
 <?php endif; ?>
 
@@ -328,12 +375,14 @@ if (!empty($_POST['btnInappropriate'])) {
                     .done(function (response) {
                         if(response.liked == true){
                             $myElement.data("action", "unlike");
+                            $myElement.toggleClass("iLike");
                             $myElement.attr("value", "Unlike");
                             $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
                         }
                         if(response.unliked == true){
                             $myElement.data("action", "like");
                             $myElement.attr("value", "Like");
+                            $myElement.toggleClass("iLike");
                             $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
                         }
                     });
