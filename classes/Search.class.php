@@ -57,7 +57,7 @@ class SearchClass {
     public function searchLocation()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select DISTINCT postLocation from posts where postLocation like :text LIMIT 5");
+        $statement = $conn->prepare("select * from posts where postLocation like :text LIMIT 6");
         $statement->bindValue(':text', "%" . $this->m_sText . "%");
         $statement->execute();
         $result = $statement->fetchAll();

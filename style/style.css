@@ -177,6 +177,10 @@ header {
     height: 40px;
 }
 
+.ip_header_profile {
+    display: inline-block;
+}
+
 .ip_header_profile p {
     float:left;
     font-size: 15px;
@@ -373,6 +377,10 @@ header {
     text-decoration: none;
 }
 
+.authorPost__link {
+    margin-left:5px;
+}
+
 .postText {
     margin:0px 0px 10px 0px;
 }
@@ -499,3 +507,39 @@ footer {
     }
 }
 
+.userSearch li a:link,
+.userSearch li a:visited,
+.userSearch li a:hover,
+.userSearch li a:active
+{
+    color:black;
+    text-decoration:none;
+    line-height:30px;
+    margin-left:5px;
+}
+
+.userSearch li {
+    margin-bottom:5px;
+}
+
+#btnLocationCheck:link,
+#btnLocationCheck:visited,
+#btnLocationCheck:hover,
+#btnLocationCheck:active {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #005b9a;
+    border-radius:4px;
+    width: 50%;
+    margin:5px auto 10px auto;
+    outline:0;
+    border: 0;
+    text-align:center;
+    display:block;
+    color:white;
+    text-decoration: none;
+}
+
+#btnLocationCheck:hover {
+    background-color: #0065a3;
+}
