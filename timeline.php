@@ -253,7 +253,7 @@ if (!empty($_POST['btnInappropriate'])) {
 
                                 <?php if($didUserLike == true): ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
-                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
+                                    <input type="submit" name="btnLike" id="btnLike" class="likeIt iLike" value="Unlike" data-action="unlike" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
                                 <?php else: ?>
                                     <input type="text" name="postID" id="postID" hidden value="<?php echo $postID?>">
                                     <input type="submit" name="btnLike" id="btnLike" class="likeIt" value="Like" data-action="like" data-id="<?php echo $post["postID"]?>" data-user="<?php echo $thisUserID[0] ?>">
@@ -375,12 +375,14 @@ if (!empty($_POST['btnInappropriate'])) {
                     .done(function (response) {
                         if(response.liked == true){
                             $myElement.data("action", "unlike");
+                            $myElement.toggleClass("iLike");
                             $myElement.attr("value", "Unlike");
                             $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
                         }
                         if(response.unliked == true){
                             $myElement.data("action", "like");
                             $myElement.attr("value", "Like");
+                            $myElement.toggleClass("iLike");
                             $(".instaPost[data-id="+response.dataid+"] .ip_body_likes").text(response.countLikes + " vinden dit leuk");
                         }
                     });

@@ -543,3 +543,34 @@ footer {
 #btnLocationCheck:hover {
     background-color: #0065a3;
 }
+
+.likeIt {
+    outline:0;
+    border:0;
+    background-color:transparent;
+    height:44px;
+    width:44px;
+    line-height:44px;
+    display:inline-block;
+    cursor:pointer;
+    text-indent:-9999px;
+}
+
+.iLike {
+    background-image: url(http://instagramstatic-a.akamaihd.net/h1/sprites/core-sprites-6625b8.png);
+    background-repeat: no-repeat;
+    background-position: -265px -322px;
+    height: 44px;
+    width: 44px;
+    float:left;
+    text-indent:-9999px;
+}
+
+.iDislike {
+    background-image: url(http://instagramstatic-a.akamaihd.net/h1/sprites/core-sprites-6625b8.png);
+    background-repeat: no-repeat;
+    background-position: -259px -264px;
+    height: 44px;
+    width: 44px;
+    float:left;
+}
