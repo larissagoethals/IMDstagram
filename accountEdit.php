@@ -5,9 +5,12 @@ include_once('classes/User.class.php');
 if (!empty($_POST['saveChanges'])) {
     if(!empty($_FILES['profilePicture']['name'])) {
         $saveImage = new User();
-        $saveImage->ImageName = $_FILES['profilePicture']['name'];
-        $saveImage->ImageSize = $_FILES['profilePicture']['size'];
-        $saveImage->ImageTmpName = $_FILES['profilePicture']['tmp_name'];
+        $nameWithoutSpace = preg_replace('/\s+/','',$_FILES['profilePicture']['name']);
+        $nameWithoutSpaceTMP = preg_replace('/\s+/','',$_FILES['profilePicture']['tmp_name']);
+        $nameWithoutSpaceSize = preg_replace('/\s+/','',$_FILES['profilePicture']['size']);
+        $saveImage->ImageName = $nameWithoutSpace;
+        $saveImage->ImageSize = $nameWithoutSpaceSize;
+        $saveImage->ImageTmpName = $nameWithoutSpaceTMP;
         $location = $saveImage->SaveProfileImage();
     }
     else
