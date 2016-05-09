@@ -22,7 +22,7 @@ include_once("Includes/functions.php");
         <div class="modalUserInformation" style="width:50%; float:left; padding:10px; box-sizing: border-box">
             <div class="userInfo" style="margin-bottom:10px;">
                 <div class="user" style="float:left;">
-                    <a href="account.php?profile=<?php echo $item[0]['postUserID'] ?>"><?php echo $thisUserInformation[0]["username"] ?></a>
+                    <a href="account.php?profile=<?php echo $item[0]['postUserID'] ?>"><?php echo htmlspecialchars($thisUserInformation[0]["username"]) ?></a>
                 </div>
                 <div class="followButton" style="float:right">
                     Follow

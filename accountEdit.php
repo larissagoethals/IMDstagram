@@ -96,18 +96,18 @@ $thisUserSettings = $myUser->getUserInformation();
         <form action="#" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
-                   value="<?php echo $thisUserSettings['name']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['name']); ?>">
             <label for="username">Gebruikersnaam</label>
             <div id="responsUsername"></div>
             <input type="text" name="username" id="username" placeholder="Type your new username..."
-                   value="<?php echo $thisUserSettings['username']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['username']); ?>">
             <label for="email">Email</label>
             <div id="responsEmail"></div>
             <input type="email" name="email" id="email" placeholder="Type your new email..."
-                   value="<?php echo $thisUserSettings['email']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['email']); ?>">
             <label for="bioText">Mijn omschrijving</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
-                      placeholder="Type your own description..."><?php echo $thisUserSettings['biotext']; ?></textarea>
+                      placeholder="Type your own description..."><?php echo htmlspecialchars($thisUserSettings['biotext']); ?></textarea>
             <label for="profilePicture">Mijn profielfoto</label>
             <input type="file" name="profilePicture" id="profilePicture" accept="image/gif, image/jpeg, image/png, image/jpg">
             <img id="imgPreview" src="<?php echo $thisUserSettings['profileImage']; ?>" alt=""/>
