@@ -38,13 +38,14 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->Username = $_POST['username'];
     $updateUser->Private = $private;
     $updateUser->Image = $location;
-    $_SESSION['username'] = $updateUser->Update();
+    // $_SESSION['username'] = $updateUser->Update();
 
-
+    $newUsername = $_POST['username'];
 
     if($updateUser->Update())
     {
         $feedback = "Je profiel werd succesvol aangepast!";
+      $_SESSION['username'] = $newUsername;
     }
     else
     {
