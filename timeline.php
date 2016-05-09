@@ -121,7 +121,7 @@ if (!empty($_POST['btnInappropriate'])) {
         </div>
 
         <div class="profileName">
-            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo htmlspecialchars($_SESSION['username']); ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
@@ -171,7 +171,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
                              alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <a href="account.php?profile=<?php echo $userID ?>" class="authorPost authorPost__link"><?php echo $thisUserInformation[0]['username'] ?></a>
+                        <a href="account.php?profile=<?php echo $userID ?>" class="authorPost authorPost__link"><?php echo htmlspecialchars($thisUserInformation[0]['username']) ?></a>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $userInformation->timeAgo($post["postTime"]) ?>
@@ -216,7 +216,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="clearfix"></div>
                         <div class="ip_body_textContent">
-                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
+                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo htmlspecialchars($thisUserInformation[0]['username']) ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
                         </div>
                     </div>
@@ -237,7 +237,7 @@ if (!empty($_POST['btnInappropriate'])) {
                             <img src="<?php echo $reactionUserInfo[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
                             <div class="rightReaction">
                                 <div class="rightReactionName">
-                                    <a href="account.php?profile=<?php echo $myReaction['userID'] ?>" class="inheritParent"><?php echo $reactionUserInfo[0]['username'] ?></a>
+                                    <a href="account.php?profile=<?php echo $myReaction['userID'] ?>" class="inheritParent"><?php echo htmlspecialchars($reactionUserInfo[0]['username']) ?></a>
                                 </div>
                                 <div class="myReaction">
                                     <?php echo htmlspecialchars($myReaction['commentText']) ?>
@@ -300,9 +300,9 @@ if (!empty($_POST['btnInappropriate'])) {
                 }
                 ?></p>
             <?php if($location == true): ?>
-                <a href="?search=<?php echo $_GET['search'] ?>" id="btnLocationCheck">Niet zoeken op locatie.</a>
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>" id="btnLocationCheck">Niet zoeken op locatie.</a>
             <?php else: ?>
-                <a href="?search=<?php echo $_GET['search'] ?>&location" id="btnLocationCheck">Zoeken op locatie.</a>
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&location" id="btnLocationCheck">Zoeken op locatie.</a>
             <?php endif; ?>
 
             <?php if($location == true): ?>
@@ -330,7 +330,7 @@ if (!empty($_POST['btnInappropriate'])) {
             <p>Foto's op locatie's zoals: <?php echo $_GET['search'] ?></p>
             <div class="allMatches">
                 <?php foreach ($locationResults as $locationResult): ?>
-                    <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $locationResult['postID'] ?>"
+                    <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $locationResult['postID'] ?>"
                        style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem"></a>
                 <?php endforeach; ?>
             </div>
@@ -344,7 +344,7 @@ if (!empty($_POST['btnInappropriate'])) {
         <p>Berichten:</p>
         <div class="allMatches">
             <?php foreach ($allResults as $allResult): ?>
-                <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $allResult['postID'] ?>"
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $allResult['postID'] ?>"
                    style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
             <?php endforeach; ?>
             <?php if ($countSearchPosts == 0): ?>

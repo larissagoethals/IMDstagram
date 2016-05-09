@@ -54,7 +54,7 @@ if (!empty($_POST['btnPlaats'])) {
         <a href="timeline.php" class="logoInsta">IMDstagram Home</a>
 
         <div class="profileName">
-            <a href="account.php"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php"><?php echo htmlspecialchars($_SESSION['username']); ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
