@@ -292,10 +292,10 @@ class User
 
                     }
                 } else {
-                    echo "Deze username is reeds in gebruik!";
+                    return false;
                 }
             } else {
-                echo "Dit emailadres is reeds in gebruik!";
+                return false;
             }
     }
 
