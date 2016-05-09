@@ -38,18 +38,17 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->Username = $_POST['username'];
     $updateUser->Private = $private;
     $updateUser->Image = $location;
-    // $_SESSION['username'] = $updateUser->Update();
 
     $newUsername = $_POST['username'];
 
     if($updateUser->Update())
     {
-        $feedback = "Je profiel werd succesvol aangepast!";
+        $message = "Je profiel werd succesvol aangepast!";
       $_SESSION['username'] = $newUsername;
     }
     else
     {
-        $feedback = "Het is niet mogelijk om je profiel aan te passen!";
+        $errorMessage = "Het is niet mogelijk om je profiel aan te passen!";
     }
 
 }
@@ -88,11 +87,18 @@ $thisUserSettings = $myUser->getUserInformation();
         <div class="imageAndChange">
             <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="yaron" class="profileImage">
         </div>
-        <?php if( isset( $feedback ) ) : ?>
-            <h3><?php echo $feedback; ?></h3>
-        <?php else: ?>
-            <h3>Wijzig je profiel hier:</h3>
-        <?php endif; ?>
+
+        <div class="myMessages">
+            <?php if(isset($errorMessage)): ?>
+                <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+            <?php endif; ?>
+
+            <?php if(isset($message)): ?>
+                <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+            <?php endif; ?>
+        </div>
+
+
         <form action="#" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
@@ -185,6 +191,12 @@ $thisUserSettings = $myUser->getUserInformation();
 
         $("#profilePicture").change(function () {
             readURL(this);
+        });
+
+
+        $(".closeNotification").click(function () {
+            console.log("TEST");
+            $(this).parent().slideUp();
         });
     });
 </script>

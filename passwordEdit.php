@@ -9,11 +9,11 @@ if (!empty($_POST['saveChangesPassword'])) {
     $updateUser->OldPassword = $_POST['passwordOld'];
     if($updateUser->UpdatePassword())
     {
-        $feedback = "Het wachtwoord werd succesvol aangepast!";
+        $message = "Het wachtwoord werd succesvol aangepast!";
     }
     else
     {
-        $feedback = "Het is niet mogelijk om het wachtwoord aan te passen!";
+        $errorMessage = "Het is niet mogelijk om het wachtwoord aan te passen!";
     }
 }
 
@@ -27,6 +27,8 @@ $thisUserSettings = $myUser->getUserInformation();
     <meta charset="UTF-8">
     <title>Account</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
@@ -51,11 +53,17 @@ $thisUserSettings = $myUser->getUserInformation();
         <div class="imageAndChange">
             <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="" class="profileImage">
         </div>
-        <?php if( isset( $feedback ) ) : ?>
-            <h3><?php echo $feedback; ?></h3>
-        <?php else: ?>
-            <h3>Wijzig je wachtwoord hier:</h3>
-        <?php endif; ?>
+
+        <div class="myMessages">
+            <?php if(isset($errorMessage)): ?>
+                <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+            <?php endif; ?>
+
+            <?php if(isset($message)): ?>
+                <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+            <?php endif; ?>
+        </div>
+
         <form action="" method="post">
             <label for="passwordOld">Oude wachtwoord</label>
             <input type="password" name="passwordOld" id="passwordOld" placeholder="Type your old password...">
@@ -75,6 +83,13 @@ $thisUserSettings = $myUser->getUserInformation();
 </section>
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".closeNotification").click(function () {
+            console.log("TEST");
+            $(this).parent().slideUp();
+        });
+    });
+</script>
 </body>
 </html>
