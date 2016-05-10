@@ -67,7 +67,7 @@ if( !empty( $_POST ) ) {
             <div class="loginOrText">of</div>
             <div class="loginStripe"></div>
         </div>
-        <a href="#" class="viaFacebook">
+        <a href="facebooklogin.php" class="viaFacebook">
             <div class="logoFacebook"></div>
             <div class="textFacebook">Aanmelden met Facebook</div>
        </a>

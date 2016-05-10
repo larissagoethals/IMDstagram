@@ -13,6 +13,7 @@ class Post
     private $m_sUserID;
     private $m_sPostID;
     private $m_sPostLocation;
+    private $m_sFilter;
 
     //ophalen waarde uit velden
     public function __set($p_sProperty, $p_vValue)
@@ -47,6 +48,9 @@ class Post
                 break;
             case "PostLocation":
                 $this->m_sPostLocation = $p_vValue;
+                break;
+            case "Filter":
+                $this->m_sFilter = $p_vValue;
                 break;
         }
     }
@@ -85,6 +89,9 @@ class Post
             case "PostLocation":
                 return $this->m_sPostLocation;
                 break;
+            case "Filter":
+                return $this->m_sFilter;
+                break;
         }
     }
 
@@ -120,12 +127,13 @@ class Post
             $postUserID = $_SESSION['userID'];
 
             $conn = Db::getInstance();
-            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID) values (:postImage, :postText, :postTime, :postLocation, :postUserID)");
+            $statement = $conn->prepare("insert into posts (postImage, postText, postTime, postLocation, postUserID, postFilter) values (:postImage, :postText, :postTime, :postLocation, :postUserID, :postFilter)");
             $statement->bindValue(":postImage", $this->m_sPostImgUrl);
             $statement->bindValue(":postText", $this->m_sBeschrijving);
             $statement->bindValue(":postTime", $tijd);
             $statement->bindValue(":postLocation", $this->m_sPostLocation);
             $statement->bindValue(":postUserID", $postUserID);
+            $statement->bindValue(":postFilter", $this->m_sFilter);
             $statement->execute();
         } catch (Exception $e) {
             var_dump("helaas");
@@ -169,6 +177,20 @@ class Post
             $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
             $statement->execute();
             $result = $statement->fetchAll();
+        return $result;
+    }
+
+    public function getMorePosts($start, $end){
+        $friends = $this->getFriends(); // [1, 4, 5, 10];
+
+
+        $allFriends = array_column($friends, 0);
+        $array = implode(" , ",$allFriends);
+
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . $start .",". $end);
+        $statement->execute();
+        $result = $statement->fetchAll();
         return $result;
     }
 

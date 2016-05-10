@@ -38,17 +38,17 @@ if (!empty($_POST['saveChanges'])) {
     $updateUser->Username = $_POST['username'];
     $updateUser->Private = $private;
     $updateUser->Image = $location;
-    $_SESSION['username'] = $updateUser->Update();
 
-
+    $newUsername = $_POST['username'];
 
     if($updateUser->Update())
     {
-        $feedback = "Je profiel werd succesvol aangepast!";
+        $message = "Je profiel werd succesvol aangepast!";
+      $_SESSION['username'] = $newUsername;
     }
     else
     {
-        $feedback = "Het is niet mogelijk om je profiel aan te passen!";
+        $errorMessage = "Het is niet mogelijk om je profiel aan te passen!";
     }
 
 }
@@ -87,26 +87,33 @@ $thisUserSettings = $myUser->getUserInformation();
         <div class="imageAndChange">
             <img src="<?php echo $thisUserSettings['profileImage']; ?>" alt="yaron" class="profileImage">
         </div>
-        <?php if( isset( $feedback ) ) : ?>
-            <h3><?php echo $feedback; ?></h3>
-        <?php else: ?>
-            <h3>Wijzig je profiel hier:</h3>
-        <?php endif; ?>
+
+        <div class="myMessages">
+            <?php if(isset($errorMessage)): ?>
+                <div class="errorMessage"><?php echo $errorMessage; ?> <span class="closeNotification">X</span> </div>
+            <?php endif; ?>
+
+            <?php if(isset($message)): ?>
+                <div class="successMessage"><?php echo $message; ?> <span class="closeNotification">X</span></div>
+            <?php endif; ?>
+        </div>
+
+
         <form action="#" method="post" enctype="multipart/form-data">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" placeholder="Type your new name..."
-                   value="<?php echo $thisUserSettings['name']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['name']); ?>">
             <label for="username">Gebruikersnaam</label>
             <div id="responsUsername"></div>
             <input type="text" name="username" id="username" placeholder="Type your new username..."
-                   value="<?php echo $thisUserSettings['username']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['username']); ?>">
             <label for="email">Email</label>
             <div id="responsEmail"></div>
             <input type="email" name="email" id="email" placeholder="Type your new email..."
-                   value="<?php echo $thisUserSettings['email']; ?>">
+                   value="<?php echo htmlspecialchars($thisUserSettings['email']); ?>">
             <label for="bioText">Mijn omschrijving</label>
             <textarea name="bioText" id="bioText" cols="30" rows="10"
-                      placeholder="Type your own description..."><?php echo $thisUserSettings['biotext']; ?></textarea>
+                      placeholder="Type your own description..."><?php echo htmlspecialchars($thisUserSettings['biotext']); ?></textarea>
             <label for="profilePicture">Mijn profielfoto</label>
             <input type="file" name="profilePicture" id="profilePicture" accept="image/gif, image/jpeg, image/png, image/jpg">
             <img id="imgPreview" src="<?php echo $thisUserSettings['profileImage']; ?>" alt=""/>
@@ -184,6 +191,12 @@ $thisUserSettings = $myUser->getUserInformation();
 
         $("#profilePicture").change(function () {
             readURL(this);
+        });
+
+
+        $(".closeNotification").click(function () {
+            console.log("TEST");
+            $(this).parent().slideUp();
         });
     });
 </script>

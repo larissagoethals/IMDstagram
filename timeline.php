@@ -103,6 +103,7 @@ if (!empty($_POST['btnInappropriate'])) {
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/cssgram.min.css">
 </head>
 <body>
 <header>
@@ -121,13 +122,13 @@ if (!empty($_POST['btnInappropriate'])) {
         </div>
 
         <div class="profileName">
-            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo $_SESSION['username']; ?></a></div>
+            <a href="account.php?profile=<?php echo $_SESSION['userID']?>"><?php echo htmlspecialchars($_SESSION['username']); ?></a></div>
     </div>
     <div class="clearfix"></div>
 </header>
 
 <?php if (!isset($_GET["search"]) || empty($_GET["search"])): ?>
-    <section class="timeline">
+    <section class="timeline" id="timeline">
         <a href="postImage.php" class="uploadImage">
             <div class="photoUpload"></div>
             <p>Post foto</p>
@@ -171,7 +172,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         <img src="<?php echo $thisUserInformation[0]['profileImage'] ?>"
                              alt="<?php echo $post["postUserID"] ?>"
                              class="postProfileImage">
-                        <a href="account.php?profile=<?php echo $userID ?>" class="authorPost authorPost__link"><?php echo $thisUserInformation[0]['username'] ?></a>
+                        <a href="account.php?profile=<?php echo $userID ?>" class="authorPost authorPost__link"><?php echo htmlspecialchars($thisUserInformation[0]['username']) ?></a>
                     </div>
                     <div class="instaPost_timeAgo">
                         <?php echo $userInformation->timeAgo($post["postTime"]) ?>
@@ -179,7 +180,7 @@ if (!empty($_POST['btnInappropriate'])) {
                     <div class="clearfix"></div>
                 </div>
                 <div class="instaPost_image">
-                    <img src="<?php echo $post["postImage"] ?>" alt="">
+                    <img src="<?php echo $post["postImage"] ?>" alt="" class="<?php echo $post['postFilter']?>">
                     <?php if(!empty($post['postLocation'])): ?>
                     <div class="locationPost">
                         <span class="positionIcon"></span>
@@ -216,7 +217,7 @@ if (!empty($_POST['btnInappropriate'])) {
                         </div>
                         <div class="clearfix"></div>
                         <div class="ip_body_textContent">
-                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo $thisUserInformation[0]['username'] ?></a>
+                            <a href="account.php?profile=<?php echo $userID ?>" class="authorPost"><?php echo htmlspecialchars($thisUserInformation[0]['username']) ?></a>
                             <p class="postText"><?php echo htmlspecialchars($post["postText"]); ?></p>
                         </div>
                     </div>
@@ -237,7 +238,7 @@ if (!empty($_POST['btnInappropriate'])) {
                             <img src="<?php echo $reactionUserInfo[0]['profileImage'] ?>" alt="me" class="postProfileImage reactOne">
                             <div class="rightReaction">
                                 <div class="rightReactionName">
-                                    <a href="account.php?profile=<?php echo $myReaction['userID'] ?>" class="inheritParent"><?php echo $reactionUserInfo[0]['username'] ?></a>
+                                    <a href="account.php?profile=<?php echo $myReaction['userID'] ?>" class="inheritParent"><?php echo htmlspecialchars($reactionUserInfo[0]['username']) ?></a>
                                 </div>
                                 <div class="myReaction">
                                     <?php echo htmlspecialchars($myReaction['commentText']) ?>
@@ -275,12 +276,13 @@ if (!empty($_POST['btnInappropriate'])) {
                 </div>
             </div>
         <?php endforeach; ?>
-        <div class="insta_loadMore">
-            <form action="" method="post">
-                <input type="submit" name="btnLoadMore" value="Load More">
-            </form>
-        </div>
+
     </section>
+    <div class="insta_loadMore">
+        <form action="" method="post">
+            <input type="submit" name="btnLoadMore" value="Load More" id="btnLoadMore" data-position="21">
+        </form>
+    </div>
 <?php else: ?>
     <section class="timeline">
         <div class="infoSearch">
@@ -300,9 +302,9 @@ if (!empty($_POST['btnInappropriate'])) {
                 }
                 ?></p>
             <?php if($location == true): ?>
-                <a href="?search=<?php echo $_GET['search'] ?>" id="btnLocationCheck">Niet zoeken op locatie.</a>
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>" id="btnLocationCheck">Niet zoeken op locatie.</a>
             <?php else: ?>
-                <a href="?search=<?php echo $_GET['search'] ?>&location" id="btnLocationCheck">Zoeken op locatie.</a>
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&location" id="btnLocationCheck">Zoeken op locatie.</a>
             <?php endif; ?>
 
             <?php if($location == true): ?>
@@ -330,8 +332,8 @@ if (!empty($_POST['btnInappropriate'])) {
             <p>Foto's op locatie's zoals: <?php echo $_GET['search'] ?></p>
             <div class="allMatches">
                 <?php foreach ($locationResults as $locationResult): ?>
-                    <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $locationResult['postID'] ?>"
-                       style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem"></a>
+                    <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $locationResult['postID'] ?>"
+                       style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem <?php echo $locationResult['postFilter'] ?>"></a>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
@@ -344,8 +346,8 @@ if (!empty($_POST['btnInappropriate'])) {
         <p>Berichten:</p>
         <div class="allMatches">
             <?php foreach ($allResults as $allResult): ?>
-                <a href="?search=<?php echo $_GET['search'] ?>&image=<?php echo $allResult['postID'] ?>"
-                   style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
+                <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $allResult['postID'] ?>"
+                   style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem <?php echo $allResult['postFilter'] ?>"></a>
             <?php endforeach; ?>
             <?php if ($countSearchPosts == 0): ?>
                 <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts
@@ -409,6 +411,31 @@ if (!empty($_POST['btnInappropriate'])) {
             }
 
             e.preventDefault(); // submit tegenhouden
+        });
+
+        $("#btnLoadMore").on('click', function(e) {
+
+            "use strict";
+            var start = parseInt($(this).attr("data-position"));
+            var newStart = start + 20;
+
+            $.post('ajax/loadMore.php', {
+                start: start
+            }).done(function (response) {
+                if(response.status === 'success'){
+                    if(response.result.length !== 0){
+
+                        $("#timeline").append(response.result);
+                        $("#btnLoadMore").attr('data-position', newStart);
+                    }
+                    else{
+                        $(".insta_loadMore").hide(600);
+                    }
+                }
+
+            });
+
+            e.preventDefault();
         });
     });
 </script>

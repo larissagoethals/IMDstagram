@@ -121,13 +121,6 @@ $countPostUserFollow = new Post();
 $countPostUserFollow->userID = $_GET['profile'];
 $PostCountUserFollow = $countPostUserFollow->countFollowUser();
 
-
-
-
-
-
-
-
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -137,6 +130,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/cssgram.min.css">
 </head>
 <body>
 <header>
@@ -206,8 +200,8 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
         </div>
 
         <div class="profileInformation">
-            <h1><?php echo $bio[0]['username']; ?></h1>
-            <p><?php echo $bio[0]['biotext']; ?></p>
+            <h1><?php echo htmlspecialchars($bio[0]['username']); ?></h1>
+            <p><?php echo htmlspecialchars($bio[0]['biotext']); ?></p>
             <ul class="countEverything">
                 <?php if($PostCountUser == 1): ?>
                 <li><span class="bold"><?php echo $PostCountUser; ?></span> bericht</li>
@@ -229,7 +223,7 @@ $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     <div class="allMatches">
         <?php foreach ($allResultsPost as $allResult): ?>
             <a href="?profile=<?php echo $allResult['postUserID']; ?>&image=<?php echo $allResult['postID']; ?>"
-               style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile"></a>
+               style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem imageOnProfile <?php echo $allResult['postFilter'] ?>"></a>
 
         <?php endforeach; ?>
         <?php if ($countSearchPosts == 0): ?>
