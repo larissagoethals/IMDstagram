@@ -237,7 +237,8 @@ header {
 }
 
 .likeAndReact {
-    border-top: 1px solid #eeefef;   
+    border-top: 1px solid #eeefef;
+    margin-bottom: -14px;
 }
 
 .react input {
@@ -250,6 +251,24 @@ header {
     z-index: 2;
     display:inline;
     float:left;
+    margin-top: 10px;
+}
+
+#btnReact
+{
+    margin-top: 13px;
+    margin-left: 30px;
+    background-image: url("../images/add-comment.png");
+    background-size: contain;
+    background-color: transparent;
+    text-indent: -9999px;
+    width: 20px;
+    height: 20px;
+}
+
+#commentText
+{
+    width: 420px;
 }
 
 .like {
@@ -406,6 +425,7 @@ header {
 
 .reactionOne {
     display:flex;
+    margin-bottom: 3px;
 }
 
 .rightReactionName {
@@ -573,4 +593,9 @@ footer {
     height: 44px;
     width: 44px;
     float:left;
+}
+
+.imageModal
+{
+    z-index: 1;
 }
