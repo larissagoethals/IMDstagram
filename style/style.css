@@ -116,7 +116,7 @@ header {
     background-image:url(../images/photo.svg);
     width:16px;
     height:16px;
-    margin:2px 0px;
+    margin:-2px 0px;
     background-size:cover;
     display:inline-block;
 }
@@ -264,6 +264,14 @@ header {
     text-indent: -9999px;
     width: 20px;
     height: 20px;
+    cursor: pointer;
+}
+
+#btnReact:hover,
+#btnReact:active
+{
+    background-image: url("../images/add-commentHover.png");
+    background-size: contain;
 }
 
 #commentText
@@ -320,6 +328,7 @@ header {
     height: 100vh;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .errorMessage {
