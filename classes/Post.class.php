@@ -156,7 +156,7 @@ class Post
     {
         $conn = Db::getInstance();
 
-        $statement = $conn->prepare("select userFollowID from follow WHERE userID = " . $_SESSION['userID']);
+        $statement = $conn->prepare("select userFollowID from follow WHERE Accept = 1 and userID = " . $_SESSION['userID']);
         $statement->execute();
         $result = $statement->fetchAll();
 
@@ -171,10 +171,11 @@ class Post
 
 
         $allFriends = array_column($friends, 0);
+        array_push($allFriends, $_SESSION['userID']);
         $array = implode(" , ",$allFriends);
       
             $conn = Db::getInstance();
-            $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
+            $statement = $conn->prepare("select * from posts WHERE postUserID in (".$array.") order by postTime DESC LIMIT " . 20);
             $statement->execute();
             $result = $statement->fetchAll();
         return $result;
