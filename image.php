@@ -14,6 +14,7 @@ include_once("Includes/functions.php");
 ?>
 
 <?php if(isset($_GET['image']) && !empty($_GET['image'])): ?>
+    <link rel="stylesheet" href="style/image.css">
     <div class="modalBackground">
 
     </div>
@@ -22,19 +23,17 @@ include_once("Includes/functions.php");
         <div class="modalUserInformation" style="width:50%; float:left; padding:10px; box-sizing: border-box">
             <div class="userInfo" style="margin-bottom:10px;">
                 <div class="user" style="float:left;">
-                    <a href="account.php?profile=<?php echo $item[0]['postUserID'] ?>"><?php echo htmlspecialchars($thisUserInformation[0]["username"]) ?></a>
-                </div>
-                <div class="followButton" style="float:right">
-                    Follow
-                </div>
-            </div>
-            <div class="photoInformation" style="clear:both;padding:10px 0px; border-top:1px solid black; border-bottom:1px solid black; margin-bottom:5px;">
-                <div class="photoText" style="float:left">
-                    <?php echo htmlspecialchars($item[0]['postText']); ?>
+                    <a class="usernameImage" href="account.php?profile=<?php echo $item[0]['postUserID'] ?>"><?php echo htmlspecialchars($thisUserInformation[0]["username"]) ?></a>
                 </div>
                 <div class="modalTimeAgo" style="float:right;">
                     <?php echo timeAgo($item[0]['postTime']) ?>
                 </div>
+            </div>
+            <div class="photoInformation" style="clear:both;padding:10px 0px;  margin-bottom:5px;">
+                <div class="photoText" style="float:left">
+                    <?php echo htmlspecialchars($item[0]['postText']); ?>
+                </div>
+
             </div>
             <div class="clearfix" style="clear:both"></div>
             <div class="commentsModal" style="clear:both;"></div>

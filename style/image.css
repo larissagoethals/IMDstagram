@@ -1,0 +1,22 @@
+.usernameImage
+{
+    text-decoration: none;
+    font-size: 1.2em;
+    color: #094485;
+}
+
+.modalTimeAgo
+{
+    font-size: 1em;
+}
+
+.photoText
+{
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.userInfo
+{
+    border-bottom: 1px solid black;
+}
