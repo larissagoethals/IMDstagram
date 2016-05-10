@@ -18,6 +18,7 @@ if (!empty($_POST['btnPlaats'])) {
             $savePost->Beschrijving = $_POST['beschrijvingImg'];
             $savePost->PostImgUrl = $location;
             $savePost->PostLocation = $_POST['place'];
+            $savePost->Filter = $_POST['filter'];
             $savePost->CreatePost();
 
             $message = "Foto werd upgeload.";
