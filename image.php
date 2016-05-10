@@ -18,7 +18,7 @@ include_once("Includes/functions.php");
 
     </div>
     <div class="imageModal" style="width:70%;position:fixed;top:20%;left:15%;background-color:white;">
-        <img src="<?php echo $item[0]['postImage'] ?>" alt="" style="width:50%; float:left;" >
+        <img src="<?php echo $item[0]['postImage'] ?>" alt="" class="<?php echo $item[0]['postFilter'] ?>" style="width:50%; float:left;" >
         <div class="modalUserInformation" style="width:50%; float:left; padding:10px; box-sizing: border-box">
             <div class="userInfo" style="margin-bottom:10px;">
                 <div class="user" style="float:left;">

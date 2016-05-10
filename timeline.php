@@ -103,6 +103,7 @@ if (!empty($_POST['btnInappropriate'])) {
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/cssgram.min.css">
 </head>
 <body>
 <header>
@@ -179,7 +180,7 @@ if (!empty($_POST['btnInappropriate'])) {
                     <div class="clearfix"></div>
                 </div>
                 <div class="instaPost_image">
-                    <img src="<?php echo $post["postImage"] ?>" alt="">
+                    <img src="<?php echo $post["postImage"] ?>" alt="" class="<?php echo $post['postFilter']?>">
                     <?php if(!empty($post['postLocation'])): ?>
                     <div class="locationPost">
                         <span class="positionIcon"></span>
@@ -331,7 +332,7 @@ if (!empty($_POST['btnInappropriate'])) {
             <div class="allMatches">
                 <?php foreach ($locationResults as $locationResult): ?>
                     <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $locationResult['postID'] ?>"
-                       style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem"></a>
+                       style="background-image:url(<?php echo $locationResult['postImage'] ?>)" class="searchItem <?php echo $locationResult['postFilter'] ?>"></a>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
@@ -345,7 +346,7 @@ if (!empty($_POST['btnInappropriate'])) {
         <div class="allMatches">
             <?php foreach ($allResults as $allResult): ?>
                 <a href="?search=<?php echo htmlspecialchars($_GET['search']) ?>&image=<?php echo $allResult['postID'] ?>"
-                   style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem"></a>
+                   style="background-image:url(<?php echo $allResult['postImage'] ?>)" class="searchItem <?php echo $allResult['postFilter'] ?>"></a>
             <?php endforeach; ?>
             <?php if ($countSearchPosts == 0): ?>
                 <p style="text-align:center; display:block; width:100%;">Voor deze zoekopdracht zijn nog geen posts
