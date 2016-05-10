@@ -180,6 +180,20 @@ class Post
         return $result;
     }
 
+    public function getMorePosts($start, $end){
+        $friends = $this->getFriends(); // [1, 4, 5, 10];
+
+
+        $allFriends = array_column($friends, 0);
+        $array = implode(" , ",$allFriends);
+
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select * from posts WHERE postUserID = " . $_SESSION['userID'] . " or postUserID in (".$array.") order by postTime DESC LIMIT " . $start .",". $end);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
 
 
     //full post receive

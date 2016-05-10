@@ -128,7 +128,7 @@ if (!empty($_POST['btnInappropriate'])) {
 </header>
 
 <?php if (!isset($_GET["search"]) || empty($_GET["search"])): ?>
-    <section class="timeline">
+    <section class="timeline" id="timeline">
         <a href="postImage.php" class="uploadImage">
             <div class="photoUpload"></div>
             <p>Post foto</p>
@@ -276,12 +276,13 @@ if (!empty($_POST['btnInappropriate'])) {
                 </div>
             </div>
         <?php endforeach; ?>
-        <div class="insta_loadMore">
-            <form action="" method="post">
-                <input type="submit" name="btnLoadMore" value="Load More">
-            </form>
-        </div>
+
     </section>
+    <div class="insta_loadMore">
+        <form action="" method="post">
+            <input type="submit" name="btnLoadMore" value="Load More" id="btnLoadMore" data-position="21">
+        </form>
+    </div>
 <?php else: ?>
     <section class="timeline">
         <div class="infoSearch">
@@ -410,6 +411,31 @@ if (!empty($_POST['btnInappropriate'])) {
             }
 
             e.preventDefault(); // submit tegenhouden
+        });
+
+        $("#btnLoadMore").on('click', function(e) {
+
+            "use strict";
+            var start = parseInt($(this).attr("data-position"));
+            var newStart = start + 20;
+
+            $.post('ajax/loadMore.php', {
+                start: start
+            }).done(function (response) {
+                if(response.status === 'success'){
+                    if(response.result.length !== 0){
+
+                        $("#timeline").append(response.result);
+                        $("#btnLoadMore").attr('data-position', newStart);
+                    }
+                    else{
+                        $(".insta_loadMore").hide(600);
+                    }
+                }
+
+            });
+
+            e.preventDefault();
         });
     });
 </script>
