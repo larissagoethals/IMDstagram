@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('Includes/checklogin.php');
 include_once('classes/User.class.php');
 include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
@@ -7,15 +8,8 @@ include_once('image.php');
 include_once("Includes/functions.php");
 include_once ('classes/Reaction.class.php');
 
-//Check if able to be here
-/*
-if(isset($_SESSION['loggedinFact'])){
 
-}
-else {
-    header('Location: login.php');
-}
-*/
+
 
 $myUser = new User();
 $myUser->Username = $_SESSION['username'];

@@ -1,5 +1,6 @@
 <?php
 //include settings.php
+
 include_once('settings.php');
 include_once('classes/User.class.php');
     session_start();
@@ -23,7 +24,7 @@ if(!empty($_POST)) {
         } else {
             if ($user->Save()) {
                 $error = "U bent geregistreerd";
-                $_SESSION['loggedinFace'] = true;
+                $_SESSION['loggedinFact'] = true;
                 $_SESSION['loggedin'] = "yes";
                 $_SESSION['username'] = strtolower($_POST['username']);
                 $userID = $user->getUserInformation();

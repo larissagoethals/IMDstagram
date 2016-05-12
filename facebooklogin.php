@@ -1,3 +1,6 @@
+<?php
+include_once('Includes/checklogin.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
