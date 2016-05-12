@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('Includes/checklogin.php');
 include_once('classes/User.class.php');
 
 if (!empty($_POST['saveChangesPassword'])) {

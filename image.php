@@ -1,4 +1,5 @@
 <?php
+include_once('Includes/checklogin.php');
 include_once('classes/Post.class.php');
 include_once("classes/User.class.php");
 include_once("Includes/functions.php");
