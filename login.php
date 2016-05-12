@@ -21,7 +21,7 @@ if( !empty( $_POST ) ) {
         $user->Username = $_POST['username'];
         $user->Password = $_POST['password'];
         if ($user->canLogin()) {
-            $_SESSION['loggedinFace'] = true;
+            $_SESSION['loggedinFact'] = true;
             $_SESSION['loggedin'] = "yes";
             $_SESSION['username'] = strtolower($_POST['username']);
             $user->Username = $_SESSION['username'];
