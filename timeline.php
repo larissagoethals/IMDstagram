@@ -4,7 +4,7 @@ include_once('Includes/checklogin.php');
 include_once('classes/User.class.php');
 include_once('classes/Search.class.php');
 include_once('classes/Post.class.php');
-include_once('image.php');
+//include_once('image.php');
 include_once("Includes/functions.php");
 include_once ('classes/Reaction.class.php');
 
@@ -218,7 +218,7 @@ if (!empty($_POST['btnInappropriate'])) {
                     <h2 class="titleReact">Reacties:</h2>
                     <div class="reactions" data-id="<?php echo $post['postID']?>">
                         <?php if($countReactions == 0): ?>
-                        <div class="reactionOne">
+                        <div class="reactionOne noComments">
                             Voor deze post zijn nog geen reacties.
                         </div>
                         <?php endif; ?>
@@ -358,6 +358,7 @@ if (!empty($_POST['btnInappropriate'])) {
         <li>Terms of Use</li>
     </ul>
 </footer>
+<script src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -400,6 +401,7 @@ if (!empty($_POST['btnInappropriate'])) {
                             var nieuweReactie = "<div class='reactionOne'><img src='" + response.userphoto + "' alt='me' class='postProfileImage reactOne'><div class='rightReaction'><div class='rightReactionName'><a href='account.php?profile=" + response.userID + "' class='inheritParent'>" + response.username + "</a></div><div class='myReaction'>" + response.text + "</div></div><div class='clearfix'></div></div>";
                             $(".reactions[data-id=" + response.dataid + "]").append(nieuweReactie);
                             $myElement.prev().val("");
+                            $(".reactions[data-id=" + response.dataid + "] noComments").text('');
                         }
                     });
             }

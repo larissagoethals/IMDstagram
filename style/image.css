@@ -13,10 +13,15 @@
 .photoText
 {
     font-size: 0.9em;
-    margin-left: 10px;
 }
 
 .userInfo
 {
-    border-bottom: 1px solid black;
+    border-bottom:1px solid #0065a3;
+    padding-bottom:10px;
+}
+
+.reactions {
+    max-height: 30vh;
+    overflow: scroll;
 }

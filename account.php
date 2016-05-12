@@ -16,6 +16,27 @@ include_once('classes/User.class.php');
             $user = new User();
             $user->UserID = $_SESSION['userID'];
             $friendships = count($user->showNotAcceptedFriends());
+
+            $search = new SearchClass();
+            $search->UserID = $_SESSION['userID'];
+            $allResults = $search->searchOwnPost();
+            $countSearchPosts = count($allResults);
+
+            $userPost = new Post();
+            $userPost->userID = $_SESSION['userID'];
+            $allResultsPost = $userPost->getAllPostsfromUser();
+
+            $countPostUser = new Post();
+            $countPostUser->userID = $_SESSION['userID'];
+            $PostCountUser = $countPostUser->countPostUser();
+
+            $countPostUserFollowers = new Post();
+            $countPostUserFollowers->userID = $_SESSION['userID'];
+            $PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
+
+            $countPostUserFollow = new Post();
+            $countPostUserFollow->userID = $_SESSION['userID'];
+            $PostCountUserFollow = $countPostUserFollow->countFollowUser();
         } else {
             $userAccount = new User();
             $userAccount->UserID = $_GET['profile'];
@@ -42,6 +63,27 @@ include_once('classes/User.class.php');
                     $notAccepted = false;
                 }
             }
+
+            $search = new SearchClass();
+            $search->UserID = $_SESSION['userID'];
+            $allResults = $search->searchOwnPost();
+            $countSearchPosts = count($allResults);
+
+            $userPost = new Post();
+            $userPost->userID = $_GET['profile'];
+            $allResultsPost = $userPost->getAllPostsfromUser();
+
+            $countPostUser = new Post();
+            $countPostUser->userID = $_GET['profile'];
+            $PostCountUser = $countPostUser->countPostUser();
+
+            $countPostUserFollowers = new Post();
+            $countPostUserFollowers->userID = $_GET['profile'];
+            $PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
+
+            $countPostUserFollow = new Post();
+            $countPostUserFollow->userID = $_GET['profile'];
+            $PostCountUserFollow = $countPostUserFollow->countFollowUser();
         }
     }
     else {
@@ -52,6 +94,28 @@ include_once('classes/User.class.php');
         $user = new User();
         $user->UserID = $_SESSION['userID'];
         $friendships = count($user->showNotAcceptedFriends());
+        $privateFollow = true;
+
+        $search = new SearchClass();
+        $search->UserID = $_SESSION['userID'];
+        $allResults = $search->searchOwnPost();
+        $countSearchPosts = count($allResults);
+
+        $userPost = new Post();
+        $userPost->userID = $_SESSION['userID'];
+        $allResultsPost = $userPost->getAllPostsfromUser();
+
+        $countPostUser = new Post();
+        $countPostUser->userID = $_SESSION['userID'];
+        $PostCountUser = $countPostUser->countPostUser();
+
+        $countPostUserFollowers = new Post();
+        $countPostUserFollowers->userID = $_SESSION['userID'];
+        $PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
+
+        $countPostUserFollow = new Post();
+        $countPostUserFollow->userID = $_SESSION['userID'];
+        $PostCountUserFollow = $countPostUserFollow->countFollowUser();
     }
 
     if(isset($_POST["volgverzoek"])){
@@ -69,9 +133,9 @@ include_once('classes/User.class.php');
     }
 
 
-
+if(isset($_GET["profile"])){
 $AlreadyFriend = new User();
-if( $AlreadyFriend->userFollowsUser($_SESSION['userID'],$_GET['profile'] ))
+if( $AlreadyFriend->userFollowsUser($_SESSION['userID'], $_GET['profile']))
 {
     $feedbackFriendship = "Volg deze persoon niet meer";
 }
@@ -97,30 +161,7 @@ if(isset($_POST["addFriend"]))
         $feedbackFriendship = "Volg deze persoon niet meer";
     }
 }
-
-
-
-
-$search = new SearchClass();
-$search->UserID = $_SESSION['userID'];
-$allResults = $search->searchOwnPost();
-$countSearchPosts = count($allResults);
-
-$userPost = new Post();
-$userPost->userID = $_GET['profile'];
-$allResultsPost = $userPost->getAllPostsfromUser();
-
-$countPostUser = new Post();
-$countPostUser->userID = $_GET['profile'];
-$PostCountUser = $countPostUser->countPostUser();
-
-$countPostUserFollowers = new Post();
-$countPostUserFollowers->userID = $_GET['profile'];
-$PostCountUserFollower = $countPostUserFollowers->countFollowersUser();
-
-$countPostUserFollow = new Post();
-$countPostUserFollow->userID = $_GET['profile'];
-$PostCountUserFollow = $countPostUserFollow->countFollowUser();
+}
 
 ?><!doctype html>
 <html lang="en">

@@ -608,3 +608,8 @@ footer {
 {
     z-index: 1;
 }
+
+.reactions {
+    max-height: 30vh;
+    overflow: scroll;
+}

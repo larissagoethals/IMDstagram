@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-
+include_once('../classes/User.class.php');
 include_once ('../classes/Post.class.php');
 include_once ('../classes/Reaction.class.php');
 
