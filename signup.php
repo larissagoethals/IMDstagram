@@ -1,6 +1,6 @@
 <?php
 //include settings.php
-
+$error = "";
 include_once('settings.php');
 include_once('classes/User.class.php');
     session_start();
@@ -14,12 +14,18 @@ if(!empty($_POST)) {
         $user->Image = "images/Unknown.png";
         $user->Biotext = "";
         $user->Private = 0;
-        if ($user->userNameExists() || $user->emailExists()) {
+        if ($user->userNameExists() || $user->emailExists() || $user->usernameWrong() || $user->emailWrong() ) {
             if($user->userNameExists()){
                 $error = "Deze gebruikersnaam bestaat al, gelieve een andere te kiezen. ";
             }
             if($user->emailExists()){
-                $error .= "Dit emailadres werd al gebruikt, gelieve een ander te kiezen of hiermee in te loggen";
+                $error .= "Dit emailadres werd al gebruikt, gelieve een ander te kiezen of hiermee in te loggen. ";
+            }
+            if($user->usernameWrong()){
+                $error .= "Gelieve enkel letters en cijfers in uw gebruikersnaam te gebruiken. ";
+            }
+            if($user->emailWrong()){
+                $error .= "Gelieve een correct e-mailadres te gebruiken.";
             }
         } else {
             if ($user->Save()) {

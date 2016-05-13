@@ -487,6 +487,24 @@ class User
 
         return $result;
     }
+
+    public function usernameWrong() {
+        if (!preg_match('/[^A-Za-z0-9]/', $this->m_sUsername)) // '/[^a-z\d]/i' should also work.
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function emailWrong() {
+        if (!filter_var($this->m_sEmail, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }
 
 ?>
